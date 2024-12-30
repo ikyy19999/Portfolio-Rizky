@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #64748b;
+            --accent-color: #3b82f6;
+            --hover-color: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(145deg, var(--bg-primary), var(--bg-secondary));
+            color: var(--text-primary);
+            padding: 20px;
+        }
+
+        .calculator-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .calculator {
+            background-color: var(--bg-secondary);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #display {
+            width: 100%;
+            height: 90px;
+            background-color: var(--bg-primary);
+            border: none;
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-size: 48px;
+            text-align: right;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 16px;
+            font-size: 24px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.1);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        button:hover::before {
+            opacity: 1;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .clear {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .equal {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        #backButton {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #backButton:hover {
+            background-color: var(--hover-color);
+        }
+
+        footer {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 20px;
+            }
+
+            #display {
+                font-size: 36px;
+                height: 70px;
+            }
+
+            button {
+                font-size: 20px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .calculator-container {
+                justify-content: flex-start;
+                padding-top: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator">
+            <input type="text" id="display" readonly>
+            <div class="buttons">
+                <button class="clear" onclick="clearDisplay()">C</button>
+                <button class="operator" onclick="appendToDisplay('/')">/</button>
+                <button class="operator" onclick="appendToDisplay('*')">×</button>
+                <button class="operator" onclick="appendToDisplay('-')">-</button>
+                
+                <button onclick="appendToDisplay('7')">7</button>
+                <button onclick="appendToDisplay('8')">8</button>
+                <button onclick="appendToDisplay('9')">9</button>
+                <button class="operator" onclick="appendToDisplay('+')">+</button>
+                
+                <button onclick="appendToDisplay('4')">4</button>
+                <button onclick="appendToDisplay('5')">5</button>
+                <button onclick="appendToDisplay('6')">6</button>
+                <button class="equal" onclick="calculateResult()">=</button>
+                
+                <button onclick="appendToDisplay('1')">1</button>
+                <button onclick="appendToDisplay('2')">2</button>
+                <button onclick="appendToDisplay('3')">3</button>
+                <button onclick="appendToDisplay('0')">0</button>
+            </div>
+        </div>
+        <button id="backButton" onclick="goBack()">Back to Page</button>
+        <footer>
+            <p>&copy; <span id="currentYear"></span> Rizky Maulana. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function appendToDisplay(value) {
+            const display = document.getElementById("display");
+            // Prevent multiple operators
+            const lastChar = display.value.slice(-1);
+            const operators = ['+', '-', '*', '/'];
+            
+            if (operators.includes(lastChar) && operators.includes(value)) {
+                return;
+            }
+
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById("display").value = "";
+        }
+
+        function calculateResult() {
+            const display = document.getElementById("display");
+            try {
+                // Additional safety checks
+                const result = Function(`"use strict"; return (${display.value})`)();
+                display.value = isFinite(result) ? result : "Error";
+            } catch (e) {
+                display.value = "Error";
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Update footer year
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

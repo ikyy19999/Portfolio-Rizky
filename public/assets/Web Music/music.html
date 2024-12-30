@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rizky - Music Player</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon_io (2)/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io (2)/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io (2)/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon_io (2)/android-chrome-192x192.png" />
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="favicon_io (2)/android-chrome-512x512.png" />
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="favicon_io (2)/apple-touch-icon.png" />
+    <link rel="manifest" href="favicon_io (1)/site.webmanifest" />
+</head>
+<body>
+    <div class="music-app">
+        <div class="music-player">
+            <div class="player-header">
+                <button class="btn-back"><i class="ri-arrow-left-line"></i></button>
+                <h2>Now Playing</h2>
+                <button class="btn-menu"><i class="ri-more-2-line"></i></button>
+            </div>
+
+            <div class="album-section">
+                <div class="album-art-container">
+                    <div class="album-art">
+                        <img id="album-image" src="assets/images/album1.jpg" alt="Album Art">
+                    </div>
+                </div>
+
+                <div class="track-info">
+                    <div class="track-details">
+                        <h3 id="song-title">Blinding Lights</h3>
+                        <p id="artist-name">The Weeknd</p>
+                    </div>
+                    <button class="btn-favorite"><i class="ri-heart-line"></i></button>
+                </div>
+            </div>
+
+            <div class="player-controls">
+                <div class="progress-container">
+                    <input type="range" id="progress-slider" min="0" max="100" value="0">
+                    <div class="time-info">
+                        <span id="current-time">0:00</span>
+                        <span id="total-time">3:45</span>
+                    </div>
+                </div>
+
+                <div class="control-buttons">
+                    <button id="shuffle-btn"><i class="ri-shuffle-line"></i></button>
+                    <button id="prev-btn"><i class="ri-skip-back-fill"></i></button>
+                    <button id="play-pause-btn" class="play-pause">
+                        <i class="ri-play-fill"></i>
+                    </button>
+                    <button id="next-btn"><i class="ri-skip-forward-fill"></i></button>
+                    <!-- Integrated Repeat Button -->
+                    <button id="repeat-btn" class="control-btn"><i class="ri-repeat-line"></i></button>
+                </div>
+            </div>
+
+            <div class="playlist-section">
+                <div class="playlist-header">
+                    <h3>Playlist</h3>
+                    <button class="btn-add-playlist"><i class="ri-add-line"></i></button>
+                </div>
+                <ul id="song-list" class="playlist-items">
+                    <!-- Playlist items will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Song Modal -->
+    <div id="add-song-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Song</h2>
+            <form id="add-song-form">
+                <div class="source-tabs">
+                    <div class="tab active" data-source="youtube">YouTube</div>
+                    <div class="tab" data-source="spotify">Spotify</div>
+                </div>
+                
+                <!-- YouTube Source Section -->
+                <div class="source-content active" data-source="youtube">
+                    <input type="text" id="youtube-url" placeholder="YouTube Video/Music URL" required>
+                    <div class="youtube-preview">
+                        <img id="youtube-thumbnail" src="" alt="YouTube Thumbnail" style="display:none; max-width: 200px;">
+                    </div>
+                </div>
+
+                <!-- Spotify Source Section -->
+                <div class="source-content" data-source="spotify">
+                    <input type="text" id="spotify-url" placeholder="Spotify Track URL" required>
+                    <div class="spotify-preview">
+                        <img id="spotify-artwork" src="" alt="Spotify Artwork" style="display:none; max-width: 200px;">
+                    </div>
+                </div>
+
+                <!-- Song Title and Artist Input -->
+                <input type="text" id="song-title-input" placeholder="Song Title" required>
+                <input type="text" id="artist-input" placeholder="Artist Name" required>
+                
+                <button type="submit" class="add-song-btn">Add Song</button>
+            </form>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+    <script src="script.js"></script>
+</body>
+</html>

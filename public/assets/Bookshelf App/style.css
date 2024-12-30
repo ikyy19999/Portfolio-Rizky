@@ -1,0 +1,238 @@
+/* Tipografi dan Desain Modern yang Ditingkatkan */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Pelestarian Palet Warna yang Konsisten */
+:root {
+  --color-bg-primary: #FFF0D1; /* Warna latar belakang utama */
+  --color-bg-secondary: #795757; /* Warna latar belakang sekunder */
+  --color-accent-mid: #664343; /* Warna aksen sedang */
+  --color-accent-dark: #3B3030; /* Warna aksen gelap */
+  --color-bg-light: #FFFFFF; /* Warna latar belakang terang */
+  --color-subtle-shadow: rgba(59, 48, 48, 0.08); /* Warna bayangan halus */
+  --color-text-primary: #3B3030; /* Warna teks utama */
+  --color-text-secondary: #795757; /* Warna teks sekunder */
+}
+
+/* Reset Normalisasi Modern */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth; /* Menyempurnakan scroll */
+}
+
+body {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  line-height: 1.6; /* Jarak antar baris teks */
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, #FFF5E1 100%); /* Latar belakang gradasi */
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desain Header yang Elegan */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(121, 87, 87, 0.92);
+  backdrop-filter: blur(12px); /* Efek blur pada latar belakang */
+  padding: 1.25rem 0;
+  text-align: center;
+  box-shadow: 0 4px 15px var(--color-subtle-shadow); /* Bayangan halus pada header */
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 2.75rem); /* Ukuran font responsif */
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-bg-primary);
+  text-transform: capitalize;
+}
+
+/* Container Responsif */
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+section {
+  background-color: var(--color-bg-light);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem auto;
+  box-shadow: 
+    0 15px 35px var(--color-subtle-shadow), /* Bayangan besar */
+    0 5px 15px var(--color-subtle-shadow); /* Bayangan kecil */
+  transition: 
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), /* Animasi transformasi */
+    box-shadow 0.3s ease; /* Animasi bayangan */
+}
+
+section:hover {
+  transform: translateY(-10px) scale(1.015); /* Efek hover dengan transformasi */
+  box-shadow: 
+    0 20px 40px var(--color-subtle-shadow), /* Bayangan hover besar */
+    0 8px 20px var(--color-subtle-shadow); /* Bayangan hover kecil */
+}
+
+/* Styling Formulir Lanjutan */
+form {
+  display: grid;
+  grid-template-columns: 1fr; /* Satu kolom */
+  gap: 1.25rem;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--color-accent-mid);
+  border-radius: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background-color: var(--color-bg-primary);
+  transition: 
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease; /* Efek transisi */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-bg-secondary); /* Border saat fokus */
+  box-shadow: 0 0 0 4px rgba(121, 87, 87, 0.15); /* Efek fokus */
+  transform: translateY(-3px); /* Efek pergeseran saat fokus */
+}
+
+/* Desain Tombol yang Ditingkatkan */
+button {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-bg-primary);
+  border: none;
+  border-radius: 15px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: 
+    background-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--color-accent-mid);
+  transform: translateY(-4px); /* Efek hover tombol */
+  box-shadow: 0 6px 12px var(--color-subtle-shadow); /* Bayangan saat hover */
+}
+
+button:active {
+  transform: translateY(1px); /* Efek saat tombol ditekan */
+  box-shadow: 0 2px 4px var(--color-subtle-shadow); /* Bayangan saat tombol ditekan */
+}
+
+/* Interaksi Ditingkatkan pada Item Buku */
+div[data-testid="bookItem"] {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-accent-mid);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: 
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), /* Animasi transformasi */
+    box-shadow 0.3s ease; /* Animasi bayangan */
+}
+
+div[data-testid="bookItem"]::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--color-bg-secondary), transparent); /* Efek garis bawah */
+  transform: scaleX(0);
+  transition: transform 0.4s ease; /* Efek transisi garis bawah */
+}
+
+div[data-testid="bookItem"]:hover {
+  transform: scale(1.02); /* Efek hover item buku */
+  box-shadow: 
+    0 10px 25px var(--color-subtle-shadow), /* Bayangan hover besar */
+    0 5px 15px var(--color-subtle-shadow); /* Bayangan hover kecil */
+}
+
+div[data-testid="bookItem"]:hover::before {
+  transform: scaleX(1); /* Efek garis bawah muncul */
+}
+
+div[data-testid="bookItem"] button {
+  margin-right: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+/* Penyempurnaan Tipografi */
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+p {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-primary);
+  opacity: 0.9;
+  line-height: 1.7;
+}
+
+/* Desain Responsif yang Ditingkatkan */
+@media (max-width: 768px) {
+  section {
+    padding: 1.25rem;
+    margin: 1rem;
+    border-radius: 15px; /* Penyesuaian pada ukuran layar kecil */
+  }
+
+  input[type="text"],
+  input[type="number"],
+  button {
+    font-size: 0.925rem;
+    padding: 0.875rem;
+  }
+}
+
+/* Scrollbar Modern */
+::-webkit-scrollbar {
+  width: 10px; /* Lebar scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary); /* Latar belakang track scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-secondary);
+  border-radius: 20px; /* Desain thumb scrollbar */
+  border: 3px solid var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-accent-mid); /* Efek hover pada thumb scrollbar */
+}
