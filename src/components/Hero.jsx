@@ -43,7 +43,7 @@ const Hero = () => {
                 {/* Tombol aksi */}
                 <div className='flex items-center gap-3'>
                     <ButtonPrimary 
-                        href={'#'}
+                        href={'/assets/CV - Rizky Maulana.pdf'}
                         label='Download CV'
                         icon='download'
                     />
