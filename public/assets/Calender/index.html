@@ -1,328 +1,717 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Calendar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Modern Daily Planner</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Dark Mode Configuration -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              pastel: {
+                pink: '#FFB6C1',
+                blue: '#AEC6CF',
+                green: '#77DD77',
+                yellow: '#FFFACD',
+                purple: '#CDA4DE',
+                orange: '#FFD1DC',
+                gray: '#D3D3D3',
+              }
+            }
+          },
+        },
+        plugins: [],
+      }
+    </script>
+    <!-- Icons (Heroicons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.0.13/outline.min.css" integrity="sha512-LbzyKxONeKo1uRgFmJ5ysP8++HjjK/oElHVnQhXSQu8m/Qb56qjf0XfE4jIHRYHCyGJdEIXVXZxpkvGczDwRPA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent-color: #3b82f6;
-            --hover-color: #2563eb;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
+        /* Custom styles for the pastel indicator bar */
+        .tab-container {
+            position: relative;
+            width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(145deg, var(--bg-primary), var(--bg-secondary));
-            color: var(--text-primary);
-            padding: 20px;
+            margin-bottom: 1rem;
         }
-
-        .calendar-container {
-            background-color: var(--bg-secondary);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .calendar-header button,
-        .dropdown {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 12px;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
+        .indicator {
+            position: absolute;
+            bottom: 0;
+            height: 2px;
+            background-color: #AEC6CF; /* Pastel blue */
             transition: all 0.3s ease;
-        }
-
-        .calendar-header button:hover,
-        .dropdown:hover {
-            background-color: var(--accent-color);
-        }
-
-        .dropdown {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1 4l5 5 5-5' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 30px;
-        }
-
-        #current-date {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 18px;
-            color: var(--text-secondary);
-        }
-
-        .calendar-weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text-secondary);
-        }
-
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-
-        .calendar-days div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: var(--bg-primary);
-            color: var(--text-secondary);
-        }
-
-        .calendar-days div:hover {
-            background-color: var(--accent-color);
-            color: var(--text-primary);
-            transform: scale(1.05);
-        }
-
-        .current-date {
-            background-color: var(--accent-color);
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .weekend {
-            color: #ef4444;
-        }
-
-        #backButton {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: var(--accent-color);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #backButton:hover {
-            background-color: var(--hover-color);
-        }
-
-        #copyright {
-            text-align: center;
-            margin-top: 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .calendar-container {
-                padding: 20px;
-            }
-
-            .calendar-header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .calendar-header button,
-            .dropdown {
-                width: 100%;
-            }
         }
     </style>
 </head>
-<body>
-    <div class="calendar-container">
-        <div class="calendar-header">
-            <button id="prev-month">&#8249;</button>
-            <select id="month-dropdown" class="dropdown"></select>
-            <select id="year-dropdown" class="dropdown"></select>
-            <button id="next-month">&#8250;</button>
+<body class="bg-pastel-gray dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col min-h-screen">
+    <div class="container mx-auto p-4 flex-grow">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold mb-4 md:mb-0 text-pastel-pink">Daily Planner</h1>
+            <button id="theme-toggle" class="focus:outline-none">
+                <svg id="theme-toggle-dark-icon" class="w-6 h-6 hidden text-pastel-blue" fill="currentColor" viewBox="0 0 20 20">
+                    <!-- Moon Icon -->
+                    <path d="M17.293 13.293A8 8 0 116.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-6 h-6 hidden text-pastel-yellow" fill="currentColor" viewBox="0 0 20 20">
+                    <!-- Sun Icon -->
+                    <path d="M10 5a1 1 0 011 1v1a1 1 0 11-2 0V6a1 1 0 011-1zm4.22 1.78a1 1 0 011.415 1.415l-.707.707a1 1 0 11-1.414-1.414l.707-.708zM15 10a1 1 0 011 1h1a1 1 0 110 2h-1a1 1 0 01-1-1v-1a1 1 0 011-1zm-4.22 4.95a1 1 0 011.06 0l1.06 1.06a1 1 0 11-1.06 1.06l-1.06-1.06a1 1 0 011.06 0zM10 17.25a1 1 0 011 1v1.5a1 1 0 11-2 0v-1.5a1 1 0 011-1zm-4.95-2.05a1 1 0 011.06-1.06l1.06 1.06a1 1 0 11-1.06 1.06l-1.06-1.06a1 1 0 011.06-1.06zM2 10a1 1 0 011-1H4a1 1 0 110 2H3a1 1 0 01-1-1zm1.78-4.22a1 1 0 011.415 0l.707.708a1 1 0 11-1.414 1.414l-.708-.707a1 1 0 010-1.415zM10 8a2 2 0 100 4 2 2 0 000-4z"/>
+                </svg>
+            </button>
         </div>
-        <div id="current-date">Selected Date: <span id="selected-date"></span></div>
-        <div class="calendar-body">
-            <div class="calendar-weekdays">
-                <div>Sun</div><div>Mon</div><div>Tue</div>
-                <div>Wed</div><div>Thu</div><div>Fri</div>
-                <div>Sat</div>
+
+        <!-- Task Input -->
+        <div class="mb-6">
+            <form id="task-form" class="flex flex-col sm:flex-row items-center gap-4">
+                <input type="text" id="task-title" placeholder="Task Title" required class="flex-1 px-4 py-2 rounded border border-pastel-pink dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-pastel-blue">
+                <input type="datetime-local" id="task-datetime" required class="px-4 py-2 rounded border border-pastel-blue dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-pastel-green">
+                <select id="task-category" class="px-4 py-2 rounded border border-pastel-green dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                    <option value="blue">Work</option>
+                    <option value="green">Personal</option>
+                    <option value="red">Urgent</option>
+                    <option value="yellow">Others</option>
+                </select>
+                <div id="others-input-container" class="hidden flex-1">
+                    <input type="text" id="others-agenda" placeholder="Specify your agenda" class="w-full px-4 py-2 rounded border border-pastel-purple dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-pastel-orange">
+                </div>
+                <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-pastel-yellow text-gray-800 rounded hover:bg-pastel-orange focus:outline-none focus:ring-2 focus:ring-pastel-blue">Add Task</button>
+            </form>
+        </div>
+
+        <!-- Calendar and Tasks -->
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Calendar View -->
+            <div class="flex-1 bg-pastel-blue dark:bg-gray-800 p-4 rounded shadow">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-4">
+                    <div class="tab-container flex space-x-4 relative w-full md:w-auto">
+                        <button id="daily-view" class="px-3 py-1 text-center text-pastel-pink focus:outline-none">Daily</button>
+                        <button id="weekly-view" class="px-3 py-1 text-center text-pastel-green focus:outline-none">Weekly</button>
+                        <button id="monthly-view" class="px-3 py-1 text-center text-pastel-purple focus:outline-none">Monthly</button>
+                        <div id="indicator" class="indicator bg-pastel-orange"></div>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-4 md:mt-0 w-full md:w-auto">
+                        <button id="prev-btn" class="p-2 bg-pastel-gray rounded hover:bg-pastel-gray dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none">
+                            &larr;
+                        </button>
+                        <div id="current-date" class="text-xl font-semibold text-center text-pastel-pink flex-1"></div>
+                        <button id="next-btn" class="p-2 bg-pastel-gray rounded hover:bg-pastel-gray dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none">
+                            &rarr;
+                        </button>
+                    </div>
+                </div>
+                <div id="calendar" class="overflow-auto">
+                    <!-- Calendar will be rendered here -->
+                </div>
             </div>
-            <div id="calendar-days" class="calendar-days"></div>
+
+            <!-- Task List -->
+            <div class="w-full lg:w-1/3 bg-pastel-green dark:bg-gray-800 p-4 rounded shadow">
+                <h2 class="text-2xl font-bold mb-4 text-pastel-purple">Tasks</h2>
+                <ul id="task-list" class="space-y-4">
+                    <!-- Tasks will be rendered here -->
+                </ul>
+            </div>
         </div>
-        <div id="copyright"></div>
-        <button id="backButton" onclick="goBack()">Back to Page</button>
+
+        <!-- Contact Form -->
+        <div class="mt-12 bg-pastel-pink dark:bg-gray-800 p-6 rounded shadow">
+            <h2 class="text-2xl font-bold mb-4 text-pastel-blue">Contact Us to submit your feedback and suggestions. We greatly appreciate your input to help us improve our services.</h2>
+            <form id="contact-form" action="https://getform.io/f/bvrrndyb" method="POST" class="flex flex-col gap-4">
+                <input type="text" name="name" placeholder="Your Name" required class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                <input type="email" name="email" placeholder="Your Email" required class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                <textarea name="message" placeholder="Your Message" rows="4" required class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow"></textarea>
+                <button type="submit" class="w-full px-4 py-2 bg-pastel-yellow text-gray-800 rounded hover:bg-pastel-orange focus:outline-none focus:ring-2 focus:ring-pastel-blue">Send Message</button>
+            </form>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="bg-pastel-gray dark:bg-gray-800 py-4">
+        <div class="container mx-auto text-center">
+            <p id="footer-text" class="text-sm text-pastel-blue dark:text-gray-400">
+                © <span id="current-year"></span> Rizky Maulana. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Edit Task Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-pastel-orange dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3">
+            <h2 class="text-xl font-bold mb-4 text-pastel-blue">Edit Task</h2>
+            <form id="edit-form" class="flex flex-col gap-4">
+                <input type="text" id="edit-title" required class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                <input type="datetime-local" id="edit-datetime" required class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                <select id="edit-category" class="px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                    <option value="blue">Work</option>
+                    <option value="green">Personal</option>
+                    <option value="red">Urgent</option>
+                    <option value="yellow">Others</option>
+                </select>
+                <div id="edit-others-input-container" class="hidden flex-1">
+                    <input type="text" id="edit-others-agenda" placeholder="Specify your agenda" class="w-full px-4 py-2 rounded border border-pastel-purple dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastel-yellow">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="close-modal" class="px-4 py-2 bg-pastel-purple text-white rounded hover:bg-pastel-pink focus:outline-none">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-pastel-yellow text-gray-800 rounded hover:bg-pastel-orange focus:outline-none">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+    <!-- JavaScript -->
     <script>
-        const calendarDays = document.getElementById('calendar-days');
-        const monthDropdown = document.getElementById('month-dropdown');
-        const yearDropdown = document.getElementById('year-dropdown');
-        const selectedDateDisplay = document.getElementById('selected-date');
-        const copyrightElement = document.getElementById('copyright');
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
 
-        let currentYear = new Date().getFullYear();
-        let currentMonth = new Date().getMonth();
-        const today = new Date();
-
-        const months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
-
-        // Ask user for end year with validation
-        let endYear = parseInt(prompt('Enter the end year:', new Date().getFullYear()));
-        if (isNaN(endYear) || endYear < 1682) {
-            endYear = new Date().getFullYear(); // Default to current year if input is invalid
+        // Initialize theme based on system preference
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+            darkIcon.classList.add('hidden');
+            lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon.classList.remove('hidden');
+            lightIcon.classList.add('hidden');
         }
 
-        // Populate month and year dropdowns
-        function populateDropdowns() {
-            monthDropdown.innerHTML = '';
-            yearDropdown.innerHTML = '';
+        // Toggle theme on button click
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+        });
 
-            months.forEach((month, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = month;
-                monthDropdown.appendChild(option);
+        // Task Management
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        const taskForm = document.getElementById('task-form');
+        const taskList = document.getElementById('task-list');
+
+        const editModal = document.getElementById('edit-modal');
+        const editForm = document.getElementById('edit-form');
+        let currentEditId = null;
+
+        const othersInputContainer = document.getElementById('others-input-container');
+        const taskCategorySelect = document.getElementById('task-category');
+        const othersAgendaInput = document.getElementById('others-agenda');
+
+        const editOthersInputContainer = document.getElementById('edit-others-input-container');
+        const editCategorySelect = document.getElementById('edit-category');
+        const editOthersAgendaInput = document.getElementById('edit-others-agenda');
+
+        // Show/hide "Others" agenda input based on category selection
+        taskCategorySelect.addEventListener('change', () => {
+            if (taskCategorySelect.value === 'yellow') { // 'yellow' corresponds to "Others"
+                othersInputContainer.classList.remove('hidden');
+            } else {
+                othersInputContainer.classList.add('hidden');
+            }
+        });
+
+        editCategorySelect.addEventListener('change', () => {
+            if (editCategorySelect.value === 'yellow') { // 'yellow' corresponds to "Others"
+                editOthersInputContainer.classList.remove('hidden');
+            } else {
+                editOthersInputContainer.classList.add('hidden');
+            }
+        });
+
+        // Add Task
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('task-title').value.trim();
+            const datetime = document.getElementById('task-datetime').value;
+            const category = document.getElementById('task-category').value;
+            const othersAgenda = document.getElementById('others-agenda').value.trim();
+
+            if (title && datetime) {
+                const task = {
+                    id: Date.now(),
+                    title,
+                    datetime,
+                    category,
+                    othersAgenda: category === 'yellow' ? othersAgenda : ''
+                };
+                tasks.push(task);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                renderTasks();
+                taskForm.reset();
+                othersInputContainer.classList.add('hidden');
+                scheduleReminder(task);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Task Added',
+                    text: 'Your task has been successfully added!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        // Render Tasks
+        function renderTasks() {
+            taskList.innerHTML = '';
+            tasks.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `p-4 rounded border ${getCategoryColor(task.category)} dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center`;
+                li.innerHTML = `
+                    <div>
+                        <h3 class="font-semibold">${task.title}</h3>
+                        <p class="text-sm">${new Date(task.datetime).toLocaleString()}</p>
+                        ${task.category === 'yellow' && task.othersAgenda ? `<p class="text-sm italic">Agenda: ${task.othersAgenda}</p>` : ''}
+                    </div>
+                    <div class="flex items-center gap-2 mt-2 sm:mt-0">
+                        <button onclick="openEditModal(${task.id})" class="text-pastel-purple hover:text-pastel-pink focus:outline-none">
+                            ✏️
+                        </button>
+                        <button onclick="deleteTask(${task.id})" class="text-pastel-red hover:text-pastel-pink focus:outline-none">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+                taskList.appendChild(li);
             });
-
-            for (let year = 1682; year <= endYear; year++) {
-                const option = document.createElement('option');
-                option .value = year;
-                option.textContent = year;
-                yearDropdown.appendChild(option);
-            }
-
-            monthDropdown.value = currentMonth;
-            yearDropdown.value = currentYear;
         }
 
-        // Function to render the calendar
-        function renderCalendar(year, month) {
-            calendarDays.innerHTML = '';
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
-
-            for (let i = 0; i < firstDay; i++) {
-                const emptyCell = document.createElement('div');
-                emptyCell.classList.add('blank');
-                calendarDays.appendChild(emptyCell);
+        // Get Category Color
+        function getCategoryColor(category) {
+            switch(category) {
+                case 'blue':
+                    return 'border-pastel-blue';
+                case 'green':
+                    return 'border-pastel-green';
+                case 'red':
+                    return 'border-pastel-red';
+                case 'yellow':
+                    return 'border-pastel-yellow';
+                default:
+                    return 'border-gray-500';
             }
+        }
 
-            for (let i = 1; i <= totalDays; i++) {
-                const dayCell = document.createElement('div');
-                dayCell.textContent = i;
-
-                if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
-                    dayCell.classList.add('current-date');
+        // Delete Task
+        function deleteTask(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you really want to delete this task?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#EF9A9A', // Pastel red
+                cancelButtonColor: '#B3E5FC', // Pastel blue
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    tasks = tasks.filter(task => task.id !== id);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    renderTasks();
+                    Swal.fire(
+                        'Deleted!',
+                        'Your task has been deleted.',
+                        'success'
+                    );
                 }
+            });
+        }
 
-                if (new Date(year, month, i).getDay() === 0 || new Date(year, month, i).getDay() === 6) {
-                    dayCell.classList.add('weekend');
+        // Edit Task
+        function openEditModal(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                currentEditId = id;
+                document.getElementById('edit-title').value = task.title;
+                document.getElementById('edit-datetime').value = task.datetime;
+                document.getElementById('edit-category').value = task.category;
+                if (task.category === 'yellow') {
+                    editOthersInputContainer.classList.remove('hidden');
+                    document.getElementById('edit-others-agenda').value = task.othersAgenda;
+                } else {
+                    editOthersInputContainer.classList.add('hidden');
                 }
+                editModal.classList.remove('hidden');
+            }
+        }
 
-                // Select Date Event
-                dayCell.addEventListener('click', () => {
-                    selectedDateDisplay.textContent = `${months[month]} ${i}, ${year}`;
+        // Close Edit Modal
+        document.getElementById('close-modal').addEventListener('click', () => {
+            editModal.classList.add('hidden');
+            editForm.reset();
+            editOthersInputContainer.classList.add('hidden');
+            Swal.fire({
+                icon: 'info',
+                title: 'Edit Canceled',
+                text: 'Your edits have been canceled.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        });
+
+        // Save Edited Task
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('edit-title').value.trim();
+            const datetime = document.getElementById('edit-datetime').value;
+            const category = document.getElementById('edit-category').value;
+            const othersAgenda = document.getElementById('edit-others-agenda').value.trim();
+
+            if (title && datetime && currentEditId !== null) {
+                tasks = tasks.map(task => {
+                    if (task.id === currentEditId) {
+                        return { 
+                            ...task, 
+                            title, 
+                            datetime, 
+                            category, 
+                            othersAgenda: category === 'yellow' ? othersAgenda : '' 
+                        };
+                    }
+                    return task;
+                });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                renderTasks();
+                editModal.classList.add('hidden');
+                editForm.reset();
+                editOthersInputContainer.classList.add('hidden');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Task Updated',
+                    text: 'Your task has been successfully updated!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        // Calendar View
+        const calendarEl = document.getElementById('calendar');
+        const currentDateEl = document.getElementById('current-date');
+        const dailyViewBtn = document.getElementById('daily-view');
+        const weeklyViewBtn = document.getElementById('weekly-view');
+        const monthlyViewBtn = document.getElementById('monthly-view');
+        const indicator = document.getElementById('indicator');
+        const tabContainer = document.querySelector('.tab-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        let currentView = 'daily';
+        let currentDate = new Date();
+
+        // Event listeners for view buttons
+        dailyViewBtn.addEventListener('click', () => { setView('daily'); });
+        weeklyViewBtn.addEventListener('click', () => { setView('weekly'); });
+        monthlyViewBtn.addEventListener('click', () => { setView('monthly'); });
+
+        // Event listeners for navigation buttons
+        prevBtn.addEventListener('click', () => { navigateCalendar(-1); });
+        nextBtn.addEventListener('click', () => { navigateCalendar(1); });
+
+        // Set current view and update indicator
+        function setView(view) {
+            currentView = view;
+            updateIndicator();
+            renderCalendar();
+        }
+
+        // Update the position and width of the indicator bar
+        function updateIndicator() {
+            const activeButton = document.getElementById(`${currentView}-view`);
+            const left = activeButton.offsetLeft;
+            const width = activeButton.offsetWidth;
+
+            indicator.style.width = `${width}px`;
+            indicator.style.left = `${left}px`;
+        }
+
+        // Render Calendar
+        function renderCalendar() {
+            calendarEl.innerHTML = '';
+            if (currentView === 'daily') {
+                renderDailyView();
+            } else if (currentView === 'weekly') {
+                renderWeeklyView();
+            } else {
+                renderMonthlyView();
+            }
+            currentDateEl.textContent = getCurrentDateText();
+        }
+
+        // Get formatted current date text
+        function getCurrentDateText() {
+            if (currentView === 'daily') {
+                return currentDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            } else if (currentView === 'weekly') {
+                const startOfWeek = new Date(currentDate);
+                startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+                const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(startOfWeek.getDate() + 6);
+                return `Week of ${startOfWeek.toLocaleDateString('en-US')} - ${endOfWeek.toLocaleDateString('en-US')}`;
+            } else {
+                return currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+            }
+        }
+
+        // Render Daily View
+        function renderDailyView() {
+            const tasksForDay = tasks.filter(task => isSameDay(new Date(task.datetime), currentDate));
+            if (tasksForDay.length === 0) {
+                calendarEl.innerHTML = `<p class="text-center text-gray-500">No tasks for today.</p>`;
+                return;
+            }
+            const list = document.createElement('ul');
+            list.className = 'space-y-2';
+            tasksForDay.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `p-2 rounded ${getCategoryColor(task.category)} dark:border-gray-700`;
+                li.innerHTML = `
+                    <span class="font-semibold">${new Date(task.datetime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}:</span> 
+                    ${task.title}
+                    ${task.category === 'yellow' && task.othersAgenda ? `<br><span class="text-sm italic">Agenda: ${task.othersAgenda}</span>` : ''}
+                `;
+                calendarEl.appendChild(li);
+            });
+        }
+
+        // Render Weekly View
+        function renderWeeklyView() {
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+
+            const weekContainer = document.createElement('div');
+            weekContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4';
+
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(startOfWeek);
+                day.setDate(startOfWeek.getDate() + i);
+                const dayEl = document.createElement('div');
+                dayEl.className = 'bg-pastel-blue dark:bg-gray-700 p-2 rounded h-24 overflow-auto';
+                dayEl.innerHTML = `
+                    <strong>${day.toLocaleDateString('en-US', { weekday: 'short' })}</strong><br>${day.getDate()}
+                `;
+
+                const tasksForDay = tasks.filter(task => isSameDay(new Date(task.datetime), day));
+                tasksForDay.forEach(task => {
+                    const taskEl = document.createElement('div');
+                    taskEl.className = `text-sm ${getCategoryColor(task.category)} dark:border-gray-600 mb-1`;
+                    taskEl.innerHTML = `
+                        <span class="font-semibold">${new Date(task.datetime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}:</span> 
+                        ${task.title}
+                        ${task.category === 'yellow' && task.othersAgenda ? `<br><span class="text-xs italic">Agenda: ${task.othersAgenda}</span>` : ''}
+                    `;
+                    dayEl.appendChild(taskEl);
                 });
 
-                calendarDays.appendChild(dayCell);
+                // Highlight current day
+                if (isSameDay(day, new Date())) {
+                    dayEl.classList.add('border-2', 'border-pastel-yellow');
+                }
+
+                weekContainer.appendChild(dayEl);
+            }
+
+            calendarEl.appendChild(weekContainer);
+        }
+
+        // Render Monthly View
+        function renderMonthlyView() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDay = firstDay.getDay();
+            const totalDays = lastDay.getDate();
+
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2';
+
+            // Weekday Headers
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            weekdays.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'font-bold text-center text-pastel-green';
+                header.textContent = day;
+                grid.appendChild(header);
+            });
+
+            // Empty cells before the first day
+            for (let i = 0; i < startDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'bg-pastel-gray dark:bg-gray-700 h-24';
+                grid.appendChild(empty);
+            }
+
+            // Days
+            for (let day = 1; day <= totalDays; day++) {
+                const date = new Date(year, month, day);
+                const dayEl = document.createElement('div');
+                dayEl.className = 'bg-pastel-blue dark:bg-gray-700 p-2 rounded h-24 overflow-auto';
+                dayEl.innerHTML = `<strong>${day}</strong>`;
+
+                const tasksForDay = tasks.filter(task => isSameDay(new Date(task.datetime), date));
+                tasksForDay.forEach(task => {
+                    const taskEl = document.createElement('div');
+                    taskEl.className = `text-xs ${getCategoryColor(task.category)} dark:border-gray-600 mb-1`;
+                    taskEl.innerHTML = `
+                        <span class="font-semibold">${new Date(task.datetime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}:</span> 
+                        ${task.title}
+                        ${task.category === 'yellow' && task.othersAgenda ? `<br><span class="text-xs italic">Agenda: ${task.othersAgenda}</span>` : ''}
+                    `;
+                    dayEl.appendChild(taskEl);
+                });
+
+                // Highlight current day
+                if (isSameDay(date, new Date())) {
+                    dayEl.classList.add('border-2', 'border-pastel-yellow');
+                }
+
+                grid.appendChild(dayEl);
+            }
+
+            calendarEl.appendChild(grid);
+        }
+
+        // Check if two dates are the same day
+        function isSameDay(d1, d2) {
+            return d1.getFullYear() === d2.getFullYear() &&
+                   d1.getMonth() === d2.getMonth() &&
+                   d1.getDate() === d2.getDate();
+        }
+
+        // Initialize Calendar
+        renderCalendar();
+        updateIndicator();
+
+        // Render Tasks on load
+        renderTasks();
+
+        // Navigate Calendar with Arrow Keys (Optional)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                navigateCalendar(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateCalendar(1);
+            }
+        });
+
+        function navigateCalendar(direction) {
+            if (currentView === 'daily') {
+                currentDate.setDate(currentDate.getDate() + direction);
+            } else if (currentView === 'weekly') {
+                currentDate.setDate(currentDate.getDate() + (7 * direction));
+            } else {
+                currentDate.setMonth(currentDate.getMonth() + direction);
+            }
+            renderCalendar();
+        }
+
+        // Reminders using Notifications API
+        function scheduleReminder(task) {
+            if (Notification.permission === 'granted') {
+                const taskTime = new Date(task.datetime).getTime();
+                const now = Date.now();
+                const delay = taskTime - now - (5 * 60 * 1000); // 5 minutes before
+
+                if (delay > 0) {
+                    setTimeout(() => {
+                        new Notification('Task Reminder', {
+                            body: `${task.title} at ${new Date(task.datetime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`,
+                        });
+                    }, delay);
+                }
             }
         }
 
-        // Event listeners for month navigation
-        document.getElementById('prev-month').addEventListener('click', () => {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
+        // Request Notification Permission
+        const notificationPermission = document.getElementById('notification-permission');
+        const enableNotificationsBtn = document.getElementById('enable-notifications');
+
+        window.onload = () => {
+            // Display current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                notificationPermission.classList.remove('hidden');
             }
-            updateCalendar();
+            tasks.forEach(task => scheduleReminder(task));
+        };
+
+        enableNotificationsBtn.addEventListener('click', () => {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    notificationPermission.classList.add('hidden');
+                    tasks.forEach(task => scheduleReminder(task));
+                }
+            });
         });
 
-        document.getElementById('next-month').addEventListener('click', () => {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            updateCalendar();
+        // Schedule Reminders for Existing Tasks
+        tasks.forEach(task => scheduleReminder(task));
+
+        // Contact Form Submission with SweetAlert2
+        const contactForm = document.getElementById('contact-form');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Message Sent',
+                        text: 'Thank you for your feedback!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    form.reset();
+                    document.getElementById('others-input-container').classList.add('hidden');
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.errors.map(error => error.message).join(', '),
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            });
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            });
         });
-
-        // Update calendar based on dropdown selection
-        monthDropdown.addEventListener('change', () => {
-            currentMonth = parseInt(monthDropdown.value);
-            currentYear = parseInt(yearDropdown.value);
-            renderCalendar(currentYear, currentMonth);
-        });
-
-        yearDropdown.addEventListener('change', () => {
-            currentYear = parseInt(yearDropdown.value);
-            renderCalendar(currentYear, currentMonth);
-        });
-
-        // Initialize the calendar
-        function updateCalendar() {
-            monthDropdown.value = currentMonth;
-            yearDropdown.value = currentYear;
-            renderCalendar(currentYear, currentMonth);
-            updateCopyright();
-        }
-
-        // Function to go back to the previous page
-        function goBack() {
-            window.history.back();
-        }
-
-        // Function to update copyright
-        function updateCopyright() {
-            const currentYear = new Date().getFullYear();
-            copyrightElement.textContent = `© ${currentYear} Rizky Maulana. All rights reserved.`;
-        }
-
-        populateDropdowns();
-        updateCalendar();
-
-        // Update copyright every second
-        setInterval(updateCopyright, 1000);
     </script>
 </body>
 </html>
