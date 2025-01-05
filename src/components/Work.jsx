@@ -39,6 +39,12 @@ const works = [
         title: 'QR Code Generator',
         tags: ['Web-design', 'Development'],
         projectLink: '/assets/QR/index.html'
+    },
+    {
+        imgSrc: '/assets/Finance.png',
+        title: 'Finance Tracker',
+        tags: ['Web-design', 'Development'],
+        projectLink: '/assets/Personal Finance Tracker/index.html'
     }
 ];
 

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Poppins', 'ui-sans-serif', 'system-ui']
+          },
+          colors: {
+            'brand-purple': '#8A4FFF',
+            'brand-pink': '#FF6B9E',
+            'brand-bg': '#F5F5F9',
+            'dark-bg': '#121212',
+            'dark-surface': '#1E1E1E',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8A4FFF;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-brand-bg dark:bg-dark-bg text-gray-900 dark:text-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-10 bg-gradient-to-r from-brand-purple to-brand-pink p-4 rounded-2xl shadow-lg">
+      <h1 class="text-3xl font-bold text-white">Finance Tracker</h1>
+      <div class="flex items-center space-x-4">
+        <button id="themeToggle" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Balance Card -->
+      <div class="lg:col-span-1 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+        <h2 class="text-xl font-semibold mb-4 text-brand-purple dark:text-brand-pink">Total Balance</h2>
+        <p id="balance" class="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">Rp 0</p>
+      </div>
+
+      <!-- Transaction Form -->
+      <div class="lg:col-span-2 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+        <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink">Add New Transaction</h2>
+        <form id="transactionForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Transaction Type</label>
+              <select id="type" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+            <div>
+              <label for="amount" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Amount (Rp)</label>
+              <input id="amount" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter amount" required>
+            </div>
+          </div>
+          <div>
+            <label for="category" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Category</label>
+            <input id="category" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Example: Salary, Food, etc." required>
+          </div>
+
+          <!-- Source for Income and Method for Expense -->
+          <div id="incomeSource" class="hidden">
+            <label for="incomeSourceSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Source of Income</label>
+            <select id="incomeSourceSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+              <option value="transfer">Transfer</option>
+              <option value="cash">Cash Deposit</option>
+            </select>
+          </div>
+
+          <div id="expenseMethod" class="hidden">
+            <label for="expenseMethodSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Expense Method</label>
+            <select id="expenseMethodSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+              <option value="qris">QRIS</option>
+              <option value="transfer">Transfer</option>
+              <option value="cash">Cash Withdrawal</option>
+            </select>
+          </div>
+
+          <!-- Add Transaction Button -->
+          <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-lg hover:opacity-90 transition">
+            Add Transaction
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Transactions and Chart Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+      <!-- Transaction List -->
+      <div class="lg:col-span-2 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+        <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink">Transaction History</h2>
+        <div class="max-h-96 overflow-y-auto">
+          <ul id="transactionList" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
+        </div>
+      </div>
+
+      <!-- Chart Section -->
+      <div class="lg:col-span-1 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+        <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink">Monthly Overview</h2>
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-10 text-center text-gray-700 dark:text-gray-300">
+      <p>&copy; <span id="copyrightYear"></span> Finance Tracker by Rizky Maulana. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Dynamic Year Update for Copyright
+    document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+    // Theme Management Class
+    class ThemeManager {
+      constructor() {
+        this.themeToggle = document.getElementById('themeToggle');
+        this.initTheme();
+        this.setupEventListeners();
+      }
+
+      initTheme() {
+        const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme') || (userPrefersDark ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+      }
+
+      setupEventListeners() {
+        this.themeToggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      }
+    }
+
+    // Transaction Management Class
+    class TransactionManager {
+      constructor() {
+        this.transactionForm = document.getElementById('transactionForm');
+        this.transactionList = document.getElementById('transactionList');
+        this.balanceElement = document.getElementById('balance');
+        this.chartContext = document.getElementById('chart').getContext('2d');
+        
+        this.transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        this.chart = this.initChart();
+        
+        this.setupEventListeners();
+        this.renderTransactions();
+        this.updateBalance();
+        this.updateChart();
+        
+        // Call toggleTransactionTypeFields on page load based on the current selected type
+        this.toggleTransactionTypeFields(document.getElementById('type').value);
+      }
+
+      setupEventListeners() {
+        this.transactionForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.addTransaction();
+        });
+
+        // Handle transaction type change
+        document.getElementById('type').addEventListener('change', (e) => {
+          this.toggleTransactionTypeFields(e.target.value);
+        });
+      }
+
+      toggleTransactionTypeFields(type) {
+        if (type === 'income') {
+          document.getElementById('incomeSource').classList.remove('hidden');
+          document.getElementById('expenseMethod').classList.add('hidden');
+        } else if (type === 'expense') {
+          document.getElementById('expenseMethod').classList.remove('hidden');
+          document.getElementById('incomeSource').classList.add('hidden');
+        }
+      }
+
+      addTransaction() {
+        const type = document.getElementById('type').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const category = document.getElementById('category').value;
+        
+        let sourceOrMethod = '';
+        if (type === 'income') {
+          sourceOrMethod = document.getElementById('incomeSourceSelect').value;
+        } else if (type === 'expense') {
+          sourceOrMethod = document.getElementById('expenseMethodSelect').value;
+        }
+
+        this.transactions.push({ type, amount, category, sourceOrMethod });
+        localStorage.setItem('transactions', JSON.stringify(this.transactions));
+        this.renderTransactions();
+        this.updateBalance();
+        this.updateChart();
+        this.transactionForm.reset();
+      }
+
+      renderTransactions() {
+        this.transactionList.innerHTML = this.transactions.map((t, index) => ` 
+          <li class="flex justify-between items-center py-2">
+            <span>${t.category} - ${t.sourceOrMethod || ''}</span>
+            <span class="${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">
+              Rp ${t.amount.toLocaleString('id-ID')}
+            </span>
+            <button onclick="transactionManager.deleteTransaction(${index})" class="text-red-500">Delete</button>
+          </li>
+        `).join('');
+      }
+
+      deleteTransaction(index) {
+        this.transactions.splice(index, 1);
+        localStorage.setItem('transactions', JSON.stringify(this.transactions));
+        this.renderTransactions();
+        this.updateBalance();
+        this.updateChart();
+      }
+
+      updateBalance() {
+        const balance = this.transactions.reduce((acc, curr) => acc + (curr.type === 'income' ? curr.amount : -curr.amount), 0);
+        this.balanceElement.textContent = `Rp ${balance.toLocaleString('id-ID')}`;
+      }
+
+      initChart() {
+        return new Chart(this.chartContext, {
+          type: 'doughnut',
+          data: {
+            labels: ['Income', 'Expense'],
+            datasets: [{
+              data: [0, 0],
+              backgroundColor: ['#4CAF50', '#F44336'],
+            }]
+          }
+        });
+      }
+
+      updateChart() {
+        const income = this.transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+        const expense = this.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+        this.chart.data.datasets[0].data = [income, expense];
+        this.chart.update();
+      }
+    }
+
+    // Initialize the Theme and Transaction Managers
+    const themeManager = new ThemeManager();
+    const transactionManager = new TransactionManager();
+  </script>
+</body>
+</html>
