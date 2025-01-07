@@ -18,9 +18,9 @@ const works = [
     },
     {
         imgSrc: '/assets/Kuis.png',
-        title: 'Kuis Website',
+        title: 'Quiz Website',
         tags: ['Development', 'API'],
-        projectLink: '/assets/Kuis App/weather.html'
+        projectLink: '/assets/quiz/index.html'
     },
     {
         imgSrc: '/assets/Calculator.png',
