@@ -27,7 +27,7 @@
   </script>
   <style>
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 4px;
     }
     ::-webkit-scrollbar-track {
       background: #f1f1f1;
@@ -36,13 +36,43 @@
       background: #8A4FFF;
       border-radius: 10px;
     }
+
+    @media (min-width: 640px) {
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+    }
+
+    /* Ensure text is visible in dark mode */
+    .dark .text-gray-700 {
+      color: #e5e7eb; /* Light gray for dark mode */
+    }
+    .dark .text-gray-900 {
+      color: #f9fafb; /* Very light gray for dark mode */
+    }
+    .dark .text-gray-100 {
+      color: #1f2937; /* Dark gray for light mode */
+    }
+
+    /* Ensure input and select text is visible in dark mode */
+    .dark input::placeholder,
+    .dark select {
+      color: #e5e7eb; /* Light gray for dark mode */
+    }
+
+    /* Ensure input and select background is visible in dark mode */
+    .dark input,
+    .dark select {
+      background-color: #374151; /* Dark gray background for inputs and selects */
+      color: #e5e7eb; /* Light gray text for inputs and selects */
+    }
   </style>
 </head>
 <body class="bg-brand-bg dark:bg-dark-bg text-gray-900 dark:text-gray-100 min-h-screen">
   <div class="container mx-auto px-4 py-8 max-w-6xl">
     <!-- Header -->
     <header class="flex justify-between items-center mb-10 bg-gradient-to-r from-brand-purple to-brand-pink p-4 rounded-2xl shadow-lg">
-      <h1 class="text-3xl font-bold text-white">Finance Tracker</h1>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">Finance Tracker</h1>
       <div class="flex items-center space-x-4">
         <button id="themeToggle" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,25 +97,25 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Transaction Type</label>
-              <select id="type" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+              <select id="type" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
                 <option value="income">Income</option>
                 <option value="expense">Expense</option>
               </select>
             </div>
             <div>
               <label for="amount" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Amount (Rp)</label>
-              <input id="amount" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter amount" required>
+              <input id="amount" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter amount" required>
             </div>
           </div>
           <div>
             <label for="category" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Category</label>
-            <input id="category" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Example: Salary, Food, etc." required>
+            <input id="category" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Example: Salary, Food, etc." required>
           </div>
 
           <!-- Source for Income and Method for Expense -->
           <div id="incomeSource" class="hidden">
             <label for="incomeSourceSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Source of Income</label>
-            <select id="incomeSourceSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+            <select id="incomeSourceSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
               <option value="transfer">Transfer</option>
               <option value="cash">Cash Deposit</option>
             </select>
@@ -93,7 +123,7 @@
 
           <div id="expenseMethod" class="hidden">
             <label for="expenseMethodSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Expense Method</label>
-            <select id="expenseMethodSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+            <select id="expenseMethodSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
               <option value="qris">QRIS</option>
               <option value="transfer">Transfer</option>
               <option value="cash">Cash Withdrawal</option>
@@ -112,6 +142,49 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
       <!-- Transaction List -->
       <div class="lg:col-span-2 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+        <!-- Filter Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+          <div class="flex space-x-4">
+            <select id="typeFilter" class="px-3 py-2 border rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+              <option value="">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Search transactions..." 
+              class="px-3 py-2 border rounded w-64 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+            >
+          </div>
+          <div>
+            <select id="monthFilter" class="px-3 py-2 border rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+              <option value="">All Months</option>
+              <!-- Month options will be populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Monthly Recap -->
+        <div id="monthlyRecap" class="bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl mt-4">
+          <h2 class="text-xl font-semibold mb-4 text-brand-purple dark:text-brand-pink">Monthly Recap</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-green-100 dark:bg-green-800 p-4 rounded">
+              <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">Total Income</h3>
+              <p id="monthlyIncome" class="text-2xl font-bold text-green-600 dark:text-green-400">Rp 0</p>
+            </div>
+            <div class="bg-red-100 dark:bg-red-800 p-4 rounded">
+              <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">Total Expense</h3>
+              <p id="monthlyExpense" class="text-2xl font-bold text-red-600 dark:text-red-400">Rp 0</p>
+            </div>
+            <div class="bg-blue-100 dark:bg-blue-800 p-4 rounded">
+              <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">Net Balance</h3>
+              <p id="monthlyNetBalance" class="text-2xl font-bold text-blue-600 dark:text-blue-400">Rp 0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction List -->
         <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink">Transaction History</h2>
         <div class="max-h-96 overflow-y-auto">
           <ul id="transactionList" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
@@ -121,14 +194,64 @@
       <!-- Chart Section -->
       <div class="lg:col-span-1 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
         <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink">Monthly Overview</h2>
-        <canvas id="chart"></canvas>
+        <canvas id="chart" class="w-full h-48 sm:h-64 md:h-80"></canvas>
       </div>
     </div>
 
     <!-- Footer -->
-    <footer class="mt-10 text-center text-gray-700 dark:text-gray-300">
+    <footer class="mt-10 text-center text-sm sm:text-base text-gray-700 dark:text-gray-300">
       <p>&copy; <span id="copyrightYear"></span> Finance Tracker by Rizky Maulana. All Rights Reserved.</p>
     </footer>
+  </div>
+
+  <!-- Edit Transaction Modal -->
+  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white dark:bg-dark-surface rounded-2xl p-6 w-full sm:w-96">
+      <h2 class="text-xl font-semibold mb-4 text-brand-purple dark:text-brand-pink">Edit Transaction</h2>
+      <form id="editTransactionForm" class="space-y-4">
+        <div>
+          <label for="editType" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Transaction Type</label>
+          <select id="editType" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        <div>
+          <label for="editAmount" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Amount (Rp)</label>
+          <input id="editAmount" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200" required>
+        </div>
+        <div>
+          <label for="editCategory" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Category</label>
+          <input id="editCategory" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200" required>
+        </div>
+        
+        <div id="editIncomeSource" class="hidden">
+          <label for="editIncomeSourceSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Income Source</label>
+          <select id="editIncomeSourceSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+            <option value="transfer">Transfer</option>
+            <option value="cash">Cash Deposit</option>
+          </select>
+        </div>
+
+        <div id="editExpenseMethod" class="hidden">
+          <label for="editExpenseMethodSelect" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Expense Method</label>
+          <select id="editExpenseMethodSelect" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+            <option value="qris">QRIS</option>
+            <option value="transfer">Transfer</option>
+            <option value="cash">Cash Withdrawal</option>
+          </select>
+        </div>
+
+        <div class="flex justify-between">
+          <button type="submit" class="w-1/2 mr-2 py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-lg hover:opacity-90 transition">
+            Save
+          </button>
+          <button type="button" id="cancelEdit" class="w-1/2 ml-2 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:opacity-90 transition">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Scripts -->
@@ -171,9 +294,13 @@
         this.chart = this.initChart();
         
         this.setupEventListeners();
+        this.setupEditModalListeners();
+        this.setupFilterListeners();
+        this.populateMonthFilter();
         this.renderTransactions();
         this.updateBalance();
         this.updateChart();
+        this.updateMonthlyRecap(this.transactions);
         
         // Call toggleTransactionTypeFields on page load based on the current selected type
         this.toggleTransactionTypeFields(document.getElementById('type').value);
@@ -191,6 +318,83 @@
         });
       }
 
+      setupFilterListeners() {
+        const typeFilter = document.getElementById('typeFilter');
+        const searchInput = document.getElementById('searchInput');
+        const monthFilter = document.getElementById('monthFilter');
+
+        // Add event listeners for filters and search
+        typeFilter.addEventListener('change', () => this.filterTransactions());
+        searchInput.addEventListener('input', () => this.filterTransactions());
+        monthFilter.addEventListener('change', () => this.filterTransactions());
+      }
+
+      populateMonthFilter() {
+        const monthFilter = document.getElementById('monthFilter');
+        const months = [
+          'January', 'February', 'March', 'April', 'May', 'June', 
+          'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        months.forEach((month, index) => {
+          const option = document.createElement('option');
+          option.value = index + 1;
+          option.textContent = month;
+          monthFilter.appendChild(option);
+        });
+      }
+
+      filterTransactions() {
+        const typeFilter = document.getElementById('typeFilter').value;
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const monthFilter = document.getElementById('monthFilter').value;
+
+        const filteredTransactions = this.transactions.filter(transaction => {
+          const matchType = !typeFilter || transaction.type === typeFilter;
+          const matchSearch = transaction.category.toLowerCase().includes(searchInput);
+          const matchMonth = !monthFilter || new Date(transaction.date).getMonth() + 1 === parseInt(monthFilter);
+
+          return matchType && matchSearch && matchMonth;
+        });
+
+        this.renderFilteredTransactions(filteredTransactions);
+        this.updateMonthlyRecap(filteredTransactions);
+      }
+
+      renderFilteredTransactions(filteredTransactions) {
+        this.transactionList.innerHTML = filteredTransactions.map((t, index) => `
+          <li class="flex justify-between items-center py-2">
+            <div>
+              <span class="text-sm text-gray-500 dark:text-gray-400">${new Date(t.date).toLocaleString()}</span>
+              <span>${t.category} - ${t.sourceOrMethod || ''}</span>
+            </div>
+            <span class="${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">
+              Rp ${t.amount.toLocaleString('id-ID')}
+            </span>
+            <div>
+              <button onclick="transactionManager.openEditModal(${index})" class="text-blue-500 mr-2">Edit</button>
+              <button onclick="transactionManager.deleteTransaction(${index})" class="text-red-500">Delete</button>
+            </div>
+          </li>
+        `).join('');
+      }
+
+      updateMonthlyRecap(filteredTransactions) {
+        const monthlyIncome = filteredTransactions
+          .filter(t => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const monthlyExpense = filteredTransactions
+          .filter(t => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const monthlyNetBalance = monthlyIncome - monthlyExpense;
+
+        document.getElementById('monthlyIncome').textContent = `Rp ${monthlyIncome.toLocaleString('id-ID')}`;
+        document.getElementById('monthlyExpense').textContent = `Rp ${monthlyExpense.toLocaleString('id-ID')}`;
+        document.getElementById('monthlyNetBalance').textContent = `Rp ${monthlyNetBalance.toLocaleString('id-ID')}`;
+      }
+
       toggleTransactionTypeFields(type) {
         if (type === 'income') {
           document.getElementById('incomeSource').classList.remove('hidden');
@@ -205,6 +409,7 @@
         const type = document.getElementById('type').value;
         const amount = parseFloat(document.getElementById('amount').value);
         const category = document.getElementById('category').value;
+        const date = new Date().toISOString(); // Generate current date and time automatically
         
         let sourceOrMethod = '';
         if (type === 'income') {
@@ -213,24 +418,24 @@
           sourceOrMethod = document.getElementById('expenseMethodSelect').value;
         }
 
-        this.transactions.push({ type, amount, category, sourceOrMethod });
+        this.transactions.push({ 
+          type, 
+          amount, 
+          category, 
+          sourceOrMethod,
+          date // Simpan tanggal dan waktu
+        });
+
         localStorage.setItem('transactions', JSON.stringify(this.transactions));
         this.renderTransactions();
         this.updateBalance();
         this.updateChart();
+        this.updateMonthlyRecap(this.transactions);
         this.transactionForm.reset();
       }
 
       renderTransactions() {
-        this.transactionList.innerHTML = this.transactions.map((t, index) => ` 
-          <li class="flex justify-between items-center py-2">
-            <span>${t.category} - ${t.sourceOrMethod || ''}</span>
-            <span class="${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">
-              Rp ${t.amount.toLocaleString('id-ID')}
-            </span>
-            <button onclick="transactionManager.deleteTransaction(${index})" class="text-red-500">Delete</button>
-          </li>
-        `).join('');
+        this.renderFilteredTransactions(this.transactions);
       }
 
       deleteTransaction(index) {
@@ -239,6 +444,7 @@
         this.renderTransactions();
         this.updateBalance();
         this.updateChart();
+        this.updateMonthlyRecap(this.transactions);
       }
 
       updateBalance() {
@@ -264,6 +470,95 @@
         const expense = this.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
         this.chart.data.datasets[0].data = [income, expense];
         this.chart.update();
+      }
+
+      openEditModal(index) {
+        const transaction = this.transactions[index];
+        const editModal = document.getElementById('editModal');
+        const editType = document.getElementById('editType');
+        const editAmount = document.getElementById('editAmount');
+        const editCategory = document.getElementById('editCategory');
+        const editIncomeSource = document.getElementById('editIncomeSource');
+        const editExpenseMethod = document.getElementById('editExpenseMethod');
+
+        // Set initial values
+        editType.value = transaction.type;
+        editAmount.value = transaction.amount;
+        editCategory.value = transaction.category;
+
+        // Toggle source/method fields
+        if (transaction.type === 'income') {
+          editIncomeSource.classList.remove('hidden');
+          editExpenseMethod.classList.add('hidden');
+          document.getElementById('editIncomeSourceSelect').value = transaction.sourceOrMethod;
+        } else {
+          editExpenseMethod.classList.remove('hidden');
+          editIncomeSource.classList.add('hidden');
+          document.getElementById('editExpenseMethodSelect').value = transaction.sourceOrMethod;
+        }
+
+        // Store the current editing index
+        this.currentEditIndex = index;
+        editModal.classList.remove('hidden');
+
+        // Handle type change in edit modal
+        editType.onchange = () => {
+          if (editType.value === 'income') {
+            editIncomeSource.classList.remove('hidden');
+            editExpenseMethod.classList.add('hidden');
+          } else {
+            editExpenseMethod.classList.remove('hidden');
+            editIncomeSource.classList.add('hidden');
+          }
+        };
+      }
+
+      setupEditModalListeners() {
+        const editModal = document.getElementById('editModal');
+        const editForm = document.getElementById('editTransactionForm');
+        const cancelEditBtn = document.getElementById('cancelEdit');
+
+        editForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.saveEditedTransaction();
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+          editModal.classList.add('hidden');
+        });
+      }
+
+      saveEditedTransaction() {
+        const editType = document.getElementById('editType').value;
+        const editAmount = parseFloat(document.getElementById('editAmount').value);
+        const editCategory = document.getElementById('editCategory').value;
+        
+        let sourceOrMethod = '';
+        if (editType === 'income') {
+          sourceOrMethod = document.getElementById('editIncomeSourceSelect').value;
+        } else {
+          sourceOrMethod = document.getElementById('editExpenseMethodSelect').value;
+        }
+
+        // Update transaction
+        this.transactions[this.currentEditIndex] = { 
+          type: editType, 
+          amount: editAmount, 
+          category: editCategory, 
+          sourceOrMethod,
+          date: this.transactions[this.currentEditIndex].date // Keep the original date
+        };
+
+        localStorage.setItem('transactions', JSON.stringify(this.transactions));
+        
+        // Close modal
+        document.getElementById('editModal').classList.add('hidden');
+        
+        // Refresh view
+        this.renderTransactions();
+        this.updateBalance();
+        this.updateChart();
+        this.updateMonthlyRecap(this.transactions);
       }
     }
 
