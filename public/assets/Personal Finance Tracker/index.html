@@ -6,7 +6,7 @@
   <title>Finance Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -44,28 +44,33 @@
       }
     }
 
-    /* Ensure text is visible in dark mode */
     .dark .text-gray-700 {
-      color: #e5e7eb; /* Light gray for dark mode */
+      color: #e5e7eb;
     }
     .dark .text-gray-900 {
-      color: #f9fafb; /* Very light gray for dark mode */
+      color: #f9fafb;
     }
     .dark .text-gray-100 {
-      color: #1f2937; /* Dark gray for light mode */
+      color: #1f2937;
     }
 
-    /* Ensure input and select text is visible in dark mode */
     .dark input::placeholder,
     .dark select {
-      color: #e5e7eb; /* Light gray for dark mode */
+      color: #e5e7eb;
     }
 
-    /* Ensure input and select background is visible in dark mode */
     .dark input,
     .dark select {
-      background-color: #374151; /* Dark gray background for inputs and selects */
-      color: #e5e7eb; /* Light gray text for inputs and selects */
+      background-color: #374151;
+      color: #e5e7eb;
+    }
+
+    .transaction-item {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .transaction-item.removing {
+      opacity: 0;
+      transform: translateX(-100%);
     }
   </style>
 </head>
@@ -75,14 +80,18 @@
     <header class="flex justify-between items-center mb-10 bg-gradient-to-r from-brand-purple to-brand-pink p-4 rounded-2xl shadow-lg">
       <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white" data-lang="title">Finance Tracker</h1>
       <div class="flex items-center space-x-4">
-        <!-- Toggle Bahasa -->
         <button id="languageToggle" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition">
           <span id="languageText">ID</span>
         </button>
-        <!-- Toggle Tema -->
         <button id="themeToggle" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+        <!-- Tombol Logout -->
+        <button onclick="window.location.href='app.html'" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
         </button>
       </div>
@@ -106,6 +115,7 @@
               <select id="type" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
                 <option value="income" data-lang="income">Income</option>
                 <option value="expense" data-lang="expense">Expense</option>
+                <option value="savings" data-lang="savings">Savings Goal</option>
               </select>
             </div>
             <div>
@@ -113,7 +123,7 @@
               <input id="amount" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter amount" required>
             </div>
           </div>
-          <div>
+          <div id="categoryField">
             <label for="category" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" data-lang="category">Category</label>
             <input id="category" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Example: Salary, Food, etc." required>
           </div>
@@ -144,6 +154,52 @@
       </div>
     </div>
 
+    <!-- Savings Section -->
+    <div class="mt-8 bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+      <h2 class="text-xl font-semibold mb-6 text-brand-purple dark:text-brand-pink" data-lang="savingsGoal">Savings Goal</h2>
+      <form id="savingsForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="savingsGoal" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" data-lang="savingsGoal">Savings Goal (Rp)</label>
+            <input id="savingsGoal" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter savings goal" required>
+          </div>
+          <div>
+            <label for="timePeriod" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" data-lang="timePeriod">Time Period</label>
+            <input id="timePeriod" type="number" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter time period" required>
+          </div>
+          <div>
+            <label for="timeUnit" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300" data-lang="timeUnit">Time Unit</label>
+            <select id="timeUnit" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple">
+              <option value="days" data-lang="days">Days</option>
+              <option value="weeks" data-lang="weeks">Weeks</option>
+              <option value="months" data-lang="months">Months</option>
+              <option value="years" data-lang="years">Years</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-lg hover:opacity-90 transition" data-lang="calculateSavings">
+          Calculate Savings
+        </button>
+      </form>
+      <div id="savingsResult" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-4 text-brand-purple dark:text-brand-pink" data-lang="savingsResult">Savings Result</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-green-100 dark:bg-green-800 p-4 rounded">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200" data-lang="dailySavings">Daily Savings</h4>
+            <p id="dailySavings" class="text-2xl font-bold text-green-600 dark:text-green-400">Rp 0</p>
+          </div>
+          <div class="bg-blue-100 dark:bg-blue-800 p-4 rounded">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200" data-lang="weeklySavings">Weekly Savings</h4>
+            <p id="weeklySavings" class="text-2xl font-bold text-blue-600 dark:text-blue-400">Rp 0</p>
+          </div>
+          <div class="bg-purple-100 dark:bg-purple-800 p-4 rounded">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200" data-lang="monthlySavings">Monthly Savings</h4>
+            <p id="monthlySavings" class="text-2xl font-bold text-purple-600 dark:text-purple-400">Rp 0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Transactions and Chart Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
       <!-- Transaction List -->
@@ -155,6 +211,7 @@
               <option value="" data-lang="allTypes">All Types</option>
               <option value="income" data-lang="income">Income</option>
               <option value="expense" data-lang="expense">Expense</option>
+              <option value="savings" data-lang="savings">Savings Goal</option>
             </select>
             <input 
               type="text" 
@@ -196,6 +253,12 @@
         <div class="max-h-96 overflow-y-auto">
           <ul id="transactionList" class="divide-y divide-gray-200 dark:divide-gray-700"></ul>
         </div>
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-4">
+          <button id="prevPage" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:opacity-90 transition" data-lang="prev">Previous</button>
+          <span id="pageInfo" class="text-sm text-gray-700 dark:text-gray-300"></span>
+          <button id="nextPage" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:opacity-90 transition" data-lang="next">Next</button>
+        </div>
       </div>
 
       <!-- Chart Section -->
@@ -221,6 +284,7 @@
           <select id="editType" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
             <option value="income" data-lang="income">Income</option>
             <option value="expense" data-lang="expense">Expense</option>
+            <option value="savings" data-lang="savings">Savings Goal</option>
           </select>
         </div>
         <div>
@@ -328,12 +392,27 @@
             allTypes: 'All Types',
             income: 'Income',
             expense: 'Expense',
+            savings: 'Savings Goal',
             allMonths: 'All Months',
             transfer: 'Transfer',
             cash: 'Cash',
             qris: 'QRIS',
             cashDeposit: 'Cash Deposit',
             cashWithdrawal: 'Cash Withdrawal',
+            prev: 'Previous',
+            next: 'Next',
+            savingsGoal: 'Savings Goal',
+            timePeriod: 'Time Period',
+            timeUnit: 'Time Unit',
+            calculateSavings: 'Calculate Savings',
+            savingsResult: 'Savings Result',
+            dailySavings: 'Daily Savings',
+            weeklySavings: 'Weekly Savings',
+            monthlySavings: 'Monthly Savings',
+            days: 'Days',
+            weeks: 'Weeks',
+            months: 'Months',
+            years: 'Years'
           },
           id: {
             title: 'Pelacak Keuangan',
@@ -363,12 +442,27 @@
             allTypes: 'Semua Jenis',
             income: 'Pendapatan',
             expense: 'Pengeluaran',
+            savings: 'Tujuan Menabung',
             allMonths: 'Semua Bulan',
             transfer: 'Transfer',
             cash: 'Tunai',
             qris: 'QRIS',
             cashDeposit: 'Setoran Tunai',
             cashWithdrawal: 'Penarikan Tunai',
+            prev: 'Sebelumnya',
+            next: 'Berikutnya',
+            savingsGoal: 'Tujuan Menabung',
+            timePeriod: 'Jangka Waktu',
+            timeUnit: 'Satuan Waktu',
+            calculateSavings: 'Hitung Tabungan',
+            savingsResult: 'Hasil Menabung',
+            dailySavings: 'Tabungan Harian',
+            weeklySavings: 'Tabungan Mingguan',
+            monthlySavings: 'Tabungan Bulanan',
+            days: 'Hari',
+            weeks: 'Minggu',
+            months: 'Bulan',
+            years: 'Tahun'
           }
         };
         this.initLanguage();
@@ -417,6 +511,14 @@
             option.textContent = texts[key];
           }
         });
+
+        // Update opsi satuan waktu
+        document.querySelectorAll('#timeUnit option').forEach(option => {
+          const key = option.getAttribute('data-lang');
+          if (texts[key]) {
+            option.textContent = texts[key];
+          }
+        });
       }
     }
 
@@ -427,8 +529,11 @@
         this.transactionList = document.getElementById('transactionList');
         this.balanceElement = document.getElementById('balance');
         this.chartContext = document.getElementById('chart').getContext('2d');
+        this.itemsPerPage = 10;
+        this.currentPage = 1;
         
         this.transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        this.savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
         this.chart = this.initChart();
         
         this.setupEventListeners();
@@ -439,6 +544,10 @@
         this.updateBalance();
         this.updateChart();
         this.updateMonthlyRecap(this.transactions);
+        this.updatePagination();
+
+        // Inisialisasi variabel untuk menyimpan total tabungan
+        this.totalSavings = 0;
         
         // Call toggleTransactionTypeFields on page load based on the current selected type
         this.toggleTransactionTypeFields(document.getElementById('type').value);
@@ -453,6 +562,29 @@
         // Handle transaction type change
         document.getElementById('type').addEventListener('change', (e) => {
           this.toggleTransactionTypeFields(e.target.value);
+        });
+
+        // Pagination
+        document.getElementById('prevPage').addEventListener('click', () => {
+          if (this.currentPage > 1) {
+            this.currentPage--;
+            this.renderTransactions();
+            this.updatePagination();
+          }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+          if (this.currentPage < Math.ceil(this.transactions.length / this.itemsPerPage)) {
+            this.currentPage++;
+            this.renderTransactions();
+            this.updatePagination();
+          }
+        });
+
+        // Savings Form
+        document.getElementById('savingsForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.calculateSavings();
         });
       }
 
@@ -501,21 +633,28 @@
       }
 
       renderFilteredTransactions(filteredTransactions) {
-        this.transactionList.innerHTML = filteredTransactions.map((t, index) => `
-          <li class="flex justify-between items-center py-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
-            <div class="flex-1">
-              <span class="text-sm text-gray-500 dark:text-gray-400">${new Date(t.date).toLocaleString()}</span>
-              <p class="text-gray-700 dark:text-gray-200">${t.category} - ${t.sourceOrMethod || ''}</p>
-            </div>
-            <span class="${t.type === 'income' ? 'text-green-500' : 'text-red-500'} font-medium">
-              Rp ${t.amount.toLocaleString('id-ID')}
-            </span>
-            <div class="ml-4">
-              <button onclick="transactionManager.openEditModal(${index})" class="text-blue-500 hover:text-blue-600 mr-2">Edit</button>
-              <button onclick="transactionManager.deleteTransaction(${index})" class="text-red-500 hover:text-red-600">Delete</button>
-            </div>
-          </li>
-        `).join('');
+        const start = (this.currentPage - 1) * this.itemsPerPage;
+        const end = start + this.itemsPerPage;
+        const paginatedTransactions = filteredTransactions.slice(start, end);
+
+        this.transactionList.innerHTML = paginatedTransactions.map((t, index) => {
+          const globalIndex = this.transactions.indexOf(t); // Get the global index
+          return `
+            <li class="flex justify-between items-center py-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+              <div class="flex-1">
+                <span class="text-sm text-gray-500 dark:text-gray-400">${new Date(t.date).toLocaleString()}</span>
+                <p class="text-gray-700 dark:text-gray-200">${t.category} - ${t.sourceOrMethod || ''}</p>
+              </div>
+              <span class="${t.type === 'income' ? 'text-green-500' : 'text-red-500'} font-medium">
+                Rp ${t.amount.toLocaleString('id-ID')}
+              </span>
+              <div class="ml-4">
+                <button onclick="transactionManager.openEditModal(${globalIndex})" class="text-blue-500 hover:text-blue-600 mr-2">Edit</button>
+                <button onclick="transactionManager.deleteTransaction(${globalIndex})" class="text-red-500 hover:text-red-600">Delete</button>
+              </div>
+            </li>
+          `;
+        }).join('');
       }
 
       updateMonthlyRecap(filteredTransactions) {
@@ -538,9 +677,15 @@
         if (type === 'income') {
           document.getElementById('incomeSource').classList.remove('hidden');
           document.getElementById('expenseMethod').classList.add('hidden');
+          document.getElementById('categoryField').classList.remove('hidden');
         } else if (type === 'expense') {
           document.getElementById('expenseMethod').classList.remove('hidden');
           document.getElementById('incomeSource').classList.add('hidden');
+          document.getElementById('categoryField').classList.remove('hidden');
+        } else if (type === 'savings') {
+          document.getElementById('incomeSource').classList.add('hidden');
+          document.getElementById('expenseMethod').classList.add('hidden');
+          document.getElementById('categoryField').classList.add('hidden');
         }
       }
 
@@ -550,11 +695,19 @@
         const category = document.getElementById('category').value;
         const date = new Date().toISOString(); // Generate current date and time automatically
         
+        if (amount <= 0) {
+          Swal.fire('Error', 'Amount must be greater than 0', 'error');
+          return;
+        }
+
         let sourceOrMethod = '';
         if (type === 'income') {
           sourceOrMethod = document.getElementById('incomeSourceSelect').value;
         } else if (type === 'expense') {
           sourceOrMethod = document.getElementById('expenseMethodSelect').value;
+        } else if (type === 'savings') {
+          this.totalSavings += amount;
+          localStorage.setItem('totalSavings', this.totalSavings);
         }
 
         this.transactions.push({ 
@@ -643,7 +796,7 @@
       }
 
       openEditModal(index) {
-        const transaction = this.transactions[index];
+        const transaction = this.transactions[index]; // Use the global index
         const editModal = document.getElementById('editModal');
         const editType = document.getElementById('editType');
         const editAmount = document.getElementById('editAmount');
@@ -663,10 +816,13 @@
           editIncomeSource.classList.remove('hidden');
           editExpenseMethod.classList.add('hidden');
           document.getElementById('editIncomeSourceSelect').value = transaction.sourceOrMethod;
-        } else {
+        } else if (transaction.type === 'expense') {
           editExpenseMethod.classList.remove('hidden');
           editIncomeSource.classList.add('hidden');
           document.getElementById('editExpenseMethodSelect').value = transaction.sourceOrMethod;
+        } else if (transaction.type === 'savings') {
+          editIncomeSource.classList.add('hidden');
+          editExpenseMethod.classList.add('hidden');
         }
 
         // Store the current editing index
@@ -678,9 +834,12 @@
           if (editType.value === 'income') {
             editIncomeSource.classList.remove('hidden');
             editExpenseMethod.classList.add('hidden');
-          } else {
+          } else if (editType.value === 'expense') {
             editExpenseMethod.classList.remove('hidden');
             editIncomeSource.classList.add('hidden');
+          } else if (editType.value === 'savings') {
+            editIncomeSource.classList.add('hidden');
+            editExpenseMethod.classList.add('hidden');
           }
         };
       }
@@ -706,11 +865,19 @@
         const editCategory = document.getElementById('editCategory').value;
         const editDate = document.getElementById('editDate').value;
         
+        if (editAmount <= 0) {
+          Swal.fire('Error', 'Amount must be greater than 0', 'error');
+          return;
+        }
+
         let sourceOrMethod = '';
         if (editType === 'income') {
           sourceOrMethod = document.getElementById('editIncomeSourceSelect').value;
-        } else {
+        } else if (editType === 'expense') {
           sourceOrMethod = document.getElementById('editExpenseMethodSelect').value;
+        } else if (editType === 'savings') {
+          this.totalSavings += editAmount;
+          localStorage.setItem('totalSavings', this.totalSavings);
         }
 
         // Update transaction
@@ -732,6 +899,51 @@
         this.updateBalance();
         this.updateChart();
         this.updateMonthlyRecap(this.transactions);
+      }
+
+      updatePagination() {
+        const pageInfo = document.getElementById('pageInfo');
+        const totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
+        pageInfo.textContent = `Page ${this.currentPage} of ${totalPages}`;
+      }
+
+      calculateSavings() {
+        const savingsGoal = parseFloat(document.getElementById('savingsGoal').value);
+        const timePeriod = parseFloat(document.getElementById('timePeriod').value);
+        const timeUnit = document.getElementById('timeUnit').value;
+
+        if (savingsGoal <= 0 || timePeriod <= 0) {
+          Swal.fire('Error', 'Savings goal and time period must be greater than 0', 'error');
+          return;
+        }
+
+        let totalDays;
+        switch (timeUnit) {
+          case 'days':
+            totalDays = timePeriod;
+            break;
+          case 'weeks':
+            totalDays = timePeriod * 7;
+            break;
+          case 'months':
+            totalDays = timePeriod * 30; // Approximate
+            break;
+          case 'years':
+            totalDays = timePeriod * 365; // Approximate
+            break;
+          default:
+            totalDays = 0;
+        }
+
+        const dailySavings = savingsGoal / totalDays;
+        const weeklySavings = dailySavings * 7;
+        const monthlySavings = dailySavings * 30; // Approximate
+
+        document.getElementById('dailySavings').textContent = `Rp ${dailySavings.toLocaleString('id-ID')}`;
+        document.getElementById('weeklySavings').textContent = `Rp ${weeklySavings.toLocaleString('id-ID')}`;
+        document.getElementById('monthlySavings').textContent = `Rp ${monthlySavings.toLocaleString('id-ID')}`;
+
+        document.getElementById('savingsResult').classList.remove('hidden');
       }
     }
 
