@@ -45,6 +45,12 @@ const works = [
         title: 'Finance Tracker',
         tags: ['Web-design', 'Development'],
         projectLink: '/assets/Personal Finance Tracker/index.html'
+    },
+    {
+        imgSrc: '/assets/ecommerce.png',
+        title: 'Skycommerce',
+        tags: ['Web-design', 'Development'],
+        projectLink: '/assets/comingsoon_03/index.html'
     }
 ];
 
