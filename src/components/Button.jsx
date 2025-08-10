@@ -32,7 +32,7 @@ const ButtonPrimary = ({
                     // Download CV
                     const link = document.createElement('a')
                     link.href = href
-                    link.download = 'CV_RizkyMaulana.pdf'
+                    link.download = 'public/assets/CV - Rizky Maulana.pdf'
                     link.click()
                 }
             })

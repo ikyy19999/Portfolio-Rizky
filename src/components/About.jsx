@@ -24,11 +24,11 @@ const About = () => {
 
           {/* Paragraf deskripsi personal */}
           <p className='text-zinc-300 mb-4 md:mb-8 md:text-xl md:max-w-[60ch]'>
-          A third-semester Computer Science student at Indraprasta PGRI University who readily learns 
-          new things, communicates effectively, and is interested in exploring various fields. Areas of 
-          interest include Web Development, IT Support, and IT Staff positions. Possesses a strong ability 
-          to adapt to new technologies and is enthusiastic about developing skills in the IT sector. Actively 
-          seeks opportunities to apply academic knowledge in practical projects and relevant work experiences.
+          A fifth-semester Computer Science student at Indraprasta PGRI University who
+          is eager to deepen knowledge, communicate effectively, and explore various IT fields. 
+          Areas of interest include Web Development, IT Support, and IT Staff roles. Possesses strong 
+          adaptability to new technologies and enthusiasm for advancing skills in the IT sector. Actively 
+          seeks opportunities to apply academic knowledge through practical projects and relevant work experiences.
           </p>
 
           {/* Container untuk pencapaian dan logo */}

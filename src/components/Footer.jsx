@@ -35,7 +35,7 @@ const sitemap = [
     },
     {
       label: 'Email',
-      href: 'mailto:rizkymaulanaofficial6@gmail.com'
+      href: 'mailto:halo@rizkymaulana.web.id'
     }
   ];
 
@@ -52,7 +52,7 @@ const Footer = () => {
                     </h2>
 
                     <ButtonPrimary
-                    href='mailto:rizkymaulanaofficial6@gmail.com'
+                    href='mailto:halo@rizkymaulana.web.id'
                     label='Start Project'
                     icon='chevron_right'
                     classes='reveal-up' />

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finance Tracker - Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     tailwind.config = {
@@ -16,11 +16,31 @@
             'sans': ['Poppins', 'ui-sans-serif', 'system-ui']
           },
           colors: {
-            'brand-purple': '#8A4FFF',
-            'brand-pink': '#FF6B9E',
-            'brand-bg': '#F5F5F9',
-            'dark-bg': '#121212',
-            'dark-surface': '#1E1E1E',
+            'brand-purple': '#7C3AED',
+            'brand-purple-light': '#8B5CF6',
+            'brand-pink': '#EC4899',
+            'brand-pink-light': '#F472B6',
+            'brand-bg': '#F8FAFC',
+            'dark-bg': '#0F172A',
+            'dark-surface': '#1E293B',
+            'dark-text': '#E2E8F0',
+          },
+          boxShadow: {
+            'neumorphic': '8px 8px 16px #d1d5db, -8px -8px 16px #ffffff',
+            'neumorphic-dark': '8px 8px 16px #0f172a, -8px -8px 16px #334155',
+            'btn-hover': '0 10px 25px -5px rgba(124, 58, 237, 0.4)',
+            'btn-active': '0 5px 10px -3px rgba(124, 58, 237, 0.4)',
+            'input-focus': '0 0 0 3px rgba(167, 139, 250, 0.5)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
           }
         }
       }
@@ -28,97 +48,277 @@
   </script>
   <style>
     ::-webkit-scrollbar {
-      width: 4px;
+      width: 6px;
+      height: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #f1f1f1;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #8A4FFF;
       border-radius: 10px;
     }
-
-    @media (min-width: 640px) {
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
+    ::-webkit-scrollbar-thumb {
+      background: #7C3AED;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8B5CF6;
     }
 
-    .dark .text-gray-700 {
-      color: #e5e7eb;
+    .dark ::-webkit-scrollbar-track {
+      background: #1E293B;
     }
-    .dark .text-gray-900 {
-      color: #f9fafb;
+    .dark ::-webkit-scrollbar-thumb {
+      background: #8B5CF6;
     }
-    .dark .text-gray-100 {
-      color: #1f2937;
-    }
-
-    .dark input::placeholder,
-    .dark select {
-      color: #e5e7eb;
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #A78BFA;
     }
 
-    .dark input,
-    .dark select {
-      background-color: #374151;
-      color: #e5e7eb;
+    /* Input focus effect */
+    .input-focus-effect:focus {
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.5);
+      transition: box-shadow 0.2s ease;
+    }
+
+    /* Button hover effect */
+    .btn-hover-effect {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(0);
+    }
+    .btn-hover-effect:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.4);
+    }
+    .btn-hover-effect:active {
+      transform: translateY(1px);
+      box-shadow: 0 5px 10px -3px rgba(124, 58, 237, 0.4);
+    }
+
+    /* Gradient text */
+    .text-gradient {
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    /* Card glow effect */
+    .card-glow {
+      position: relative;
+      overflow: hidden;
+    }
+    .card-glow::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+      animation: pulse-slow 6s infinite;
+      z-index: 0;
     }
   </style>
 </head>
-<body class="bg-brand-bg dark:bg-dark-bg text-gray-900 dark:text-gray-100 min-h-screen">
-  <!-- Login/Register Section -->
-  <div class="container mx-auto px-4 py-8 max-w-6xl">
-    <div class="bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl max-w-md mx-auto">
-      <h1 class="text-2xl font-bold text-center text-brand-purple dark:text-brand-pink mb-6">Finance Tracker</h1>
-      <div id="loginForm">
-        <h2 class="text-xl font-semibold mb-4 text-center">Login</h2>
-        <form id="loginForm" class="space-y-4">
-          <div>
-            <label for="loginUsername" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Username</label>
-            <input id="loginUsername" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter username" required>
+<body class="bg-brand-bg dark:bg-dark-bg text-gray-800 dark:text-dark-text min-h-screen flex items-center justify-center p-4">
+  <!-- Background elements -->
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-brand-purple/10 dark:bg-brand-purple/5 blur-3xl animate-float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full bg-brand-pink/10 dark:bg-brand-pink/5 blur-3xl animate-float animation-delay-2000"></div>
+    <div class="absolute top-1/3 right-1/3 w-56 h-56 rounded-full bg-brand-purple/15 dark:bg-brand-purple/10 blur-3xl animate-float animation-delay-3000"></div>
+  </div>
+
+  <!-- Main card -->
+  <div class="w-full max-w-md">
+    <div class="bg-white dark:bg-dark-surface rounded-2xl p-8 shadow-xl dark:shadow-none card-glow relative overflow-hidden">
+      <div class="relative z-10">
+        <!-- Logo -->
+        <div class="flex flex-col items-center mb-8">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-pink flex items-center justify-center shadow-lg mb-4 animate-float">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
-          <div class="relative">
-            <label for="loginPassword" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Password</label>
-            <input id="loginPassword" type="password" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple pr-10" placeholder="Enter password" required>
-            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 mt-7" onclick="togglePasswordVisibility('loginPassword', 'loginEyeIcon')">
-              <span id="loginEyeIcon">👁️</span>
+          <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-brand-purple to-brand-pink text-gradient">Finance Tracker</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Manage your finances effortlessly</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm">
+          <form id="loginForm" class="space-y-6">
+            <div class="space-y-2">
+              <label for="loginUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+              <div class="relative">
+                <input id="loginUsername" type="text" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none input-focus-effect transition-all duration-200 pl-10" placeholder="john.doe" required>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="loginPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <div class="relative">
+                <input id="loginPassword" type="password" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none input-focus-effect transition-all duration-200 pl-10 pr-10" placeholder="••••••••" required>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePasswordVisibility('loginPassword', 'loginEyeIcon')">
+                  <span id="loginEyeIcon" class="text-gray-400 hover:text-brand-purple dark:hover:text-brand-pink transition-colors">👁️</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input id="rememberMe" type="checkbox" class="h-4 w-4 text-brand-purple focus:ring-brand-purple border-gray-300 rounded">
+                <label for="rememberMe" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Remember me</label>
+              </div>
+              <a href="#" class="text-sm text-brand-purple dark:text-brand-pink hover:underline">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-xl font-medium btn-hover-effect relative overflow-hidden group">
+              <span class="relative z-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Login
+              </span>
+              <span class="absolute inset-0 bg-gradient-to-r from-brand-purple-light to-brand-pink-light opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </button>
+          </form>
+
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white dark:bg-dark-surface text-gray-500 dark:text-gray-400">Or continue with</span>
+              </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-2 gap-3">
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0110 4.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C17.14 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
+                </svg>
+              </button>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-lg hover:opacity-90 transition">Login</button>
-        </form>
-        <p class="text-center mt-4 text-sm text-gray-700 dark:text-gray-300">
-          Don't have an account? <button id="showRegister" class="text-brand-purple dark:text-brand-pink font-medium">Register</button>
-        </p>
-      </div>
-      <div id="registerForm" class="hidden">
-        <h2 class="text-xl font-semibold mb-4 text-center">Register</h2>
-        <form id="registerForm" class="space-y-4">
-          <div>
-            <label for="registerUsername" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Username</label>
-            <input id="registerUsername" type="text" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple" placeholder="Enter username" required>
-          </div>
-          <div class="relative">
-            <label for="registerPassword" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Password</label>
-            <input id="registerPassword" type="password" class="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-brand-purple pr-10" placeholder="Enter password" required oninput="validatePassword('registerPassword', 'passwordNotes')">
-            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 mt-7" onclick="togglePasswordVisibility('registerPassword', 'registerEyeIcon')">
-              <span id="registerEyeIcon">👁️</span>
+
+          <p class="mt-6 text-center text-sm text-gray-700 dark:text-gray-300">
+            Don't have an account? 
+            <button id="showRegister" class="text-brand-purple dark:text-brand-pink font-medium hover:underline transition-colors">
+              Register now
             </button>
-          </div>
-          <div id="passwordNotes" class="text-sm text-gray-600 dark:text-gray-400">
-            <p>Password must contain:</p>
-            <ul class="list-disc list-inside">
-              <li id="lengthNote">At least 8 characters</li>
-              <li id="upperCaseNote">1 uppercase letter</li>
-              <li id="lowerCaseNote">1 lowercase letter</li>
-              <li id="specialCharNote">1 special character (!@#$%^&*.)</li>
-            </ul>
-          </div>
-          <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-lg hover:opacity-90 transition">Register</button>
-        </form>
-        <p class="text-center mt-4 text-sm text-gray-700 dark:text-gray-300">
-          Already have an account? <button id="showLogin" class="text-brand-purple dark:text-brand-pink font-medium">Login</button>
-        </p>
+          </p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="hidden">
+          <form id="registerForm" class="space-y-6">
+            <div class="space-y-2">
+              <label for="registerUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+              <div class="relative">
+                <input id="registerUsername" type="text" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none input-focus-effect transition-all duration-200 pl-10" placeholder="john.doe" required>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="registerEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+              <div class="relative">
+                <input id="registerEmail" type="email" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none input-focus-effect transition-all duration-200 pl-10" placeholder="john@example.com" required>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="registerPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <div class="relative">
+                <input id="registerPassword" type="password" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none input-focus-effect transition-all duration-200 pl-10 pr-10" placeholder="••••••••" required oninput="validatePassword('registerPassword', 'passwordNotes')">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePasswordVisibility('registerPassword', 'registerEyeIcon')">
+                  <span id="registerEyeIcon" class="text-gray-400 hover:text-brand-purple dark:hover:text-brand-pink transition-colors">👁️</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="passwordNotes" class="p-4 bg-gray-50 dark:bg-slate-800 rounded-xl">
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password requirements:</h4>
+              <ul class="space-y-1 text-xs text-gray-600 dark:text-gray-400">
+                <li id="lengthNote" class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  At least 8 characters
+                </li>
+                <li id="upperCaseNote" class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  1 uppercase letter
+                </li>
+                <li id="lowerCaseNote" class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  1 lowercase letter
+                </li>
+                <li id="specialCharNote" class="flex items-center">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  1 special character (!@#$%^&*)
+                </li>
+              </ul>
+            </div>
+
+            <div class="flex items-center">
+              <input id="termsAgreement" type="checkbox" class="h-4 w-4 text-brand-purple focus:ring-brand-purple border-gray-300 rounded">
+              <label for="termsAgreement" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                I agree to the <a href="#" class="text-brand-purple dark:text-brand-pink hover:underline">Terms of Service</a> and <a href="#" class="text-brand-purple dark:text-brand-pink hover:underline">Privacy Policy</a>
+              </label>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-xl font-medium btn-hover-effect relative overflow-hidden group">
+              <span class="relative z-10 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Register
+              </span>
+              <span class="absolute inset-0 bg-gradient-to-r from-brand-purple-light to-brand-pink-light opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </button>
+          </form>
+
+          <p class="mt-6 text-center text-sm text-gray-700 dark:text-gray-300">
+            Already have an account? 
+            <button id="showLogin" class="text-brand-purple dark:text-brand-pink font-medium hover:underline transition-colors">
+              Login here
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -151,17 +351,26 @@
       const hasSpecialChar = /[!@#$%^&*]/.test(password);
 
       // Update notes
-      document.getElementById('lengthNote').style.color = minLength ? 'green' : 'red';
-      document.getElementById('upperCaseNote').style.color = hasUpperCase ? 'green' : 'red';
-      document.getElementById('lowerCaseNote').style.color = hasLowerCase ? 'green' : 'red';
-      document.getElementById('specialCharNote').style.color = hasSpecialChar ? 'green' : 'red';
+      document.getElementById('lengthNote').style.color = minLength ? '#10B981' : '#EF4444';
+      document.getElementById('lengthNote').querySelector('path').style.display = minLength ? 'block' : 'none';
+      
+      document.getElementById('upperCaseNote').style.color = hasUpperCase ? '#10B981' : '#EF4444';
+      document.getElementById('upperCaseNote').querySelector('path').style.display = hasUpperCase ? 'block' : 'none';
+      
+      document.getElementById('lowerCaseNote').style.color = hasLowerCase ? '#10B981' : '#EF4444';
+      document.getElementById('lowerCaseNote').querySelector('path').style.display = hasLowerCase ? 'block' : 'none';
+      
+      document.getElementById('specialCharNote').style.color = hasSpecialChar ? '#10B981' : '#EF4444';
+      document.getElementById('specialCharNote').querySelector('path').style.display = hasSpecialChar ? 'block' : 'none';
 
       // Enable/disable register button
       const registerButton = document.querySelector('#registerForm button[type="submit"]');
       if (minLength && hasUpperCase && hasLowerCase && hasSpecialChar) {
         registerButton.disabled = false;
+        registerButton.classList.remove('opacity-50', 'cursor-not-allowed');
       } else {
         registerButton.disabled = true;
+        registerButton.classList.add('opacity-50', 'cursor-not-allowed');
       }
     }
 
@@ -174,11 +383,25 @@
       const user = db.users.find(u => u.username === username && u.password === password);
       if (user) {
         localStorage.setItem('currentUser', username);
-        Swal.fire('Success', 'Login successful!', 'success').then(() => {
+        Swal.fire({
+          title: 'Success',
+          text: 'Login successful!',
+          icon: 'success',
+          background: document.documentElement.classList.contains('dark') ? '#1E293B' : '#fff',
+          color: document.documentElement.classList.contains('dark') ? '#E2E8F0' : '#1E293B',
+          confirmButtonColor: '#7C3AED',
+        }).then(() => {
           window.location.href = 'index.html'; // Redirect to main app
         });
       } else {
-        Swal.fire('Error', 'Invalid username or password', 'error');
+        Swal.fire({
+          title: 'Error',
+          text: 'Invalid username or password',
+          icon: 'error',
+          background: document.documentElement.classList.contains('dark') ? '#1E293B' : '#fff',
+          color: document.documentElement.classList.contains('dark') ? '#E2E8F0' : '#1E293B',
+          confirmButtonColor: '#7C3AED',
+        });
       }
     });
 
@@ -186,29 +409,71 @@
     document.getElementById('registerForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const username = document.getElementById('registerUsername').value;
+      const email = document.getElementById('registerEmail').value;
       const password = document.getElementById('registerPassword').value;
+      const termsAgreed = document.getElementById('termsAgreement').checked;
 
-      if (db.users.some(u => u.username === username)) {
-        Swal.fire('Error', 'Username already exists', 'error');
+      if (!termsAgreed) {
+        Swal.fire({
+          title: 'Error',
+          text: 'You must agree to the terms and conditions',
+          icon: 'error',
+          background: document.documentElement.classList.contains('dark') ? '#1E293B' : '#fff',
+          color: document.documentElement.classList.contains('dark') ? '#E2E8F0' : '#1E293B',
+          confirmButtonColor: '#7C3AED',
+        });
         return;
       }
 
-      db.users.push({ username, password });
+      if (db.users.some(u => u.username === username)) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Username already exists',
+          icon: 'error',
+          background: document.documentElement.classList.contains('dark') ? '#1E293B' : '#fff',
+          color: document.documentElement.classList.contains('dark') ? '#E2E8F0' : '#1E293B',
+          confirmButtonColor: '#7C3AED',
+        });
+        return;
+      }
+
+      db.users.push({ username, email, password });
       db.transactions[username] = [];
       localStorage.setItem('Finance', JSON.stringify(db));
-      Swal.fire('Success', 'Registration successful!', 'success');
-      showLoginForm();
+      Swal.fire({
+        title: 'Success',
+        text: 'Registration successful!',
+        icon: 'success',
+        background: document.documentElement.classList.contains('dark') ? '#1E293B' : '#fff',
+        color: document.documentElement.classList.contains('dark') ? '#E2E8F0' : '#1E293B',
+        confirmButtonColor: '#7C3AED',
+      }).then(() => {
+        showLoginForm();
+      });
     });
 
     // Toggle Login/Register Forms
-    document.getElementById('showRegister').addEventListener('click', () => {
+    function showRegisterForm() {
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('registerForm').classList.remove('hidden');
-    });
+      document.getElementById('registerUsername').focus();
+    }
 
-    document.getElementById('showLogin').addEventListener('click', () => {
+    function showLoginForm() {
       document.getElementById('registerForm').classList.add('hidden');
       document.getElementById('loginForm').classList.remove('hidden');
+      document.getElementById('loginUsername').focus();
+    }
+
+    document.getElementById('showRegister').addEventListener('click', showRegisterForm);
+    document.getElementById('showLogin').addEventListener('click', showLoginForm);
+
+    // Initialize form validation
+    document.addEventListener('DOMContentLoaded', () => {
+      // Disable register button initially
+      const registerButton = document.querySelector('#registerForm button[type="submit"]');
+      registerButton.disabled = true;
+      registerButton.classList.add('opacity-50', 'cursor-not-allowed');
     });
   </script>
 </body>
