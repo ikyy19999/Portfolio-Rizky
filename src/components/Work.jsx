@@ -44,13 +44,13 @@ const works = [
         imgSrc: '/assets/Finance.png',
         title: 'Finance Tracker',
         tags: ['Web-design', 'Development'],
-        projectLink: '/assets/Personal Finance Tracker/index.html'
+        projectLink: 'https://finance-tracker.rizkymaulana.web.id/'
     },
     {
-        imgSrc: '/assets/ecommerce.png',
-        title: 'Skycommerce',
+        imgSrc: '/assets/Pastry.png',
+        title: 'Online Pastry Shop',
         tags: ['Web-design', 'Development'],
-        projectLink: '/assets/comingsoon_03/index.html'
+        projectLink: 'https://charity-pastry.rizkymaulana.web.id'
     }
 ];
 

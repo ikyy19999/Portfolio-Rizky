@@ -35,11 +35,6 @@ const skillItem = [
         desc: 'Interaction'
     },
     {
-        imgSrc: '/assets/pascal.png',
-        label: 'Pascal',
-        desc: 'Interaction'
-    },
-    {
         imgSrc: '/assets/mysql.png',
         label: 'MySQL',
         desc: 'Database'
