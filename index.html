@@ -20,5 +20,46 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+    </script>
+
+    <script>
+      document.addEventListener('keydown', function(e) {
+      
+        if (e.key === "F12") {
+          e.preventDefault();
+        }
+      
+        if (e.ctrlKey && e.shiftKey && e.key === "I") {
+          e.preventDefault();
+        }
+      
+        if (e.ctrlKey && e.shiftKey && e.key === "C") {
+          e.preventDefault();
+        }
+      
+        if (e.ctrlKey && e.key === "U") {
+          e.preventDefault();
+        }
+      
+      });
+    </script>
+
+    <script>
+      setInterval(function() {
+        if (window.outerWidth - window.innerWidth > 200 || window.outerHeight - window.innerHeight > 200) {
+          document.body.innerHTML = "DevTools detected.";
+        }
+      }, 1000);
+    </script>
+
+    <script>
+      document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>
