@@ -7,7 +7,7 @@ const skillItem = [
     {
         imgSrc: '/assets/html.png',
         label: 'HTML',
-        desc: 'Basic Tool'
+        desc: 'Web Structure'
     },
     {
         imgSrc: '/assets/css3.svg',
@@ -17,22 +17,27 @@ const skillItem = [
     {
         imgSrc: '/assets/javascript.svg',
         label: 'JavaScript',
-        desc: 'Interaction'
+        desc: 'Web Interaction'
     },
     {
         imgSrc: '/assets/php.png',
-        label: 'Php',
-        desc: 'Interaction'
+        label: 'PHP',
+        desc: 'Backend Development'
     },
     {
-        imgSrc: '/assets/python.png',
-        label: 'Python',
-        desc: 'Interaction'
+        imgSrc: '/assets/Laravel.png',
+        label: 'Laravel',
+        desc: 'Backend Framework'
     },
     {
-        imgSrc: '/assets/java.png',
-        label: 'Java',
-        desc: 'Interaction'
+        imgSrc: '/assets/react.svg',
+        label: 'React',
+        desc: 'Frontend Framework'
+    },
+    {
+        imgSrc: '/assets/tailwindcss.svg',
+        label: 'Tailwind CSS',
+        desc: 'UI Framework'
     },
     {
         imgSrc: '/assets/mysql.png',
@@ -40,20 +45,30 @@ const skillItem = [
         desc: 'Database'
     },
     {
-        imgSrc: '/assets/react.svg',
-        label: 'React',
-        desc: 'Framework'
+        imgSrc: '/assets/linux.jpg',
+        label: 'Linux',
+        desc: 'Operating System'
     },
     {
-        imgSrc: '/assets/tailwindcss.svg',
-        label: 'TailwindCSS',
-        desc: 'User Interface'
+        imgSrc: '/assets/windows.jpg',
+        label: 'Windows',
+        desc: 'Operating System'
     },
     {
-        imgSrc: '/assets/Laravel.png',
-        label: 'Laravel',
-        desc: 'Framework'
-    }
+        imgSrc: '/assets/git.jpg',
+        label: 'Git & GitHub',
+        desc: 'Version Control'
+    },
+    {
+        imgSrc: '/assets/cisco logo.jpg',
+        label: 'Networking',
+        desc: 'LAN/WAN & Troubleshooting'
+    },
+    {
+        imgSrc: '/assets/cctv.jpg',
+        label: 'CCTV Systems',
+        desc: 'Installation & Maintenance'
+    },
 ];
 
 // Skill component to display skill cards
@@ -67,8 +82,8 @@ const Skill = () => {
                 
                 {/* Section description */}
                 <p className='text-zinc-400 mt-3 mb-8 max-w-[50ch] reveal-up'>
-                    Explore the amazing tools and technologies I use to build 
-                    outstanding, high-performance websites and applications.
+                    Explore the tools and technologies I use in various IT fields, 
+                    including web development, networking, and system support.
                 </p>
                 
                 {/* Grid layout for skill cards */}
@@ -79,6 +94,7 @@ const Skill = () => {
                             key={key}
                             imgSrc={imgSrc}
                             label={label}
+                            desc={desc}
                             classes='reveal-up'
                         />
                     ))}

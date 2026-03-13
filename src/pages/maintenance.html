@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastry Shop · Under Maintenance</title>
+    
+    <!-- Font Awesome 6 untuk ikon-ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts: Fredoka One untuk judul, Quicksand untuk teks umum -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------- RESET & DASAR -------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Memudahkan pengaturan lebar termasuk padding */
+        }
+
+        body {
+            /* Font utama dengan fallback */
+            font-family: 'Quicksand', 'Poppins', system-ui, sans-serif;
+            
+            /* Latar gradien warna pastry (krem ke peach) */
+            background: linear-gradient(135deg, #fff9f0 0%, #fee6d0 100%);
+            
+            /* Memastikan body memenuhi layar */
+            min-height: 100vh;
+            
+            /* Flexbox untuk centering konten */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            /* Padding agar tidak menempel di tepi layar kecil */
+            padding: 1.2rem;
+            
+            /* Warna teks utama (coklat tua) */
+            color: #4a2e1e;
+            
+            /* Posisi relatif untuk elemen pseudo */
+            position: relative;
+        }
+
+        /* Background pattern berupa emoji pastry (hiasan) */
+        body::after {
+            content: "🥐 🥖 🥨 🍰 🧁 🍪";
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 3rem;
+            opacity: 0.1; /* Sangat transparan */
+            white-space: nowrap;
+            transform: rotate(-5deg);
+            pointer-events: none; /* Tidak mengganggu klik */
+            z-index: 0;
+        }
+
+        /* -------------------- KARTU UTAMA -------------------- */
+        .pastry-card {
+            /* Lebar maksimal 800px, tapi bisa menyusut */
+            max-width: 800px;
+            width: 100%;
+            
+            /* Background transparan dengan efek blur (kaca) */
+            background: rgba(255, 242, 229, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            /* Sudut melengkung (atas lebih melengkung) */
+            border-radius: 70px 70px 40px 40px;
+            
+            /* Ruang dalam */
+            padding: 2.8rem 2rem 2.5rem 2rem;
+            
+            /* Bayangan dan border untuk efek 3D */
+            box-shadow: 
+                0 30px 50px -15px rgba(140, 70, 20, 0.3),
+                0 0 0 3px #fff6e9 inset,
+                0 0 0 6px #ffdbbf inset;
+            border: 2px solid #ffc99b;
+            
+            /* Teks di tengah */
+            text-align: center;
+            
+            /* Posisi relatif untuk children */
+            position: relative;
+            
+            /* Lebih tinggi dari background pattern */
+            z-index: 10;
+        }
+
+        /* -------------------- HEADER SPRINKLE -------------------- */
+        .sprinkle-header {
+            /* Flexbox untuk deretan ikon */
+            display: flex;
+            justify-content: center;
+            
+            /* Jarak antar item */
+            gap: 0.8rem 2rem;
+            
+            /* Bisa wrap ke baris baru jika layar sempit */
+            flex-wrap: wrap;
+            
+            /* Margin bawah pisahkan dengan judul */
+            margin-bottom: 2rem;
+            
+            /* Background dan border */
+            background: #ffead9;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            border: 2px dashed #e7a974;
+        }
+
+        .sprinkle-item {
+            font-size: 2.2rem;
+            line-height: 1;
+            
+            /* Bayangan untuk efek 3D */
+            filter: drop-shadow(0 6px 0 #c18653);
+            
+            /* Animasi hover halus */
+            transition: transform 0.2s ease;
+        }
+
+        .sprinkle-item:hover {
+            transform: scale(1.2) rotate(5deg); /* Membesar dan berputar saat hover */
+        }
+
+        /* -------------------- JUDUL UTAMA -------------------- */
+        h1 {
+            /* Ukuran font responsif: min 3rem, ideal 12% viewport width, max 5.5rem */
+            font-size: clamp(3rem, 12vw, 5.5rem);
+            
+            font-weight: 700;
+            color: #7b3f1f; /* Coklat gelap */
+            
+            /* Text shadow untuk efek 3D */
+            text-shadow: 3px 3px 0 #fec89a, 6px 6px 0 rgba(251, 176, 99, 0.3);
+            
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            
+            /* Font khusus untuk judul */
+            font-family: 'Fredoka One', cursive;
+            line-height: 1.1;
+        }
+
+        /* -------------------- TAGLINE -------------------- */
+        .tagline {
+            /* Ukuran responsif */
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
+            
+            background: #ffdbb5;
+            color: #8b4e28;
+            padding: 0.6rem 2rem;
+            border-radius: 60px;
+            
+            /* Agar tagline tidak melebar penuh */
+            display: inline-block;
+            
+            margin-bottom: 2.2rem;
+            border: 3px solid #ffb882;
+            font-weight: 600;
+            
+            /* Efek 3D */
+            box-shadow: 0 8px 0 #c47e48;
+        }
+
+        .tagline i {
+            margin: 0 8px;
+            color: #c4492e; /* Warna oranye-merah untuk ikon */
+        }
+
+        /* -------------------- PROGRESS BAR (OVEN) -------------------- */
+        .oven-progress {
+            background: #dbb58b; /* Warna coklat muda */
+            border-radius: 60px;
+            padding: 0.7rem;
+            
+            /* Lebar maksimum agar tidak terlalu lebar di layar besar */
+            max-width: 550px;
+            
+            /* Auto margin kiri-kanan untuk centering */
+            margin: 0 auto 2.8rem auto;
+            
+            border: 4px solid #f5c89c;
+            box-shadow: inset 0 4px 8px #7a4f2b; /* Bayangan dalam */
+        }
+
+        .baking-level {
+            /* Gradien bergerak untuk efek baking */
+            background: linear-gradient(90deg, #fba76f, #ffd58c, #fba76f);
+            background-size: 200% auto; /* Untuk animasi shimmer */
+            
+            height: 28px;
+            border-radius: 60px;
+            width: 82%; /* Menunjukkan progress 82% */
+            
+            /* Animasi */
+            animation: baking 3s infinite linear, levelPulse 2.2s infinite alternate;
+            
+            box-shadow: 0 0 25px #ffb66b;
+            
+            /* Posisi relatif untuk elemen pseudo */
+            position: relative;
+            
+            /* Mengatur teks di dalam progress bar */
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: #5e2e12;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Ikon api di kiri progress bar */
+        .baking-level::before {
+            content: "🔥";
+            position: absolute;
+            left: -10px;
+            top: -18px;
+            font-size: 2rem;
+            filter: drop-shadow(0 4px 4px #ff6f42);
+        }
+
+        /* Ikon cupcake di kanan progress bar */
+        .baking-level::after {
+            content: "🧁";
+            position: absolute;
+            right: -16px;
+            top: -24px;
+            font-size: 2.4rem;
+            transform: rotate(15deg);
+            filter: drop-shadow(0 8px 6px #b25118);
+        }
+
+        /* -------------------- STATISTIK PASTRY -------------------- */
+        .pastry-stats {
+            /* Flexbox untuk 3 kolom */
+            display: flex;
+            justify-content: center;
+            gap: 2rem 3rem;
+            
+            /* Margin vertikal */
+            margin: 2.5rem 0 2rem 0;
+            
+            /* Bisa wrap */
+            flex-wrap: wrap;
+            
+            background: rgba(252, 216, 175, 0.6);
+            padding: 1.8rem 1.5rem;
+            border-radius: 90px;
+            border: 3px solid #ffcba1;
+        }
+
+        .stat-box {
+            background: #fff2e0;
+            min-width: 120px; /* Lebar minimum agar rapi */
+            padding: 1rem 0.8rem;
+            border-radius: 50px;
+            border: 3px solid #e7a35e;
+            box-shadow: 0 7px 0 #b27035; /* Efek 3D */
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #9d4d1c;
+            line-height: 1;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #794321;
+            background: #ffe5c8;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 5px;
+            border: 2px solid #fdb87b;
+        }
+
+        .stat-label i {
+            margin-right: 5px;
+            color: #dc6e35;
+        }
+
+        /* -------------------- DEKORASI FLOATING PASTRY -------------------- */
+        .floating-pastry {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.8rem 0 0.5rem 0;
+            font-size: 2.5rem;
+            color: #c78554;
+            filter: drop-shadow(0 6px 0 #a15828);
+        }
+
+        /* -------------------- FOOTER (CATATAN OVEN) -------------------- */
+        .oven-notes {
+            margin-top: 2.2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem 2rem;
+            flex-wrap: wrap;
+            background: #ffdbb5;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            border: 3px solid #f6ad6d;
+            font-weight: 600;
+            color: #693f1f;
+        }
+
+        .oven-notes span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .oven-notes i {
+            color: #cb6133;
+            font-size: 1.3rem;
+        }
+
+        /* -------------------- ANIMASI -------------------- */
+        /* Animasi gradien bergerak (shimmer) */
+        @keyframes baking {
+            0% { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Animasi lebar progress bar bergantang */
+        @keyframes levelPulse {
+            0% { width: 78%; opacity: 0.95; }
+            100% { width: 85%; opacity: 1; }
+        }
+
+        /* -------------------- RESPONSIVE DESIGN -------------------- */
+        /* Untuk layar dengan lebar maksimal 500px */
+        @media (max-width: 500px) {
+            .pastry-card {
+                padding: 2rem 1rem 1.8rem;
+                border-radius: 40px;
+            }
+            
+            .sprinkle-header {
+                padding: 0.8rem 1rem;
+            }
+            
+            .sprinkle-item {
+                font-size: 1.8rem;
+            }
+            
+            .stat-box {
+                min-width: 100px;
+                padding: 0.8rem 0.4rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            /* Sembunyikan ikon api dan cupcake di layar kecil agar tidak berantakan */
+            .baking-level::after, .baking-level::before {
+                display: none;
+            }
+            
+            .pastry-stats {
+                padding: 1.2rem 0.8rem;
+                gap: 1rem;
+            }
+        }
+
+        /* Untuk layar sangat kecil (max 360px) */
+        @media (max-width: 360px) {
+            .stat-box {
+                width: 100%; /* Statistik jadi full width */
+            }
+            
+            .oven-notes {
+                flex-direction: column; /* Footer jadi vertikal */
+                gap: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- KARTU UTAMA PASTRY -->
+    <div class="pastry-card">
+        
+        <!-- ===== BAGIAN ATAS: DERETAN IKON PASTRY ===== -->
+        <!-- Tujuan: Memberi kesan manis dan pastry sejak awal -->
+        <div class="sprinkle-header">
+            <span class="sprinkle-item">🥐</span> <!-- Croissant -->
+            <span class="sprinkle-item">🧁</span> <!-- Cupcake -->
+            <span class="sprinkle-item">🍰</span> <!-- Shortcake -->
+            <span class="sprinkle-item">🥖</span> <!-- Baguette -->
+            <span class="sprinkle-item">🍪</span> <!-- Cookie -->
+            <span class="sprinkle-item">🥨</span> <!-- Pretzel -->
+        </div>
+
+        <!-- ===== JUDUL UTAMA ===== -->
+        <!-- Nama toko pastry -->
+        <h1>SWEET PASTRY</h1>
+        
+        <!-- ===== TAGLINE ===== -->
+        <!-- Informasi bahwa ini halaman under maintenance -->
+        <div class="tagline">
+            <i class="fa-regular fa-clock"></i> 
+            UNDER MAINTENANCE 
+            <i class="fa-regular fa-heart"></i>
+        </div>
+
+        <!-- ===== PROGRESS BAR ===== -->
+        <!-- Menunjukkan progres persiapan toko (visual) -->
+        <div class="oven-progress">
+            <div class="baking-level">82% matang</div> <!-- Teks di dalam progress -->
+        </div>
+
+        <!-- ===== STATISTIK PASTRY ===== -->
+        <!-- Informasi singkat tentang toko (semua terisi, tidak ada yang kosong) -->
+        <div class="pastry-stats">
+            <!-- Stat 1: Jumlah varian pastry -->
+            <div class="stat-box">
+                <div class="stat-number">15+</div>
+                <div class="stat-label"><i class="fa-regular fa-star"></i> Varian</div>
+            </div>
+            
+            <!-- Stat 2: Jumlah koki pastry -->
+            <div class="stat-box">
+                <div class="stat-number">7</div>
+                <div class="stat-label"><i class="fa-regular fa-snowflake"></i> Pastry Chef</div>
+            </div>
+            
+            <!-- Stat 3: Kualitas bahan -->
+            <div class="stat-box">
+                <div class="stat-number">100%</div>
+                <div class="stat-label"><i class="fa-regular fa-face-smile"></i> Butter Asli</div>
+            </div>
+        </div>
+
+        <!-- ===== DEKORASI TENGAH ===== -->
+        <!-- Ikon pastry tambahan untuk mempercantik -->
+        <div class="floating-pastry">
+            <span>🥮</span> <!-- Mooncake -->
+            <span>🍩</span> <!-- Donut -->
+            <span>🥧</span> <!-- Pie -->
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <!-- Catatan tentang grand opening (tanpa kontak/medsos) -->
+        <!-- <div class="oven-notes">
+            <span><i class="fa-regular fa-calendar-check"></i> Grand Opening: Juli 2025</span>
+            <span><i class="fa-regular fa-clock"></i> Oven Panas • Siap Memanggang</span>
+            <span><i class="fa-regular fa-bell"></i> Aroma Sedap Menyusul</span>
+        </div> -->
+
+        <!-- ===== DEKORASI BAWAH ===== -->
+        <!-- Bintang-bintang kecil sebagai hiasan -->
+        <div style="margin-top: 1.5rem; font-size: 1.2rem; color: #bb7744; letter-spacing: 5px;">
+            ✦ ✦ ✦ ✦ ✦
+        </div>
+    </div>
+</body>
+</html>
