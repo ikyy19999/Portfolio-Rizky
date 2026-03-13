@@ -159,7 +159,7 @@ repeatBtn.addEventListener('click', () => {
 
 // Fungsi untuk kembali ke halaman sebelumnya (index.html)
 backButton.addEventListener('click', function() {
-    window.location.href = '../index.html'; // Ganti dengan path yang sesuai
+    window.location.href = '../'; // Ganti dengan path yang sesuai
 });
 
 // Inisialisasi playlist dan memulai lagu pertama
