@@ -10,8 +10,7 @@ const works = [
     desc: 'Music streaming interface using public API.',
     category: 'web',
     tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/Web Music/music.html',
-    github: '#'
+    demo: '/assets/Web Music/music.html'
   },
   {
     imgSrc: '/assets/Book.png',
@@ -19,8 +18,7 @@ const works = [
     desc: 'Simple SPA for managing reading lists.',
     category: 'web',
     tech: ['JavaScript', 'LocalStorage'],
-    demo: '/assets/Bookshelf App/book.html',
-    github: '#'
+    demo: '/assets/Bookshelf App/book.html'
   },
   {
     imgSrc: '/assets/Kuis.png',
@@ -28,8 +26,7 @@ const works = [
     desc: 'Interactive quiz application.',
     category: 'web',
     tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/quiz/index.html',
-    github: '#'
+    demo: '/assets/quiz/index.html'
   },
   {
     imgSrc: '/assets/Calculator.png',
@@ -37,8 +34,7 @@ const works = [
     desc: 'Simple web calculator tool.',
     category: 'tool',
     tech: ['HTML', 'JavaScript'],
-    demo: '/assets/Calculator/index.html',
-    github: '#'
+    demo: '/assets/Calculator/index.html'
   },
   {
     imgSrc: '/assets/Calender.png',
@@ -46,8 +42,7 @@ const works = [
     desc: 'Dynamic calendar interface.',
     category: 'tool',
     tech: ['JavaScript'],
-    demo: '/assets/Calender/index.html',
-    github: '#'
+    demo: '/assets/Calender/index.html'
   },
   {
     imgSrc: '/assets/QR.png',
@@ -55,8 +50,7 @@ const works = [
     desc: 'Generate QR codes instantly.',
     category: 'tool',
     tech: ['JavaScript', 'API'],
-    demo: '/assets/QR/index.html',
-    github: '#'
+    demo: '/assets/QR/index.html'
   },
   {
     imgSrc: '/assets/Finance.png',
@@ -64,8 +58,7 @@ const works = [
     desc: 'Track income and expenses easily.',
     category: 'web',
     tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '#',
-    github: '#'
+    demo: '/assets/comingsoon_03/maintenance2.html'
   },
   {
     imgSrc: '/assets/Pastry.png',
@@ -73,8 +66,7 @@ const works = [
     desc: 'Simple e-commerce pastry website.',
     category: 'web',
     tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '#',
-    github: '#'
+    demo: '/assets/comingsoon_03/maintenance.html'
   }
 ];
 
@@ -103,8 +95,8 @@ const Work = () => {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
             ${filter === 'all'
-                ? 'bg-sky-500 text-white'
-                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+              ? 'bg-sky-500 text-white'
+              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
             }`}
           >
             All
@@ -114,8 +106,8 @@ const Work = () => {
             onClick={() => setFilter('web')}
             className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
             ${filter === 'web'
-                ? 'bg-sky-500 text-white'
-                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+              ? 'bg-sky-500 text-white'
+              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
             }`}
           >
             Web App
@@ -125,8 +117,8 @@ const Work = () => {
             onClick={() => setFilter('tool')}
             className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
             ${filter === 'tool'
-                ? 'bg-sky-500 text-white'
-                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+              ? 'bg-sky-500 text-white'
+              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
             }`}
           >
             Tools
@@ -142,10 +134,8 @@ const Work = () => {
               key={key}
               imgSrc={project.imgSrc}
               title={project.title}
-              desc={project.desc}
-              tech={project.tech}
-              demo={project.demo}
-              github={project.github}
+              tags={project.tech}
+              projectLink={project.demo} 
               classes='reveal-up'
             />
           ))}
