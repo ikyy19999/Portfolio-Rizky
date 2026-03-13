@@ -44,13 +44,13 @@ const works = [
         imgSrc: '/assets/Finance.png',
         title: 'Finance Tracker',
         tags: ['Web-design', 'Development'],
-        projectLink: '/src/pages/maintenance.html'
+        projectLink: '/assets/comingsoon_03/maintenance2.html'
     },
     {
         imgSrc: '/assets/Pastry.png',
         title: 'Online Pastry Shop',
         tags: ['Web-design', 'Development'],
-        projectLink: '/src/pages/maintenance.html'
+        projectLink: '/assets/comingsoon_03/maintenance.html'
     }
 ];
 
