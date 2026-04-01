@@ -67,7 +67,23 @@ const works = [
     category: 'web',
     tech: ['HTML', 'CSS', 'JavaScript'],
     demo: '/assets/comingsoon_03/maintenance.html'
-  }
+  },
+  {
+    imgSrc: '/assets/Screenshot 2026-03-16 045059.png',
+    title: 'Online Ramen Shop',
+    desc: 'Simple e-commerce ramen website.',
+    category: 'web',
+    tech: ['Laravel', 'Filament', 'Livewire'],
+    demo: 'https://tokoramen.rizkymaulana.web.id/en/ramenenak.id'
+  },
+  {
+    imgSrc: '/assets/Lapangan.png',
+    title: 'Booking Lapangan',
+    desc: 'Simple e-commerce ramen website.',
+    category: 'web',
+    tech: ['Laravel', 'Filament', 'Livewire'],
+    demo: 'https://booking-lapangan.rizkymaulana.web.id/'
+  },
 ];
 
 // Work component to display project portfolio

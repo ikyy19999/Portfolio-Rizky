@@ -9,6 +9,10 @@ const aboutItems = [
   {
     label: 'Years of experience',
     number: 1
+  },
+  {
+    label: 'Issues Resolved',
+    number: 30
   }
 ];
 
