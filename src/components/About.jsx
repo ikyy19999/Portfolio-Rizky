@@ -28,10 +28,11 @@ const About = () => {
 
           {/* Paragraf deskripsi personal */}
           <p className='text-zinc-300 mb-4 md:mb-8 md:text-xl md:max-w-[60ch]'>
-            Experienced IT Support and Networking specialist with a solid foundation in Computer Science.
-            Skilled in system maintenance, CCTV configuration, and network troubleshooting using tools like The Dude. 
-            Beyond infrastructure, I possess core competencies in web development (HTML, CSS, JS). Dedicated to continuous
-            learning and professional growth within the technology sector.
+            A Computer Science student and experienced Full Stack Developer with a strong background 
+            in IT infrastructure. Proficient in building robust web applications using Laravel, PHP, and React, 
+            supported by efficient MySQL database management and Tailwind CSS. Alongside development, I possess 
+            professional expertise in networking, system maintenance, and IT support. A versatile tech professional who 
+            bridges the gap between software development and IT infrastructure.
           </p>
 
           {/* Container untuk pencapaian dan logo */}
