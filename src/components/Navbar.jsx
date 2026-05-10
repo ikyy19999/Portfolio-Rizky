@@ -1,100 +1,112 @@
-import React from 'react';
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
-const Navbar = ({ navOpen }) => {
-    // Referensi untuk link terakhir yang aktif
-    const lastActiveLink = useRef(null);
-    
-    // Referensi untuk kotak aktif
-    const activeBox = useRef(null);
+const navItems = [
+    {
+        label: 'Home',
+        link: '#home'
+    },
+    {
+        label: 'About',
+        link: '#about'
+    },
+    {
+        label: 'Skills',
+        link: '#skills'
+    },
+    {
+        label: 'Projects',
+        link: '#work'
+    },
+    {
+        label: 'Contact',
+        link: '#contact'
+    }
+]
 
-    // Fungsi inisialisasi posisi kotak aktif
-    const initActiveBox = () => {
-        if (lastActiveLink.current && activeBox.current) {
-            activeBox.current.style.top = lastActiveLink.current.offsetTop + 'px';
-            activeBox.current.style.left = lastActiveLink.current.offsetLeft + 'px';
-            activeBox.current.style.width = lastActiveLink.current.offsetWidth + 'px';
-            activeBox.current.style.height = lastActiveLink.current.offsetHeight + 'px';
+const Navbar = ({ mobile = false }) => {
+
+    const [activeSection, setActiveSection] = useState('#home')
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            const sections = navItems.map(item =>
+                document.querySelector(item.link)
+            )
+
+            sections.forEach(section => {
+
+                if (!section) return
+
+                const rect = section.getBoundingClientRect()
+
+                if (rect.top <= 120 && rect.bottom >= 120) {
+                    setActiveSection(`#${section.id}`)
+                }
+
+            })
+
         }
-    };
 
-    // Panggil inisialisasi saat komponen dimuat
-    useEffect(initActiveBox, []);
-    
-    // Tambahkan event listener resize
-    window.addEventListener('resize', initActiveBox);
+        window.addEventListener('scroll', handleScroll)
 
-    // Fungsi untuk mengaktifkan link yang dipilih
-    const activeCurrentLink = (event) => {
-        // Hapus kelas 'active' dari semua link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
+        return () => window.removeEventListener('scroll', handleScroll)
 
-        // Tambahkan kelas 'active' ke link yang diklik
-        event.target.classList.add('active');
-        lastActiveLink.current = event.target;
-
-        // Update posisi active box
-        activeBox.current.style.top = event.target.offsetTop + 'px';
-        activeBox.current.style.left = event.target.offsetLeft + 'px';
-        activeBox.current.style.width = event.target.offsetWidth + 'px';
-        activeBox.current.style.height = event.target.offsetHeight + 'px';
-    };
-
-    // Daftar item navigasi
-    const navItems = [
-        {
-            label: 'Home',
-            link: '#home',
-            className: 'nav-link active', // Gunakan 'active' bukan 'nav-link-active'
-            ref: lastActiveLink
-        },
-        {
-            label: 'About',
-            link: '#about',
-            className: 'nav-link'
-        },
-        {
-            label: 'Work',
-            link: '#work',
-            className: 'nav-link'
-        },
-        {
-            label: 'Reviews',
-            link: '#reviews',
-            className: 'nav-link'
-        },
-        {
-            label: 'Contact',
-            link: '#contact',
-            className: 'nav-link md:hidden'
-        }
-    ];
+    }, [])
 
     return (
-        <nav className={'navbar' + (navOpen ? ' active' : '')}>
-            {navItems.map(({ label, link, className, ref }, key) => (
-                <a 
-                    href={link} 
-                    key={key} 
-                    ref={ref} 
-                    className={className} 
-                    onClick={activeCurrentLink}
-                > 
-                    {label} 
+
+        <nav
+            className={`
+                flex
+                ${mobile
+                    ? 'flex-col gap-2'
+                    : 'items-center gap-2'
+                }
+            `}
+        >
+
+            {navItems.map((item, key) => (
+
+                <a
+                    key={key}
+                    href={item.link}
+                    className={`
+                        relative px-5 py-3 rounded-2xl
+                        text-sm font-medium tracking-wide
+                        transition-all duration-300
+
+                        ${activeSection === item.link
+                            ? `
+                                text-white
+                                bg-white/[0.08]
+                                border border-white/10
+                                shadow-lg
+                            `
+                            : `
+                                text-zinc-400
+                                hover:text-white
+                                hover:bg-white/[0.04]
+                            `
+                        }
+                    `}
+                >
+
+                    {item.label}
+
                 </a>
+
             ))}
 
-            <div className='active-box' ref={activeBox}></div>
         </nav>
-    );
-};
 
-// Validasi prop types
+    )
+}
+
 Navbar.propTypes = {
-    navOpen: PropTypes.bool.isRequired
-};
+    mobile: PropTypes.bool
+}
 
-export default Navbar;
+export default Navbar

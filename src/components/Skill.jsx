@@ -111,7 +111,8 @@ const Skill = () => {
     });
 
     return (
-        <section className="section">
+        // <section className="section">
+        <section id="skills" className="section">
             <div className="container">
 
                 {/* Section headline */}

@@ -1,81 +1,138 @@
-// Import necessary dependencies
-import React from 'react';
-import PropTypes from 'prop-types';
-import { space } from 'postcss/lib/list';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-// ProjectCard component to display individual project details
 const ProjectCard = ({
-    imgSrc,       // Source of project image
-    title,        // Title of the project
-    tags,         // Tags associated with the project
-    projectLink,  // Link to the project
-    classes       // Additional CSS classes
+    imgSrc,
+    title,
+    desc,
+    tags,
+    projectLink,
+    classes
 }) => {
+
     return (
-        // Main card container with dynamic classes and hover effects
-        <div className={
-            'relative p-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700/50 active:bg-zinc-700/60 ring-1 ring-inset ring-zinc-50/5 transition-colors' 
-            + classes
-        }>
-            {/* Project image container */}
-            <figure className="img-box aspect-square rounded-lg mb-4">
-                <img 
-                    src={imgSrc} 
+
+        <article
+            className={`
+                group relative overflow-hidden
+                rounded-[32px]
+                border border-white/10
+                bg-white/[0.03]
+                backdrop-blur-xl
+                transition-all duration-500
+                hover:-translate-y-2
+                hover:border-sky-500/30
+                hover:shadow-2xl
+                hover:shadow-sky-500/10
+                ${classes}
+            `}
+        >
+
+            {/* Thumbnail */}
+            <figure className='relative overflow-hidden aspect-[4/3]'>
+
+                {/* Overlay */}
+                <div className='absolute inset-0 z-10
+                bg-gradient-to-t
+                from-black/70
+                via-black/10
+                to-transparent'></div>
+
+                <img
+                    src={imgSrc}
                     alt={title}
                     loading='lazy'
-                    className='img-cover' 
+                    className='w-full h-full object-cover
+                    transition-transform duration-700
+                    group-hover:scale-110'
                 />
+
             </figure>
 
-            {/* Project details section */}
-            <div className="flex items-center justify-between gap-4">
-                <div>
-                    {/* Project title */}
-                    <h3 className="title-1 mb-3">
-                        {title}
-                    </h3>
+            {/* Content */}
+            <div className='p-7'>
 
-                    {/* Project tags */}
-                    <div className="flex flex-wrap items-center gap-2">
-                        {/* {tags.map((label, key) => (
-                            <span
-                                key={key}
-                                className='h-8 text-sm text-zinc-400 bg-zinc-50/5 grid items-center px-3 rounded-lg'
-                            >
-                                {label}
-                            </span>
-                        ))} */}
+                {/* Tags */}
+                <div className='flex flex-wrap gap-2 mb-5'>
+
+                    {tags.map((tag, key) => (
+
+                        <span
+                            key={key}
+                            className='px-3 py-1 rounded-full
+                            bg-white/[0.05]
+                            border border-white/10
+                            text-xs text-zinc-300'
+                        >
+
+                            {tag}
+
+                        </span>
+
+                    ))}
+
+                </div>
+
+                {/* Title */}
+                <h3 className='text-2xl font-semibold
+                text-white mb-4
+                transition-colors duration-300
+                group-hover:text-sky-400'>
+
+                    {title}
+
+                </h3>
+
+                {/* Description */}
+                <p className='text-zinc-400 leading-relaxed mb-7'>
+
+                    {desc}
+
+                </p>
+
+                {/* Footer */}
+                <div className='flex items-center justify-between'>
+
+                    <p className='text-sm text-zinc-500'>
+                        View Project
+                    </p>
+
+                    <div className='w-12 h-12 rounded-2xl
+                    bg-sky-500 text-white
+                    grid place-items-center
+                    transition-all duration-300
+                    group-hover:rotate-45'>
+
+                        <span className='material-symbols-rounded'>
+                            arrow_outward
+                        </span>
+
                     </div>
+
                 </div>
 
-                {/* External link icon */}
-                <div className="w-11 h-11 rounded-lg grid place-items-center bg-sky-500 text-zinc-950 shrink-0">
-                    <span
-                        className='material-symbols-rounded'
-                        aria-hidden='true'
-                    >
-                        arrow_outward
-                    </span>
-                </div>
             </div>
 
-            {/* Absolute link covering the entire card */}
-            <a 
+            {/* Full Link */}
+            <a
                 href={projectLink}
                 target='_blank'
-                className='absolute inset-0'
+                rel='noopener noreferrer'
+                className='absolute inset-0 z-20'
             ></a>
-        </div>
-    );
-};
 
-// PropTypes for type checking and documentation
+        </article>
+
+    )
+}
+
 ProjectCard.propTypes = {
-    imgSrc: PropTypes.string.isRequired,       // Project image source (required)
-    title: PropTypes.string.isRequired,        // Project title (required)
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,  // Project tags (required, array of strings)
-    projectLink: PropTypes.string,             // Project link (optional)
-    classes: PropTypes.string,                 // Additional CSS classes (optional)
-};
+    imgSrc: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    desc: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    projectLink: PropTypes.string,
+    classes: PropTypes.string
+}
 
-export default ProjectCard;
+export default ProjectCard

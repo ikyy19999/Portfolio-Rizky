@@ -139,3 +139,74 @@ body {
 .text-field::placeholder {
     @apply text-zinc-400
 }
+
+/* SweetAlert CV Modal */
+.swal2-popup {
+    @apply rounded-3xl;
+    margin: auto !important;
+}
+
+.swal2-html-container {
+    @apply overflow-hidden;
+}
+
+.swal2-close {
+    @apply text-white;
+}
+
+.swal2-title {
+    @apply text-4xl font-semibold text-white pt-2;
+}
+
+/* Premium Background */
+body {
+    background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.08), transparent 25%),
+        #09090b;
+}
+
+/* Smooth Selection */
+::selection {
+    background: #38bdf8;
+    color: #09090b;
+}
+
+/* Better Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Better Headline */
+.headline-1 {
+    @apply text-5xl leading-[1.05] font-semibold tracking-tight
+    lg:text-7xl;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

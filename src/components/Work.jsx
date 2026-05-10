@@ -1,166 +1,211 @@
-// Import necessary dependencies
-import React, { useState } from 'react';
-import ProjectCard from './ProjectCard';
+import React, { useState } from 'react'
+import ProjectCard from './ProjectCard'
 
-// Array of project works with their details
 const works = [
-  {
-    imgSrc: '/assets/Web Music.png',
-    title: 'Music Website',
-    desc: 'Music streaming interface using public API.',
-    category: 'web',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/Web Music/music.html'
-  },
-  {
-    imgSrc: '/assets/Book.png',
-    title: 'Bookshelf App',
-    desc: 'Simple SPA for managing reading lists.',
-    category: 'web',
-    tech: ['JavaScript', 'LocalStorage'],
-    demo: '/assets/Bookshelf App/book.html'
-  },
-  {
-    imgSrc: '/assets/Kuis.png',
-    title: 'Quiz Website',
-    desc: 'Interactive quiz application.',
-    category: 'web',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/quiz/index.html'
-  },
-  {
-    imgSrc: '/assets/Calculator.png',
-    title: 'Calculator Website',
-    desc: 'Simple web calculator tool.',
-    category: 'tool',
-    tech: ['HTML', 'JavaScript'],
-    demo: '/assets/Calculator/index.html'
-  },
-  {
-    imgSrc: '/assets/Calender.png',
-    title: 'Calendar Website',
-    desc: 'Dynamic calendar interface.',
-    category: 'tool',
-    tech: ['JavaScript'],
-    demo: '/assets/Calender/index.html'
-  },
-  {
-    imgSrc: '/assets/QR.png',
-    title: 'QR Code Generator',
-    desc: 'Generate QR codes instantly.',
-    category: 'tool',
-    tech: ['JavaScript', 'API'],
-    demo: '/assets/QR/index.html'
-  },
-  {
-    imgSrc: '/assets/Finance.png',
-    title: 'Finance Tracker',
-    desc: 'Track income and expenses easily.',
-    category: 'web',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/comingsoon_03/maintenance2.html'
-  },
-  {
-    imgSrc: '/assets/Pastry.png',
-    title: 'Online Pastry Shop',
-    desc: 'Simple e-commerce pastry website.',
-    category: 'web',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    demo: '/assets/comingsoon_03/maintenance.html'
-  },
-  {
-    imgSrc: '/assets/Screenshot 2026-03-16 045059.png',
-    title: 'Online Ramen Shop',
-    desc: 'Simple e-commerce ramen website.',
-    category: 'web',
-    tech: ['Laravel', 'Filament', 'Livewire'],
-    demo: 'https://tokoramen.rizkymaulana.web.id/en/ramenenak.id'
-  },
-  {
-    imgSrc: '/assets/Lapangan.png',
-    title: 'Booking Lapangan',
-    desc: 'Simple e-commerce ramen website.',
-    category: 'web',
-    tech: ['Laravel', 'Filament', 'Livewire'],
-    demo: 'https://booking-lapangan.rizkymaulana.web.id/'
-  },
-];
+    {
+        imgSrc: '/assets/Screenshot 2026-03-16 045059.png',
+        title: 'Online Ramen Shop',
+        desc: 'Modern ramen e-commerce platform with elegant UI and CMS dashboard.',
+        category: 'web',
+        tech: ['Laravel', 'Filament', 'Livewire'],
+        demo: 'https://tokoramen.rizkymaulana.web.id/en/ramenenak.id'
+    },
+    {
+        imgSrc: '/assets/Lapangan.png',
+        title: 'Sports Booking Platform',
+        desc: 'Online sports court reservation system with responsive experience.',
+        category: 'web',
+        tech: ['Laravel', 'Filament', 'Livewire'],
+        demo: 'https://booking-lapangan.rizkymaulana.web.id/'
+    },
+    {
+        imgSrc: '/assets/Web Music.png',
+        title: 'Music Streaming Website',
+        desc: 'Interactive music platform integrated with public APIs.',
+        category: 'web',
+        tech: ['HTML', 'CSS', 'JavaScript'],
+        demo: '/assets/Web Music/music.html'
+    },
+    {
+        imgSrc: '/assets/Book.png',
+        title: 'Bookshelf App',
+        desc: 'Minimal reading management application with local storage.',
+        category: 'tool',
+        tech: ['JavaScript', 'LocalStorage'],
+        demo: '/assets/Bookshelf App/book.html'
+    },
+    {
+        imgSrc: '/assets/QR.png',
+        title: 'QR Generator',
+        desc: 'Instant QR code generator with clean modern interface.',
+        category: 'tool',
+        tech: ['JavaScript', 'API'],
+        demo: '/assets/QR/index.html'
+    },
+    {
+        imgSrc: '/assets/Calculator.png',
+        title: 'Calculator Tool',
+        desc: 'Simple utility calculator focused on usability.',
+        category: 'tool',
+        tech: ['HTML', 'JavaScript'],
+        demo: '/assets/Calculator/index.html'
+    },
+    {
+        imgSrc: '/assets/Calender.png',
+        title: 'Calendar App',
+        desc: 'Interactive calendar application with event management.',
+        category: 'tool',
+        tech: ['HTML', 'JavaScript'],
+        demo: '/assets/Calender/index.html'
+    },
+    {
+        imgSrc: '/assets/Finance.png',
+        title: 'Finance Tracker',
+        desc: 'Interactive finance tracking application with budgeting features.',
+        category: 'tool',
+        tech: ['HTML', 'JavaScript'],
+        demo: '/assets/Personal Finance Tracker/index.html'
+    },
+]
 
-// Work component to display project portfolio
+const filters = [
+    {
+        label: 'All',
+        value: 'all'
+    },
+    {
+        label: 'Web Apps',
+        value: 'web'
+    },
+    {
+        label: 'Tools',
+        value: 'tool'
+    }
+]
+
 const Work = () => {
 
-  const [filter, setFilter] = useState('all');
+    const [filter, setFilter] = useState('all')
 
-  const filteredProjects = works.filter(project =>
-    filter === 'all' || project.category === filter
-  );
+    const filteredProjects = works.filter(project =>
+        filter === 'all' || project.category === filter
+    )
 
-  return (
-    <section id='work' className="section">
-      <div className="container">
+    return (
 
-        {/* Section headline */}
-        <h2 className='headline-2 mb-6 reveal-up'>
-          My Portfolio Highlights
-        </h2>
+        <section
+            id='work'
+            className='section relative overflow-hidden'
+        >
 
-        {/* Filter buttons */}
-        <div className="flex gap-3 mb-8 flex-wrap">
+            {/* Background Glow */}
+            <div className='absolute inset-0 -z-10 overflow-hidden'>
 
-          <button
-            onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
-            ${filter === 'all'
-              ? 'bg-sky-500 text-white'
-              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
-            }`}
-          >
-            All
-          </button>
+                <div className='absolute top-0 right-0
+                w-[500px] h-[500px]
+                bg-sky-500/10 blur-[120px]
+                rounded-full'></div>
 
-          <button
-            onClick={() => setFilter('web')}
-            className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
-            ${filter === 'web'
-              ? 'bg-sky-500 text-white'
-              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
-            }`}
-          >
-            Web App
-          </button>
+            </div>
 
-          <button
-            onClick={() => setFilter('tool')}
-            className={`px-4 py-2 rounded-lg text-sm cursor-pointer select-none transition
-            ${filter === 'tool'
-              ? 'bg-sky-500 text-white'
-              : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
-            }`}
-          >
-            Tools
-          </button>
+            <div className='container'>
 
-        </div>
+                {/* Top Header */}
+                <div className='flex flex-col lg:flex-row
+                lg:items-end lg:justify-between gap-8 mb-14'>
 
-        {/* Grid layout for project cards */}
-        <div className='grid gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))]'>
+                    <div>
 
-          {filteredProjects.map((project, key) => (
-            <ProjectCard
-              key={key}
-              imgSrc={project.imgSrc}
-              title={project.title}
-              tags={project.tech}
-              projectLink={project.demo} 
-              classes='reveal-up'
-            />
-          ))}
+                        <p className='text-sm uppercase tracking-[0.2em]
+                        text-zinc-500 mb-5 reveal-up'>
 
-        </div>
+                            Featured Projects
 
-      </div>
-    </section>
-  );
-};
+                        </p>
 
-export default Work;
+                        <h2 className='headline-2 reveal-up max-w-[14ch] mb-6'>
+
+                            Selected work crafted
+                            with precision.
+
+                        </h2>
+
+                        <p className='text-zinc-400 max-w-[60ch] reveal-up'>
+
+                            Explore some of the projects I’ve designed and developed,
+                            combining modern UI/UX with scalable backend architecture.
+
+                        </p>
+
+                    </div>
+
+                    {/* Filters */}
+                    <div className='flex flex-wrap gap-3 reveal-up'>
+
+                        {filters.map((item, key) => (
+
+                            <button
+                                key={key}
+                                onClick={() => setFilter(item.value)}
+                                className={`
+                                    px-5 py-3 rounded-2xl
+                                    text-sm font-medium
+                                    transition-all duration-300
+
+                                    ${filter === item.value
+                                        ? `
+                                            bg-sky-500
+                                            text-white
+                                            shadow-lg shadow-sky-500/20
+                                        `
+                                        : `
+                                            bg-white/[0.03]
+                                            border border-white/10
+                                            text-zinc-400
+                                            hover:bg-white/[0.06]
+                                            hover:text-white
+                                        `
+                                    }
+                                `}
+                            >
+
+                                {item.label}
+
+                            </button>
+
+                        ))}
+
+                    </div>
+
+                </div>
+
+                {/* Project Grid */}
+                <div className='grid
+                md:grid-cols-2
+                xl:grid-cols-3
+                gap-7'>
+
+                    {filteredProjects.map((project, key) => (
+
+                        <ProjectCard
+                            key={key}
+                            imgSrc={project.imgSrc}
+                            title={project.title}
+                            desc={project.desc}
+                            tags={project.tech}
+                            projectLink={project.demo}
+                            classes='reveal-up'
+                        />
+
+                    ))}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    )
+}
+
+export default Work
