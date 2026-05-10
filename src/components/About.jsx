@@ -28,15 +28,10 @@ const About = () => {
 
           {/* Paragraf deskripsi personal */}
           <p className='text-zinc-300 mb-4 md:mb-8 md:text-xl md:max-w-[60ch]'>
-            A sixth-semester Computer Science student at Indraprasta PGRI University 
-            with a strong interest in Information Technology. Experienced in IT support, 
-            networking, and system maintenance through internships and professional work 
-            experience. Skilled in hardware installation, network troubleshooting, CCTV configuration, 
-            and basic web development using HTML, CSS, and JavaScript. Familiar with network monitoring 
-            tools such as The Dude and experienced in handling email systems and IT infrastructure. A fast 
-            learner who adapts quickly to new technologies, communicates effectively, and works well both 
-            independently and in a team. Currently seeking opportunities to further develop technical skills 
-            and contribute to the IT industry through practical projects and professional experiences.
+            Experienced IT Support and Networking specialist with a solid foundation in Computer Science.
+            Skilled in system maintenance, CCTV configuration, and network troubleshooting using tools like The Dude. 
+            Beyond infrastructure, I possess core competencies in web development (HTML, CSS, JS). Dedicated to continuous
+            learning and professional growth within the technology sector.
           </p>
 
           {/* Container untuk pencapaian dan logo */}
