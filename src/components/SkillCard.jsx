@@ -5,7 +5,7 @@ const SkillCard = ({
     imgSrc,
     label,
     desc,
-    classes
+    classes = ''
 }) => {
     return (
         <div
@@ -13,26 +13,17 @@ const SkillCard = ({
                 group
                 relative
                 overflow-hidden
-                rounded-3xl
-                border
-                border-white/10
-                bg-white/[0.03]
-                backdrop-blur-xl
+                border-4 border-black bg-white
                 p-5
-                transition-all
-                duration-500
-                hover:-translate-y-2
-                hover:border-sky-400/30
-                hover:bg-white/[0.05]
-                hover:shadow-[0_0_50px_rgba(56,189,248,0.12)]
+                shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
+                transition-all duration-200 ease-in-out
+                hover:-translate-y-1 hover:-translate-x-1
+                hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]
+                hover:bg-cyan-300
                 ${classes}
             `}
         >
-
-            {/* Glow Effect */}
-            <div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500'>
-                <div className='absolute -top-10 -right-10 w-32 h-32 bg-sky-500/20 blur-3xl rounded-full'></div>
-            </div>
+            {/* Glow Effect DIHAPUS - Diganti dengan Background Solid di parent */}
 
             {/* Content */}
             <div className='relative z-10 flex items-start gap-4'>
@@ -40,20 +31,13 @@ const SkillCard = ({
                 {/* Icon */}
                 <figure
                     className='
-                        flex
-                        items-center
-                        justify-center
-                        w-14
-                        h-14
-                        rounded-2xl
-                        bg-zinc-900/80
-                        border
-                        border-white/10
-                        shrink-0
-                        transition-transform
-                        duration-500
-                        group-hover:scale-110
-                        group-hover:rotate-3
+                        flex items-center justify-center
+                        w-14 h-14 shrink-0
+                        border-4 border-black bg-white
+                        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+                        transition-transform duration-200
+                        group-hover:scale-105
+                        group-hover:-rotate-3
                     '
                 >
                     <img
@@ -66,26 +50,28 @@ const SkillCard = ({
                 </figure>
 
                 {/* Text */}
-                <div className='flex-1'>
+                <div className='flex-1 overflow-hidden'>
 
-                    <div className='flex items-center justify-between gap-3 mb-2'>
+                    <div className='flex items-start justify-between gap-2 mb-1'>
 
-                        <h3 className='text-white text-lg font-semibold tracking-wide'>
+                        {/* Judul diubah ke hitam pekat, uppercase, dan font-black */}
+                        <h3 className='text-black text-lg md:text-xl font-black uppercase tracking-tight truncate'>
                             {label}
                         </h3>
 
+                        {/* Badge "Active" diubah jadi stiker hijau stabilo */}
                         <span
                             className='
-                                text-[11px]
+                                shrink-0
+                                text-[10px]
+                                font-black
+                                text-black
                                 uppercase
                                 tracking-widest
-                                text-sky-300
-                                bg-sky-500/10
-                                border
-                                border-sky-400/20
-                                px-2
-                                py-1
-                                rounded-full
+                                bg-green-400
+                                border-2 border-black
+                                px-2 py-1
+                                shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
                             '
                         >
                             Active
@@ -93,7 +79,8 @@ const SkillCard = ({
 
                     </div>
 
-                    <p className='text-zinc-400 text-sm leading-6'>
+                    {/* Deskripsi diubah ke hitam tebal dengan aksen garis bawah */}
+                    <p className='text-black text-xs font-bold uppercase tracking-wider leading-relaxed border-b-2 border-black inline-block pb-0.5 truncate max-w-full'>
                         {desc}
                     </p>
 

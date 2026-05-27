@@ -69,18 +69,9 @@ const works = [
 ]
 
 const filters = [
-    {
-        label: 'All',
-        value: 'all'
-    },
-    {
-        label: 'Web Apps',
-        value: 'web'
-    },
-    {
-        label: 'Tools',
-        value: 'tool'
-    }
+    { label: 'All', value: 'all' },
+    { label: 'Web Apps', value: 'web' },
+    { label: 'Tools', value: 'tool' }
 ]
 
 const Work = () => {
@@ -91,88 +82,63 @@ const Work = () => {
         filter === 'all' || project.category === filter
     )
 
+    // Helper function untuk style tombol filter (Aktif vs Tidak Aktif)
+    const getFilterBtnStyle = (currentValue) => {
+        const baseStyle = "px-6 py-3 border-4 border-black font-black uppercase tracking-wider transition-all duration-100";
+        
+        if (filter === currentValue) {
+            // STATE AKTIF: Warna pink, efek tertekan mekanikal
+            return `${baseStyle} bg-pink-400 translate-x-[4px] translate-y-[4px] shadow-none text-black`;
+        } else {
+            // STATE TIDAK AKTIF: Warna putih, shadow solid, efek hover memantul
+            return `${baseStyle} bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-black hover:bg-yellow-300 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`;
+        }
+    };
+
     return (
 
         <section
             id='work'
-            className='section relative overflow-hidden'
+            // Background solid terang dan garis pemisah tegas
+            className='section relative overflow-hidden bg-white py-20 border-b-8 border-black'
         >
 
-            {/* Background Glow */}
-            <div className='absolute inset-0 -z-10 overflow-hidden'>
+            {/* Background Glow Dihapus */}
 
-                <div className='absolute top-0 right-0
-                w-[500px] h-[500px]
-                bg-sky-500/10 blur-[120px]
-                rounded-full'></div>
-
-            </div>
-
-            <div className='container'>
+            <div className='container mx-auto px-4'>
 
                 {/* Top Header */}
-                <div className='flex flex-col lg:flex-row
-                lg:items-end lg:justify-between gap-8 mb-14'>
+                <div className='flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-16'>
 
                     <div>
-
-                        <p className='text-sm uppercase tracking-[0.2em]
-                        text-zinc-500 mb-5 reveal-up'>
-
+                        {/* Label Badge Brutalism */}
+                        <span className='inline-block bg-cyan-400 border-2 border-black text-black font-black uppercase tracking-[0.2em] px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] reveal-up'>
                             Featured Projects
+                        </span>
 
-                        </p>
-
-                        <h2 className='headline-2 reveal-up max-w-[14ch] mb-6'>
-
-                            Selected work crafted
-                            with precision.
-
+                        <h2 className='text-4xl md:text-5xl lg:text-6xl font-black text-black uppercase tracking-tight max-w-[15ch] mb-6 leading-[1.1] reveal-up'>
+                            Selected work crafted with precision.
                         </h2>
 
-                        <p className='text-zinc-400 max-w-[60ch] reveal-up'>
-
+                        {/* Deskripsi ditebalkan dengan garis pinggir (border-l) */}
+                        <p className='text-black font-bold text-lg md:text-xl border-l-8 border-yellow-400 pl-5 bg-gray-50 py-3 pr-3 max-w-[50ch] reveal-up'>
                             Explore some of the projects I’ve designed and developed,
                             combining modern UI/UX with scalable backend architecture.
-
                         </p>
 
                     </div>
 
                     {/* Filters */}
-                    <div className='flex flex-wrap gap-3 reveal-up'>
+                    <div className='flex flex-wrap gap-4 reveal-up'>
 
                         {filters.map((item, key) => (
-
                             <button
                                 key={key}
                                 onClick={() => setFilter(item.value)}
-                                className={`
-                                    px-5 py-3 rounded-2xl
-                                    text-sm font-medium
-                                    transition-all duration-300
-
-                                    ${filter === item.value
-                                        ? `
-                                            bg-sky-500
-                                            text-white
-                                            shadow-lg shadow-sky-500/20
-                                        `
-                                        : `
-                                            bg-white/[0.03]
-                                            border border-white/10
-                                            text-zinc-400
-                                            hover:bg-white/[0.06]
-                                            hover:text-white
-                                        `
-                                    }
-                                `}
+                                className={getFilterBtnStyle(item.value)}
                             >
-
                                 {item.label}
-
                             </button>
-
                         ))}
 
                     </div>
@@ -180,24 +146,27 @@ const Work = () => {
                 </div>
 
                 {/* Project Grid */}
-                <div className='grid
-                md:grid-cols-2
-                xl:grid-cols-3
-                gap-7'>
+                {/* Gap diperbesar (gap-10) untuk memberi ruang pada bayangan kartu brutalism agar tidak bertabrakan */}
+                <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-10 lg:gap-12 pb-4 pr-4'>
 
-                    {filteredProjects.map((project, key) => (
-
-                        <ProjectCard
-                            key={key}
-                            imgSrc={project.imgSrc}
-                            title={project.title}
-                            desc={project.desc}
-                            tags={project.tech}
-                            projectLink={project.demo}
-                            classes='reveal-up'
-                        />
-
-                    ))}
+                    {filteredProjects.length > 0 ? (
+                        filteredProjects.map((project, key) => (
+                            <ProjectCard
+                                key={key}
+                                imgSrc={project.imgSrc}
+                                title={project.title}
+                                desc={project.desc}
+                                tags={project.tech}
+                                projectLink={project.demo}
+                                classes='reveal-up'
+                            />
+                        ))
+                    ) : (
+                        // Fallback message jika tidak ada proyek (meski array saat ini tidak kosong, ini untuk best practice)
+                        <div className="col-span-full p-8 border-4 border-black bg-yellow-400 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+                            <h3 className="text-2xl font-black text-black uppercase">No Projects Found</h3>
+                        </div>
+                    )}
 
                 </div>
 

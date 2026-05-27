@@ -7,93 +7,75 @@ const ratings = new Array(5).fill({
 
 const ReviewCard = ({
   content,
-  imgSrc,
   name,
   company
 }) => {
 
   return (
     <div
-      className='group relative overflow-hidden
-      min-w-[320px] lg:min-w-[430px]
-      rounded-[28px]
-      border border-white/10
-      bg-white/5
-      backdrop-blur-xl
-      p-7
-      transition-all duration-500
-      hover:-translate-y-2
-      hover:border-sky-400/30'
+      className='group relative flex flex-col justify-between
+      min-w-[320px] lg:min-w-[430px] h-full
+      border-4 border-black
+      bg-white
+      p-8
+      shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+      transition-all duration-200 ease-in-out
+      hover:-translate-y-2 hover:-translate-x-2
+      hover:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)]
+      hover:bg-cyan-300'
     >
 
-      {/* Hover Glow */}
+      {/* Quote Icon - Diubah menjadi hitam pekat dengan opacity sebagai background */}
       <div
-        className='absolute inset-0 opacity-0 group-hover:opacity-100
-        transition-opacity duration-500
-        bg-gradient-to-br from-sky-500/10 via-transparent to-cyan-400/10'
-      ></div>
-
-      {/* Quote Icon */}
-      <div
-        className='absolute top-5 right-5 text-white/5
-        text-7xl font-bold pointer-events-none select-none'
+        className='absolute top-2 right-4 text-black
+        text-8xl font-black opacity-10 pointer-events-none select-none
+        group-hover:opacity-30 transition-opacity duration-200'
       >
-        ”
+        "
       </div>
 
-      {/* Rating */}
-      <div className='relative z-10 flex items-center gap-1 mb-6'>
+      <div>
+        {/* Rating */}
+        <div className='relative z-10 flex items-center gap-1 mb-8'>
 
-        {ratings.map(({ icon }, key) => (
-          <span
-            key={key}
-            className='material-symbols-rounded text-yellow-300 text-[18px]'
-            style={{
-              fontVariationSettings: '"FILL" 1'
-            }}
-          >
-            {icon}
-          </span>
-        ))}
-
-      </div>
-
-      {/* Content */}
-      <p
-        className='relative z-10 text-zinc-300 leading-relaxed
-        text-[15px] mb-10'
-      >
-        {content}
-      </p>
-
-      {/* User */}
-      <div className='relative z-10 flex items-center gap-4 mt-auto'>
-
-        <figure
-          className='w-14 h-14 rounded-2xl overflow-hidden
-          ring-2 ring-white/10'
-        >
-          <img
-            src={imgSrc}
-            alt={name}
-            width={56}
-            height={56}
-            loading='lazy'
-            className='w-full h-full object-cover'
-          />
-        </figure>
-
-        <div>
-
-          <h3 className='text-white font-medium tracking-wide'>
-            {name}
-          </h3>
-
-          <p className='text-sm text-zinc-400'>
-            {company}
-          </p>
+          {ratings.map(({ icon }, key) => (
+            <span
+              key={key}
+              // Bintang diberi efek text-shadow hitam untuk mensimulasikan border
+              className='material-symbols-rounded text-yellow-400 text-[24px] md:text-[28px]'
+              style={{
+                fontVariationSettings: '"FILL" 1',
+                textShadow: '2px 2px 0px rgba(0,0,0,1)'
+              }}
+            >
+              {icon}
+            </span>
+          ))}
 
         </div>
+
+        {/* Content */}
+        {/* Teks hitam tebal dengan aksen garis di sebelah kiri */}
+        <p
+          className='relative z-10 text-black font-bold leading-relaxed
+          text-lg md:text-xl mb-10 border-l-4 border-black pl-5'
+        >
+          {content}
+        </p>
+      </div>
+
+      {/* User Information */}
+      {/* Menggunakan border-top tebal sebagai pemisah karena foto sudah tidak ada */}
+      <div className='relative z-10 mt-auto pt-6 border-t-4 border-black'>
+
+        <h3 className='text-2xl md:text-3xl font-black text-black uppercase tracking-tight mb-3'>
+          {name}
+        </h3>
+
+        {/* Jabatan/Perusahaan dibuat menjadi label stiker bergaya brutalisme */}
+        <p className='text-black font-black uppercase tracking-widest text-xs md:text-sm bg-yellow-400 inline-block px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'>
+          {company}
+        </p>
 
       </div>
 
@@ -103,7 +85,7 @@ const ReviewCard = ({
 
 ReviewCard.propTypes = {
   content: PropTypes.string.isRequired,
-  imgSrc: PropTypes.string.isRequired,
+  // Prop imgSrc dihapus karena sudah tidak digunakan
   name: PropTypes.string.isRequired,
   company: PropTypes.string.isRequired
 }

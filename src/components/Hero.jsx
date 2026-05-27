@@ -3,7 +3,7 @@ import { ButtonPrimary, ButtonOutline } from './Button'
 
 const stats = [
     {
-        number: '20+',
+        number: '5+',
         label: 'Projects Completed'
     },
     {
@@ -29,198 +29,98 @@ const Hero = () => {
     return (
         <section
             id='home'
-            className='relative overflow-hidden pt-28 lg:pt-40'
+            className='relative overflow-hidden pt-36 pb-20 lg:pt-48 bg-white border-b-8 border-black'
         >
+            <div className='container mx-auto px-4'>
 
-            {/* Background Glow */}
-            <div className='absolute inset-0 -z-10 overflow-hidden'>
+                {/* Container max-width agar teks tidak terlalu melebar, menggantikan grid sebelumnya */}
+                <div className='max-w-5xl'>
 
-                <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px]
-                bg-sky-500/20 blur-[140px] rounded-full'></div>
+                    {/* Availability Badge */}
+                    <div className='inline-flex items-center gap-3 px-4 py-2 border-4 border-black bg-green-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-10 reveal-up'>
 
-                <div className='absolute bottom-0 right-0 w-[500px] h-[500px]
-                bg-fuchsia-500/10 blur-[120px] rounded-full'></div>
+                        <span className='relative flex h-4 w-4'>
+                            <span className='animate-ping absolute inline-flex h-full w-full bg-white border-2 border-black'></span>
+                            <span className='relative inline-flex h-4 w-4 bg-white border-2 border-black'></span>
+                        </span>
 
-            </div>
-
-            <div className='container'>
-
-                <div className='grid lg:grid-cols-[1.2fr_0.8fr] items-center gap-16'>
-
-                    {/* LEFT CONTENT */}
-                    <div>
-
-                        {/* Availability Badge */}
-                        <div className='inline-flex items-center gap-3 px-4 py-2 rounded-full
-                        border border-white/10 bg-white/5 backdrop-blur-xl mb-8 reveal-up'>
-
-                            <span className='relative flex h-3 w-3'>
-                                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75'></span>
-                                <span className='relative inline-flex rounded-full h-3 w-3 bg-emerald-400'></span>
-                            </span>
-
-                            <p className='text-sm text-zinc-300 tracking-wide'>
-                                Available for freelance projects
-                            </p>
-
-                        </div>
-
-                        {/* Main Heading */}
-                        <h1 className='headline-1 reveal-up max-w-[12ch] mb-6'>
-
-                            Crafting premium digital experiences
-                            for modern brands.
-
-                        </h1>
-
-                        {/* Description */}
-                        <p className='text-zinc-400 text-lg leading-relaxed max-w-[60ch]
-                        mb-10 reveal-up'>
-
-                            Full Stack Developer focused on building
-                            high-performance web applications with
-                            modern UI/UX, scalable backend systems,
-                            and seamless user experiences.
-
+                        <p className='text-xs md:text-sm text-black font-black uppercase tracking-wider'>
+                            Available for freelance projects
                         </p>
-
-                        {/* CTA */}
-                        <div className='flex flex-wrap items-center gap-4 mb-14 reveal-up'>
-
-                            <ButtonPrimary
-                                href={'/assets/CV - Rizky Maulana.pdf'}
-                                label='Download CV'
-                                icon='download'
-                            />
-
-                            <ButtonOutline
-                                href='#work'
-                                label='View Projects'
-                                icon='arrow_outward'
-                            />
-
-                        </div>
-
-                        {/* Stats */}
-                        <div className='grid grid-cols-2 md:grid-cols-3 gap-5 reveal-up'>
-
-                            {stats.map(({ number, label }, key) => (
-
-                                <div
-                                    key={key}
-                                    className='rounded-2xl border border-white/10
-                                    bg-white/[0.03] backdrop-blur-xl p-5'
-                                >
-
-                                    <h2 className='text-3xl font-semibold text-white mb-2'>
-                                        {number}
-                                    </h2>
-
-                                    <p className='text-sm text-zinc-400'>
-                                        {label}
-                                    </p>
-
-                                </div>
-
-                            ))}
-
-                        </div>
 
                     </div>
 
-                    {/* RIGHT CONTENT */}
-                    <div className='relative reveal-up'>
+                    {/* Main Heading */}
+                    {/* Ukuran font diperbesar (lg:text-8xl) karena tidak ada foto, agar lebih lantang ala Brutalism */}
+                    <h1 className='text-5xl md:text-7xl lg:text-8xl font-black text-black uppercase tracking-tighter leading-[1.05] reveal-up max-w-[15ch] mb-8'>
+                        Crafting premium digital experiences.
+                    </h1>
 
-                        {/* Main Image Card */}
-                        <div className='relative rounded-[40px] overflow-hidden
-                        border border-white/10 bg-gradient-to-b
-                        from-white/10 to-white/[0.02]
-                        backdrop-blur-2xl p-4'>
+                    {/* Description */}
+                    <p className='text-black font-bold text-lg md:text-2xl leading-relaxed max-w-[55ch] mb-12 reveal-up border-l-8 border-yellow-400 pl-6 bg-gray-50 py-4 pr-4'>
+                        Full Stack Developer focused on building
+                        high-performance web applications with
+                        modern UI/UX, scalable backend systems,
+                        and seamless user experiences.
+                    </p>
 
-                            {/* Gradient Glow */}
-                            <div className='absolute inset-0 bg-gradient-to-tr
-                            from-sky-500/20 via-transparent to-fuchsia-500/20'></div>
+                    {/* CTA */}
+                    <div className='flex flex-wrap items-center gap-5 mb-16 reveal-up'>
+                        <ButtonPrimary
+                            href={'/assets/CV - Rizky Maulana.pdf'}
+                            label='DOWNLOAD CV'
+                            icon='download'
+                        />
 
-                            <figure className='relative rounded-[32px] overflow-hidden
-                            bg-zinc-950'>
+                        <ButtonOutline
+                            href='#work'
+                            label='VIEW PROJECTS'
+                            icon='arrow_outward'
+                        />
+                    </div>
 
-                                <img
-                                    src='/assets/Foto.png'
-                                    alt='Rizky Maulana'
-                                    className='w-full h-[620px] object-cover'
-                                />
+                    {/* Stats */}
+                    {/* Kotak stat dibuat max-w agar tidak terlalu memanjang ke kanan */}
+                    <div className='grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl reveal-up'>
+                        {stats.map(({ number, label }, key) => (
+                            <div
+                                key={key}
+                                className='border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:bg-cyan-300'
+                            >
+                                <h2 className='text-4xl md:text-5xl lg:text-6xl font-black text-black mb-2'>
+                                    {number}
+                                </h2>
 
-                            </figure>
-
-                        </div>
-
-                        {/* Floating Card */}
-                        <div className='absolute -bottom-8 -left-8 hidden md:flex
-                        items-center gap-4 rounded-2xl border border-white/10
-                        bg-zinc-950/80 backdrop-blur-xl p-5 shadow-2xl'>
-
-                            <div className='w-14 h-14 rounded-xl
-                            bg-sky-500/20 grid place-items-center'>
-
-                                <span className='material-symbols-rounded text-sky-400'>
-                                    code
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <p className='text-sm text-zinc-400 mb-1'>
-                                    Specialized In
+                                <p className='text-xs font-bold text-black uppercase tracking-widest leading-tight'>
+                                    {label}
                                 </p>
-
-                                <h3 className='font-semibold text-white'>
-                                    Full Stack Development
-                                </h3>
-
                             </div>
-
-                        </div>
-
+                        ))}
                     </div>
 
                 </div>
 
                 {/* Tech Stack */}
-                <div className='mt-24 reveal-up'>
+                <div className='mt-28 reveal-up max-w-5xl'>
 
-                    <p className='text-sm uppercase tracking-[0.2em]
-                    text-zinc-500 mb-6'>
-
+                    <p className='text-lg font-black uppercase tracking-widest text-black mb-6 border-b-4 border-black pb-2 inline-block'>
                         Trusted Technologies
-
                     </p>
 
                     <div className='flex flex-wrap gap-4'>
-
                         {techStack.map((tech, key) => (
-
                             <div
                                 key={key}
-                                className='px-5 py-3 rounded-2xl
-                                border border-white/10
-                                bg-white/[0.03]
-                                text-zinc-300 text-sm
-                                backdrop-blur-xl'
+                                className='px-6 py-3 border-4 border-black bg-white text-black font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-default hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300'
                             >
-
                                 {tech}
-
                             </div>
-
                         ))}
-
                     </div>
 
                 </div>
 
             </div>
-
         </section>
     )
 }

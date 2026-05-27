@@ -22,42 +22,41 @@ const Contact = () => {
   return (
     <section
       id='contact'
-      className='section relative overflow-hidden'
+      // Background terang untuk mendukung warna-warna kontras
+      className='section relative overflow-hidden bg-white py-20'
     >
-
-      {/* Background Glow */}
-      <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-sky-500/10 blur-[120px] rounded-full'></div>
-
-      <div className='container relative z-10'>
+      <div className='container mx-auto px-4 relative z-10'>
 
         {/* Header */}
-        <div className='text-center mb-14 reveal-up'>
-          <p className='text-sky-400 font-medium tracking-widest uppercase mb-3'>
+        <div className='text-center mb-16 reveal-up'>
+          {/* Label diubah menjadi style tag solid */}
+          <span className='inline-block bg-yellow-400 border-2 border-black text-black font-bold tracking-widest uppercase px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
             Contact
-          </p>
+          </span>
 
-          <h2 className='headline-2 mx-auto mb-4'>
+          <h2 className='text-4xl md:text-5xl font-black text-black uppercase tracking-tight mx-auto mb-6'>
             Let’s Build Something Amazing
           </h2>
 
-          <p className='text-zinc-400 max-w-2xl mx-auto'>
+          <p className='text-black font-medium text-lg max-w-2xl mx-auto border-b-4 border-black pb-4'>
             Interested in working together, building modern web experiences,
             or discussing your next project? Let’s connect.
           </p>
         </div>
 
         {/* Main Grid */}
-        <div className='grid lg:grid-cols-[1fr,1.2fr] gap-8 items-stretch'>
+        <div className='grid lg:grid-cols-[1fr,1.2fr] gap-10 items-stretch'>
 
-          {/* Left Card */}
-          <div className='rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 reveal-up'>
+          {/* Left Card - Info */}
+          {/* Card diubah menjadi pink dengan border dan shadow tebal */}
+          <div className='rounded-none border-4 border-black bg-pink-400 p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] reveal-up flex flex-col justify-between'>
 
             <div className='mb-10'>
-              <p className='text-zinc-400 mb-2'>
+              <p className='text-black font-bold uppercase tracking-wider mb-2'>
                 Available For
               </p>
 
-              <h3 className='text-3xl font-semibold text-white leading-tight'>
+              <h3 className='text-3xl md:text-4xl font-black text-black uppercase leading-tight'>
                 Freelance Projects,
                 <br />
                 Fullstack Development,
@@ -67,120 +66,108 @@ const Contact = () => {
             </div>
 
             {/* Status */}
-            <div className='flex items-center gap-3 p-4 rounded-2xl bg-zinc-900/60 border border-white/5 mb-10'>
-              <span className='relative flex h-3 w-3'>
-                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75'></span>
-
-                <span className='relative inline-flex rounded-full h-3 w-3 bg-emerald-400'></span>
+            {/* Status box diubah menjadi putih dengan elemen neubrutalism */}
+            <div className='flex items-center gap-4 p-4 bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-10'>
+              <span className='relative flex h-4 w-4'>
+                <span className='animate-ping absolute inline-flex h-full w-full bg-green-500 border-2 border-black'></span>
+                <span className='relative inline-flex h-4 w-4 bg-green-500 border-2 border-black'></span>
               </span>
 
-              <p className='text-zinc-300'>
+              <p className='text-black font-bold uppercase tracking-wider'>
                 Currently available for work
               </p>
             </div>
 
             {/* Socials */}
             <div className='flex flex-wrap gap-4'>
-
               {socialLinks.map(({ href, label, icon }, key) => (
                 <a
                   key={key}
                   href={href}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='group flex items-center gap-3 px-5 py-4 rounded-2xl
-                  bg-zinc-900/70 border border-white/5
-                  hover:bg-sky-500 hover:text-white
-                  transition-all duration-300 hover:-translate-y-1'
+                  // Tombol social media gaya retro button press
+                  className='group flex items-center gap-3 px-5 py-3 bg-white border-4 border-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-400 transition-all duration-100 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none'
                 >
-
-                  <span className='material-symbols-rounded'>
+                  <span className='material-symbols-rounded font-bold'>
                     {icon}
                   </span>
-
-                  <span className='text-sm font-medium'>
+                  <span className='text-sm font-black uppercase tracking-wider'>
                     {label}
                   </span>
-
                 </a>
               ))}
-
             </div>
 
           </div>
 
-          {/* Form */}
+          {/* Form - Right Card */}
+          {/* Form card diubah menjadi cyan */}
           <form
             action="https://getform.io/f/bvrrndyb"
             method='POST'
-            className='rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 reveal-up'
+            className='rounded-none border-4 border-black bg-cyan-400 p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] reveal-up'
           >
 
-            <div className='grid md:grid-cols-2 gap-5 mb-5'>
+            <div className='grid md:grid-cols-2 gap-6 mb-6'>
 
               <div>
                 <label
                   htmlFor='name'
-                  className='label'
+                  className='block text-black font-black uppercase tracking-wider mb-2'
                 >
                   Your Name
                 </label>
-
                 <input
                   type='text'
                   name='name'
                   id='name'
                   required
-                  placeholder='John Doe'
-                  className='text-field'
+                  placeholder='JOHN DOE'
+                  // Input gaya neubrutalism (fokus menghilangkan shadow dan tertekan)
+                  className='w-full px-4 py-3 bg-white border-4 border-black text-black font-bold placeholder-gray-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-all duration-100 focus:translate-x-[4px] focus:translate-y-[4px] focus:shadow-none'
                 />
               </div>
 
               <div>
                 <label
                   htmlFor='email'
-                  className='label'
+                  className='block text-black font-black uppercase tracking-wider mb-2'
                 >
                   Email Address
                 </label>
-
                 <input
                   type='email'
                   name='email'
                   id='email'
                   required
-                  placeholder='you@example.com'
-                  className='text-field'
+                  placeholder='YOU@EXAMPLE.COM'
+                  className='w-full px-4 py-3 bg-white border-4 border-black text-black font-bold placeholder-gray-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-all duration-100 focus:translate-x-[4px] focus:translate-y-[4px] focus:shadow-none'
                 />
               </div>
 
             </div>
 
-            <div className='mb-5'>
-
+            <div className='mb-8'>
               <label
                 htmlFor='message'
-                className='label'
+                className='block text-black font-black uppercase tracking-wider mb-2'
               >
                 Project Details
               </label>
-
               <textarea
                 name='message'
                 id='message'
                 required
-                placeholder='Tell me about your project...'
-                className='text-field min-h-[180px] resize-none'
+                placeholder='TELL ME ABOUT YOUR PROJECT...'
+                className='w-full px-4 py-3 bg-white border-4 border-black text-black font-bold placeholder-gray-500 min-h-[180px] resize-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-all duration-100 focus:translate-x-[4px] focus:translate-y-[4px] focus:shadow-none'
               ></textarea>
-
             </div>
 
             <button
               type='submit'
-              className='w-full h-14 rounded-2xl bg-sky-500
-              hover:bg-sky-400 text-white font-medium
-              transition-all duration-300 hover:scale-[1.01]
-              active:scale-[0.99]'
+              // Submit button kuning solid
+              className='w-full py-4 bg-yellow-400 border-4 border-black text-black font-black uppercase tracking-widest text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-100 hover:bg-white active:translate-x-[6px] active:translate-y-[6px] active:shadow-none'
             >
               Send Message
             </button>

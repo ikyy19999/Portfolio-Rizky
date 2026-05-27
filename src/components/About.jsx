@@ -11,7 +11,7 @@ const aboutItems = [
   // },
   {
     label: 'Years Experience',
-    number: '03'
+    number: '1'
   }
 ]
 
@@ -19,27 +19,23 @@ const About = () => {
   return (
     <section
       id='about'
-      className='section relative overflow-hidden'
+      className='section relative overflow-hidden bg-white py-20'
     >
-      {/* Background Blur */}
-      <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-sky-500/10 blur-[140px] rounded-full'></div>
-
-      <div className="container relative z-10">
-
-        <div className='grid lg:grid-cols-[1fr,0.8fr] gap-8 items-center'>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className='grid lg:grid-cols-[1fr,0.8fr] gap-12 items-center'>
 
           {/* LEFT CONTENT */}
           <div className='reveal-up'>
 
-            <span className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-sky-300 mb-6 backdrop-blur-xl'>
+            <span className='inline-flex items-center gap-2 px-5 py-2 bg-pink-400 border-2 border-black text-sm font-bold text-black uppercase tracking-wider mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
               About Me
             </span>
 
-            <h2 className='headline-2 mb-6 max-w-[15ch]'>
+            <h2 className='text-4xl md:text-5xl font-black text-black mb-6 uppercase tracking-tight max-w-[15ch]'>
               Building modern digital experiences for the future.
             </h2>
 
-            <p className='text-zinc-400 text-base leading-8 max-w-[60ch] mb-6'>
+            <p className='text-black font-medium text-base md:text-lg leading-relaxed max-w-[60ch] mb-6 border-l-4 border-black pl-5'>
               A Computer Science student and experienced Full Stack Developer with a strong 
               background in IT infrastructure. Proficient in building robust web applications 
               using Laravel, PHP, and React, supported by efficient MySQL database management and Tailwind CSS. 
@@ -50,46 +46,36 @@ const About = () => {
           {/* RIGHT CARD */}
           <div className='reveal-up'>
 
-            <div className='relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-8'>
-
-              {/* Glow */}
-              <div className='absolute top-0 right-0 w-40 h-40 bg-sky-500/20 blur-3xl rounded-full'></div>
+            {/* Bentuk card dibuat lebih kaku (rounded-none) atau sesuai selera brutalism */}
+            <div className='relative border-4 border-black bg-cyan-300 p-8 md:p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]'>
 
               <div className='relative z-10'>
 
-                <div className='flex items-center gap-4 mb-8'>
-                  <div className='w-16 h-16 rounded-2xl overflow-hidden ring-2 ring-sky-400/30'>
-                    <img
-                      src="/assets/Foto.png"
-                      alt="Rizky Maulana"
-                      className='w-full h-full object-cover'
-                    />
-                  </div>
-
-                  <div>
-                    <h3 className='text-xl font-semibold text-white'>
-                      Rizky Maulana
-                    </h3>
-
-                    <p className='text-zinc-400 text-sm'>
-                      Full Stack Developer
-                    </p>
-                  </div>
+                {/* Karena foto hilang, nama dan jabatan menjadi fokus utama di header card */}
+                <div className='mb-10'>
+                  <h3 className='text-4xl font-black text-black uppercase tracking-tight mb-2'>
+                    Rizky Maulana
+                  </h3>
+                  
+                  {/* Jabatan diperbesar dan border bawah ditebalkan */}
+                  <p className='text-black font-bold uppercase tracking-widest border-b-4 border-black inline-block mt-1'>
+                    Full Stack Developer
+                  </p>
                 </div>
 
-                <div className='grid grid-cols-3 gap-4'>
+                <div className='grid grid-cols-2 gap-6'>
 
                   {aboutItems.map(({ label, number }, key) => (
                     <div
                       key={key}
-                      className='rounded-2xl bg-white/5 border border-white/10 p-5 text-center'
+                      className='bg-white border-4 border-black p-5 text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300'
                     >
-                      <h4 className='text-3xl font-bold text-white mb-2'>
+                      <h4 className='text-4xl md:text-5xl font-black text-black mb-2'>
                         {number}
-                        <span className='text-sky-400'>+</span>
+                        <span className='text-pink-500 ml-1'>+</span>
                       </h4>
 
-                      <p className='text-xs text-zinc-400 leading-5'>
+                      <p className='text-sm font-bold text-black uppercase leading-tight'>
                         {label}
                       </p>
                     </div>
