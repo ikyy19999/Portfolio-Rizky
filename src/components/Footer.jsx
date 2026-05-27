@@ -10,7 +10,7 @@ const sitemap = [
 ]
 
 const socials = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/rizkymaulanaa' },
+  { label: 'LinkedIn', href: '#' },
   { label: 'Instagram', href: 'https://www.instagram.com/thinkaboutky___' },
   { label: 'Email', href: 'mailto:hello@rizkymaulana.web.id' }
 ]

@@ -11,7 +11,7 @@ const stats = [
         label: 'Years Experience'
     },
     {
-        number: '100%',
+        number: '99%',
         label: 'Responsive Design'
     }
 ]
