@@ -16,7 +16,7 @@ const works = [
         desc: 'Online sports court reservation system with responsive experience.',
         category: 'web',
         tech: ['Laravel', 'Filament', 'Livewire'],
-        demo: 'https://booking-lapangan.rizkymaulana.web.id/'
+        demo: 'https://booking-lapangan.rizkymaulana.web.id'
     },
     {
         imgSrc: '/assets/Web Music.png',
