@@ -11,12 +11,12 @@ const works = [
         demo: 'https://tokoramen.rizkymaulana.web.id/en/ramenenak.id'
     },
     {
-        imgSrc: '/assets/Lapangan.png',
+        imgSrc: '/assets/Galaxy-S22+-sportix.madebyrizky.my.id.png',
         title: 'Sports Booking Platform',
         desc: 'Online sports court reservation system with responsive experience.',
         category: 'web',
         tech: ['Laravel', 'Filament', 'Livewire'],
-        demo: 'https://booking-lapangan.rizkymaulana.web.id'
+        demo: 'https://sportix.madebyrizky.my.id'
     },
     {
         imgSrc: '/assets/Web Music.png',
