@@ -13,7 +13,7 @@ const socialLinks = [
     icon: 'photo_camera'
   },
   {
-    href: 'mailto:hello@rizkymaulana.web.id',
+    href: 'mailto:hello@madebyrizky.my.id',
     label: 'Email',
     icon: 'mail'
   }
