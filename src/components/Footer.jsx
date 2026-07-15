@@ -12,7 +12,7 @@ const sitemap = [
 const socials = [
   { label: 'LinkedIn', href: '#' },
   { label: 'Instagram', href: 'https://www.instagram.com/thinkaboutky___' },
-  { label: 'Email', href: 'mailto:hello@rizkymaulana.web.id' }
+  { label: 'Email', href: 'mailto:hello@madebyrizky.my.id' }
 ]
 
 const Footer = () => {
