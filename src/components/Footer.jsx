@@ -49,7 +49,7 @@ const Footer = () => {
             <div className='shrink-0'>
               {/* Asumsi komponen ButtonPrimary sudah menggunakan gaya neubrutalism sebelumnya */}
               <ButtonPrimary
-                href='mailto:hello@rizkymaulana.web.id'
+                href='mailto:hello@madebyrizky.my.id'
                 label='START PROJECT'
                 icon='arrow_forward'
                 classes='text-lg py-4 px-8'
