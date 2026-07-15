@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import ProjectCard from './ProjectCard'
 
 const works = [
-    {
-        imgSrc: '/assets/Screenshot 2026-03-16 045059.png',
-        title: 'Online Ramen Shop',
-        desc: 'Modern ramen e-commerce platform with elegant UI and CMS dashboard.',
-        category: 'web',
-        tech: ['Laravel', 'Filament', 'Livewire'],
-        demo: 'https://tokoramen.rizkymaulana.web.id/en/ramenenak.id'
-    },
+    // {
+    //     imgSrc: '/assets/Screenshot 2026-03-16 045059.png',
+    //     title: 'Online Ramen Shop',
+    //     desc: 'Modern ramen e-commerce platform with elegant UI and CMS dashboard.',
+    //     category: 'web',
+    //     tech: ['Laravel', 'Filament', 'Livewire'],
+    //     demo: 'https://tokoramen.rizkymaulana.web.id'
+    // },
     {
         imgSrc: '/assets/Galaxy-S22+-sportix.madebyrizky.my.id.png',
         title: 'Sports Booking Platform',
