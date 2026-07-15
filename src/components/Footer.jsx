@@ -155,9 +155,9 @@ const Footer = () => {
             © {new Date().getFullYear()} Rizky Maulana. All rights reserved.
           </p>
 
-          <p className='text-black font-bold uppercase text-sm tracking-wider bg-yellow-300 px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'>
+          {/* <p className='text-black font-bold uppercase text-sm tracking-wider bg-yellow-300 px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'>
             Designed & Developed with passion.
-          </p>
+          </p> */}
 
         </div>
 
