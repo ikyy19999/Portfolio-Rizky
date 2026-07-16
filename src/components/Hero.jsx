@@ -1,128 +1,147 @@
-import React from 'react'
-import { ButtonPrimary, ButtonOutline } from './Button'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ButtonPrimary, ButtonOutline } from './Button';
 
 const stats = [
-    {
-        number: '5+',
-        label: 'Projects Completed'
-    },
-    {
-        number: '1+',
-        label: 'Years Experience'
-    },
-    {
-        number: '99%',
-        label: 'Responsive Design'
-    }
-]
+  { number: '5+', label: 'Projects Completed' },
+  { number: '1+', label: 'Years Experience' },
+  { number: '99%', label: 'Responsive Design' }
+];
 
 const techStack = [
-    'Laravel',
-    'React',
-    'Tailwind',
-    'GSAP',
-    'Livewire',
-    'MySQL'
-]
+  'Laravel',
+  'React',
+  'Tailwind',
+  'GSAP',
+  'Livewire',
+  'MySQL',
+  'Next.js',
+  'Framer Motion'
+];
+
+// Variant animasi Framer Motion untuk efek Cinematic Stagger
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Delay antar elemen
+      delayChildren: 0.2,
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 40, opacity: 0 },
+  visible: { 
+    y: 0, 
+    opacity: 1, 
+    transition: { type: 'spring', stiffness: 100, damping: 15 } // Efek spring yang playful tapi smooth
+  }
+};
 
 const Hero = () => {
-    return (
-        <section
-            id='home'
-            className='relative overflow-hidden pt-36 pb-20 lg:pt-48 bg-white border-b-8 border-black'
+  return (
+    <section 
+      id='home' 
+      className='relative min-h-screen flex flex-col justify-center pt-32 pb-20 lg:pt-40 overflow-hidden bg-zinc-950'
+    >
+      
+      {/* Decorative Cinematic Background Elements (Bukan gradient AI biasa) */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className='container relative z-10'>
+        <motion.div 
+          className='max-w-6xl mx-auto'
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-            <div className='container mx-auto px-4'>
+          {/* 1. Availability Badge (Playful + Brutalist) */}
+          <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-4 py-2 border-2 border-zinc-800 bg-zinc-900/80 backdrop-blur-sm mb-8 rounded-full'>
+            <span className='relative flex h-3 w-3'>
+              <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75'></span>
+              <span className='relative inline-flex rounded-full h-3 w-3 bg-lime-400 border-2 border-zinc-950'></span>
+            </span>
+            <p className='text-xs font-mono-tech text-lime-400 uppercase tracking-widest'>
+              Available for freelance projects
+            </p>
+          </motion.div>
 
-                {/* Container max-width agar teks tidak terlalu melebar, menggantikan grid sebelumnya */}
-                <div className='max-w-5xl'>
+          {/* 2. Main Heading (Editorial + Brutalist Mix) */}
+          <motion.div variants={itemVariants} className='mb-10'>
+            <h1 className='text-6xl md:text-8xl lg:text-9xl font-serif-editorial text-zinc-50 leading-[0.9] tracking-tight'>
+              Crafting <span className='italic text-zinc-500'>premium</span> <br />
+              <span className='font-sans-brutal font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-600'>
+                Digital Experiences.
+              </span>
+            </h1>
+          </motion.div>
 
-                    {/* Availability Badge */}
-                    <div className='inline-flex items-center gap-3 px-4 py-2 border-4 border-black bg-green-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-10 reveal-up'>
-
-                        <span className='relative flex h-4 w-4'>
-                            <span className='animate-ping absolute inline-flex h-full w-full bg-white border-2 border-black'></span>
-                            <span className='relative inline-flex h-4 w-4 bg-white border-2 border-black'></span>
-                        </span>
-
-                        <p className='text-xs md:text-sm text-black font-black uppercase tracking-wider'>
-                            Available for freelance projects
-                        </p>
-
-                    </div>
-
-                    {/* Main Heading */}
-                    {/* Ukuran font diperbesar (lg:text-8xl) karena tidak ada foto, agar lebih lantang ala Brutalism */}
-                    <h1 className='text-5xl md:text-7xl lg:text-8xl font-black text-black uppercase tracking-tighter leading-[1.05] reveal-up max-w-[15ch] mb-8'>
-                        Crafting premium digital experiences.
-                    </h1>
-
-                    {/* Description */}
-                    <p className='text-black font-bold text-lg md:text-2xl leading-relaxed max-w-[55ch] mb-12 reveal-up border-l-8 border-yellow-400 pl-6 bg-gray-50 py-4 pr-4'>
-                        Full Stack Developer focused on building
-                        high-performance web applications with
-                        modern UI/UX, scalable backend systems,
-                        and seamless user experiences.
-                    </p>
-
-                    {/* CTA */}
-                    <div className='flex flex-wrap items-center gap-5 mb-16 reveal-up'>
-                        <ButtonPrimary
-                            href={'/assets/CV - Rizky Maulana.pdf'}
-                            label='DOWNLOAD CV'
-                            icon='download'
-                        />
-
-                        <ButtonOutline
-                            href='#work'
-                            label='VIEW PROJECTS'
-                            icon='arrow_outward'
-                        />
-                    </div>
-
-                    {/* Stats */}
-                    {/* Kotak stat dibuat max-w agar tidak terlalu memanjang ke kanan */}
-                    <div className='grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl reveal-up'>
-                        {stats.map(({ number, label }, key) => (
-                            <div
-                                key={key}
-                                className='border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:bg-cyan-300'
-                            >
-                                <h2 className='text-4xl md:text-5xl lg:text-6xl font-black text-black mb-2'>
-                                    {number}
-                                </h2>
-
-                                <p className='text-xs font-bold text-black uppercase tracking-widest leading-tight'>
-                                    {label}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-
-                </div>
-
-                {/* Tech Stack */}
-                <div className='mt-28 reveal-up max-w-5xl'>
-
-                    <p className='text-lg font-black uppercase tracking-widest text-black mb-6 border-b-4 border-black pb-2 inline-block'>
-                        Trusted Technologies
-                    </p>
-
-                    <div className='flex flex-wrap gap-4'>
-                        {techStack.map((tech, key) => (
-                            <div
-                                key={key}
-                                className='px-6 py-3 border-4 border-black bg-white text-black font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-default hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300'
-                            >
-                                {tech}
-                            </div>
-                        ))}
-                    </div>
-
-                </div>
-
+          {/* 3. Description & CTA (Asymmetrical Layout) */}
+          <motion.div variants={itemVariants} className='grid lg:grid-cols-12 gap-10 lg:gap-16 mb-20'>
+            {/* Kolom Kiri: Deskripsi dengan aksen brutalist */}
+            <div className='lg:col-span-5 border-l-4 border-lime-400 pl-6 py-2'>
+              <p className='text-lg md:text-xl text-zinc-400 font-sans-brutal leading-relaxed'>
+                Full Stack Developer focused on building high-performance web applications. 
+                Blending <span className='text-zinc-100 font-bold'>modern UI/UX</span> with scalable backend systems.
+              </p>
             </div>
-        </section>
-    )
-}
 
-export default Hero
+            {/* Kolom Kanan: CTA Buttons */}
+            <div className='lg:col-span-7 flex flex-wrap items-center gap-5'>
+              <ButtonPrimary
+                href='/assets/CV - Rizky Maulana.pdf'
+                label='DOWNLOAD CV'
+                icon='download'
+              />
+              <ButtonOutline
+                href='#work'
+                label='VIEW PROJECTS'
+                icon='arrow_outward'
+              />
+            </div>
+          </motion.div>
+
+          {/* 4. Stats (Neo-Brutalist Cards, Dark Mode Adapted) */}
+          <motion.div variants={itemVariants} className='grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mb-24'>
+            {stats.map(({ number, label }, key) => (
+              <div
+                key={key}
+                className='group relative border-2 border-zinc-800 bg-zinc-900 p-6 transition-all duration-300 hover:-translate-y-2 hover:-translate-x-1 hover:border-lime-400 hover:shadow-[8px_8px_0px_0px_rgba(163,230,53,1)]'
+              >
+                <h2 className='text-4xl md:text-5xl font-sans-brutal font-black text-zinc-100 mb-2 group-hover:text-lime-400 transition-colors'>
+                  {number}
+                </h2>
+                <p className='text-xs font-mono-tech text-zinc-500 uppercase tracking-widest group-hover:text-zinc-300'>
+                  {label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* 5. Tech Stack (Editorial Clean Grid) */}
+          <motion.div variants={itemVariants} className='border-t border-zinc-800 pt-10'>
+            <p className='font-mono-tech text-xs uppercase tracking-[0.2em] text-zinc-600 mb-6'>
+              Trusted Technologies
+            </p>
+            <div className='flex flex-wrap gap-3'>
+              {techStack.map((tech, key) => (
+                <div
+                  key={key}
+                  className='px-5 py-2 border border-zinc-800 bg-zinc-900/50 text-zinc-400 font-mono-tech text-sm uppercase tracking-wider transition-all duration-300 cursor-default hover:bg-zinc-100 hover:text-zinc-950 hover:border-zinc-100 hover:-translate-y-1'
+                >
+                  {tech}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
