@@ -2,83 +2,211 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 1. IMPORT FONT & MATERIAL SYMBOLS */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0');
-
-@layer base {
-  html {
+/* Base */
+html {
     scroll-behavior: smooth;
-  }
-  
-  body {
-    @apply bg-zinc-950 text-zinc-50 font-sans;
-  }
-
-  /* Noise Overlay: Kunci agar tidak terlihat seperti template AI yang terlalu bersih */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 50;
-  }
 }
 
-@layer utilities {
-  .font-serif-editorial {
-    font-family: 'Playfair Display', serif;
-  }
-  .font-sans-brutal {
-    font-family: 'Space Grotesk', sans-serif;
-  }
-  .font-mono-tech {
-    font-family: 'JetBrains Mono', monospace;
-  }
-  
-  /* Material Symbols Reset agar sinkron dengan teks */
-  .material-symbols-rounded {
-    font-family: 'Material Symbols Rounded', sans-serif;
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
+body {
+    @apply bg-zinc-900 text-zinc-50
 }
 
-/* Custom Scrollbar yang sleek */
-::-webkit-scrollbar {
-  width: 8px;
+/* Typography */
+.headline-1, 
+.headline-2 {
+    @apply max-w-max;
+    background: -webkit-linear-gradient(0deg, #fafafa, #a1a1aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-::-webkit-scrollbar-track {
-  background: #09090b;
+
+.headline-1 {
+    @apply text-5xl leading-tight font-semibold lg:text-[55px] lg:leading-[1.15]
 }
-::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 4px;
+
+.headline-2 {
+    @apply text-3xl lg:text-4xl lg:leading-tight font-semibold
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #22d3ee; /* cyan-400 */
+
+.title-1 {
+    @apply text-[22px] font-normal
+}
+
+/* utilities */
+.material-symbols-rounded {
+    @apply w-[1em] h-[1em] overflow-hidden;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.container {
+    @apply px-4 mx-auto lg:px-8 xl:max-w-6xl
+}
+
+.img-box {
+    @apply bg-zinc-700 overflow-hidden
+}
+
+.img-cover {
+    @apply w-full h-full object-cover
+}
+
+.section {
+    @apply pt-20 lg:pt-32
+}
+
+.reveal-up {
+    @apply translate-y-20 opacity-0
+}
+/* Menu Btn */
+.menu-btn {
+    @apply w-10 h-10 
+    grid place-items-center 
+    bg-zinc-50/10 
+    rounded-xl 
+    ring-1 ring-zinc-50/[0.02] 
+    backdrop-blur-2xl 
+    hover:bg-zinc-50/15 
+    hover:ring-zinc-50/10
+    transition-all 
+    duration-300 
+    active:scale-90 
+    shadow-md 
+    hover:shadow-lg 
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-zinc-50/30
+}
+
+/* Navbar */
+.navbar {
+    @apply absolute top-full mt-2 right-0 min-w-40 p-2 bg-zinc-50/10 rounded-2xl ring-inset ring-1 ring-zinc-50/5 
+    scale-90 isolate blur-sm opacity-0 invisible transition-[opacity,transform,filter] md:static md:flex md:items-center 
+    md:mt-0 md:opacity-100 md:blur-0 md:visible md:scale-100 backdrop-blur-2xl
+}
+
+.navbar.active {
+    @apply opacity-100 scale-100 blur-0 visible
+}
+
+.nav-link {
+    @apply grid items-center h-9 px-4 text-sm font-medium tracking-wide text-zinc-50/50 hover:text-zinc-50 transition-colors relative z-10
+}
+
+.nav-link.active {
+    @apply text-zinc-900
+}
+
+.navbar .active-box {
+    @apply absolute bg-zinc-50 rounded-lg -z-10 transition-[top,left] duration-500
+}
+
+/* Button */
+.btn {
+    @apply max-w-max h-9 flex items-center gap-2 px-4 rounded-xl font-medium text-sm ring-1 
+    ring-zinc-50/5 ring-inset transition-[background-color]
+}
+
+.btn-secondary {
+    @apply bg-zinc-50 text-zinc-900 active:bg-zinc-50/80
+}
+
+.btn .material-symbols-rounded {
+    @apply text-[18px]
+}
+
+.btn:has( .material-symbols-rounded) {
+    @apply pr-3
+}
+
+.btn-primary {
+    @apply h-11 bg-blue-400 text-white hover:bg-blue-500 active:bg-blue-600
+}
+
+.btn-outline {
+    @apply h-11 bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-800
+}
+
+/* Text */
+.label {
+    @apply block text-zinc-200 text-sm font-normal mb-2
+}
+
+.text-field {
+    @apply block outline-none w-full px-3 py-3 text-sm bg-zinc-800 rounded-xl ring-1 ring-inset ring-transparent
+    transition-shadow hover:ring-zinc-50/5 focus:ring-sky-500 focus:ring-2
+}
+
+.text-field::placeholder {
+    @apply text-zinc-400
+}
+
+/* SweetAlert CV Modal */
+.swal2-popup {
+    @apply rounded-3xl;
+    margin: auto !important;
+}
+
+.swal2-html-container {
+    @apply overflow-hidden;
+}
+
+.swal2-close {
+    @apply text-white;
+}
+
+.swal2-title {
+    @apply text-4xl font-semibold text-white pt-2;
+}
+
+/* Premium Background */
+body {
+    background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.08), transparent 25%),
+        #09090b;
 }
 
 /* Smooth Selection */
 ::selection {
-  background: #22d3ee; /* cyan-400 */
-  color: #000000;
+    background: #38bdf8;
+    color: #09090b;
 }
 
-/* Container utility */
-.container {
-  @apply px-4 mx-auto lg:px-8 xl:max-w-7xl;
+/* Better Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Better Headline */
+.headline-1 {
+    @apply text-5xl leading-[1.05] font-semibold tracking-tight
+    lg:text-7xl;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
