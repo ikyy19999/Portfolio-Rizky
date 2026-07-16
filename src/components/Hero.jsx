@@ -65,7 +65,7 @@ const Hero = () => {
               <span className='relative inline-flex rounded-full h-3 w-3 bg-cyan-400 border-2 border-zinc-950'></span>
             </span>
             <p className='text-xs font-mono-tech text-cyan-400 uppercase tracking-widest'>
-              Available for freelance projects
+              Available for sada projects
             </p>
           </motion.div>
 
