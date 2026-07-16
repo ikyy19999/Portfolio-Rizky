@@ -1,12 +1,12 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ButtonPrimary, ButtonOutline } from './Button';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { ButtonPrimary, ButtonOutline } from './Button'
 
 const stats = [
   { number: '5+', label: 'Projects Completed' },
   { number: '1+', label: 'Years Experience' },
   { number: '99%', label: 'Responsive Design' }
-];
+]
 
 const techStack = [
   'Laravel',
@@ -17,7 +17,7 @@ const techStack = [
   'MySQL',
   'Next.js',
   'Framer Motion'
-];
+]
 
 // Variant animasi Framer Motion untuk efek Cinematic Stagger
 const containerVariants = {
@@ -29,7 +29,7 @@ const containerVariants = {
       delayChildren: 0.2,
     }
   }
-};
+}
 
 const itemVariants = {
   hidden: { y: 40, opacity: 0 },
@@ -38,7 +38,7 @@ const itemVariants = {
     opacity: 1, 
     transition: { type: 'spring', stiffness: 100, damping: 15 } // Efek spring yang playful tapi smooth
   }
-};
+}
 
 const Hero = () => {
   return (
@@ -47,9 +47,9 @@ const Hero = () => {
       className='relative min-h-screen flex flex-col justify-center pt-32 pb-20 lg:pt-40 overflow-hidden bg-zinc-950'
     >
       
-      {/* Decorative Cinematic Background Elements (Bukan gradient AI biasa) */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* Decorative Cinematic Background Elements (Blur halus, bukan gradient AI biasa) */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-pink-400/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className='container relative z-10'>
         <motion.div 
@@ -59,12 +59,12 @@ const Hero = () => {
           animate="visible"
         >
           {/* 1. Availability Badge (Playful + Brutalist) */}
-          <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-4 py-2 border-2 border-zinc-800 bg-zinc-900/80 backdrop-blur-sm mb-8 rounded-full'>
+          <motion.div variants={itemVariants} className='inline-flex items-center gap-3 px-4 py-2 border-2 border-zinc-800 bg-zinc-900/80 backdrop-blur-sm mb-8'>
             <span className='relative flex h-3 w-3'>
-              <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75'></span>
-              <span className='relative inline-flex rounded-full h-3 w-3 bg-lime-400 border-2 border-zinc-950'></span>
+              <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75'></span>
+              <span className='relative inline-flex rounded-full h-3 w-3 bg-cyan-400 border-2 border-zinc-950'></span>
             </span>
-            <p className='text-xs font-mono-tech text-lime-400 uppercase tracking-widest'>
+            <p className='text-xs font-mono-tech text-cyan-400 uppercase tracking-widest'>
               Available for freelance projects
             </p>
           </motion.div>
@@ -82,14 +82,14 @@ const Hero = () => {
           {/* 3. Description & CTA (Asymmetrical Layout) */}
           <motion.div variants={itemVariants} className='grid lg:grid-cols-12 gap-10 lg:gap-16 mb-20'>
             {/* Kolom Kiri: Deskripsi dengan aksen brutalist */}
-            <div className='lg:col-span-5 border-l-4 border-lime-400 pl-6 py-2'>
+            <div className='lg:col-span-5 border-l-4 border-cyan-400 pl-6 py-2'>
               <p className='text-lg md:text-xl text-zinc-400 font-sans-brutal leading-relaxed'>
                 Full Stack Developer focused on building high-performance web applications. 
                 Blending <span className='text-zinc-100 font-bold'>modern UI/UX</span> with scalable backend systems.
               </p>
             </div>
 
-            {/* Kolom Kanan: CTA Buttons */}
+            {/* Kolom Kanan: CTA Buttons (Menggunakan komponen Button kamu) */}
             <div className='lg:col-span-7 flex flex-wrap items-center gap-5'>
               <ButtonPrimary
                 href='/assets/CV - Rizky Maulana.pdf'
@@ -109,9 +109,9 @@ const Hero = () => {
             {stats.map(({ number, label }, key) => (
               <div
                 key={key}
-                className='group relative border-2 border-zinc-800 bg-zinc-900 p-6 transition-all duration-300 hover:-translate-y-2 hover:-translate-x-1 hover:border-lime-400 hover:shadow-[8px_8px_0px_0px_rgba(163,230,53,1)]'
+                className='group relative border-2 border-zinc-800 bg-zinc-900 p-6 transition-all duration-300 hover:-translate-y-2 hover:-translate-x-1 hover:border-cyan-400 hover:shadow-[8px_8px_0px_0px_rgba(34,211,238,1)]'
               >
-                <h2 className='text-4xl md:text-5xl font-sans-brutal font-black text-zinc-100 mb-2 group-hover:text-lime-400 transition-colors'>
+                <h2 className='text-4xl md:text-5xl font-sans-brutal font-black text-zinc-100 mb-2 group-hover:text-cyan-400 transition-colors'>
                   {number}
                 </h2>
                 <p className='text-xs font-mono-tech text-zinc-500 uppercase tracking-widest group-hover:text-zinc-300'>
@@ -141,7 +141,7 @@ const Hero = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero
