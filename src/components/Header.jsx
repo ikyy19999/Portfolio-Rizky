@@ -2,143 +2,190 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 
 const Header = () => {
-
-    const [navOpen, setNavOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20)
+            setScrolled(window.scrollY > 24)
         }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
+
+        handleScroll()
+
+        window.addEventListener('scroll', handleScroll, {
+            passive: true
+        })
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
     }, [])
 
+    const handleHomeClick = (event) => {
+        event.preventDefault()
+
+        const section = document.querySelector('#home')
+
+        if (!section) return
+
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        })
+    }
+
     return (
-        <header
-            className={`
-                fixed top-0 left-0 w-full z-50
-                transition-all duration-300
-                ${scrolled ? 'pt-2' : 'pt-6'}
-            `}
-        >
-            <div className='container mx-auto px-4'>
-
-                {/* Navbar Container Utama */}
-                <div
-                    className={`
-                        flex items-center justify-between
-                        border-4 border-black bg-white
-                        transition-all duration-300
-                        px-5 lg:px-7
-                        ${scrolled
-                            // State saat di-scroll: Kotak sedikit mengecil dan bayangan berkurang
-                            ? 'py-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                            // State awal: Kotak lebih besar dengan bayangan tebal
-                            : 'py-5 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]'
-                        }
-                    `}
-                >
-
-                    {/* Logo */}
-                    <a
-                        href='#home'
-                        className='flex items-center gap-4 group'
+        <>
+            <header
+                className={`
+                    fixed left-0 top-0 z-50 w-full
+                    transition-all duration-300
+                    ${scrolled ? 'pt-3' : 'pt-4 sm:pt-5'}
+                `}
+            >
+                <div className="container">
+                    <div
+                        className={`
+                            flex items-center justify-between
+                            transition-all duration-300
+                            ${
+                                scrolled
+                                    ? `
+                                        liquid-glass
+                                        px-3 py-2
+                                        sm:px-4
+                                        md:px-5
+                                    `
+                                    : `
+                                        border border-transparent
+                                        bg-transparent
+                                        px-0 py-2
+                                    `
+                            }
+                        `}
+                        style={{
+                            borderRadius: scrolled ? '16px' : '0px'
+                        }}
                     >
-                        <div className='relative'>
-                            {/* Efek Glow dihapus, diganti dengan border tebal pada gambar */}
-                            <img
-                                src='/assets/favicon.ico'
-                                alt='Logo'
-                                width={42}
-                                height={42}
-                                className='relative border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform duration-200 group-hover:-translate-y-1 group-hover:-translate-x-1'
-                            />
-                        </div>
-
-                        <div className='hidden sm:block'>
-                            <h2 className='text-black font-black uppercase tracking-wider text-lg leading-tight'>
-                                Rizky Maulana
-                            </h2>
-                            <p className='text-black font-bold uppercase text-xs border-b-2 border-black inline-block'>
-                                Full Stack Developer
-                            </p>
-                        </div>
-                    </a>
-
-                    {/* Desktop Nav */}
-                    <div className='hidden md:flex'>
-                        {/* Komponen Navbar ini akan memuat gaya Neubrutalism yang sudah kita buat sebelumnya */}
-                        <Navbar />
-                    </div>
-
-                    {/* Right Side */}
-                    <div className='flex items-center gap-4'>
-
-                        {/* CTA Button */}
                         <a
-                            href='#contact'
-                            className='hidden md:flex items-center gap-2
-                            px-6 py-3
-                            bg-pink-400 text-black font-black uppercase tracking-wider
-                            border-4 border-black
-                            transition-all duration-100 ease-in-out
-                            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-                            hover:bg-yellow-400
-                            active:translate-y-[4px] active:translate-x-[4px] active:shadow-none'
+                            href="#home"
+                            onClick={handleHomeClick}
+                            className="
+                                group
+                                flex min-w-0
+                                items-center gap-3
+                                focus:outline-none
+                            "
+                            aria-label="Go to home"
                         >
-                            Let&apos;s Talk
-                            <span className='material-symbols-rounded font-bold text-[20px]'>
-                                arrow_outward
-                            </span>
+                            <div
+                                className="
+                                    relative
+                                    flex h-10 w-10
+                                    shrink-0
+                                    items-center justify-center
+                                    overflow-hidden
+                                    border border-white/[0.08]
+                                    bg-white/[0.035]
+                                    transition-all duration-300
+                                    group-hover:border-white/[0.15]
+                                    group-hover:bg-white/[0.055]
+                                "
+                                style={{
+                                    borderRadius: '11px'
+                                }}
+                            >
+                                <img
+                                    src="/assets/favicon.ico"
+                                    alt="Rizky Maulana"
+                                    width={30}
+                                    height={30}
+                                    className="
+                                        h-7 w-7
+                                        object-contain
+                                        transition-transform duration-300
+                                        group-hover:scale-[1.05]
+                                    "
+                                />
+                            </div>
+
+                            <div className="hidden min-w-0 sm:block">
+                                <p
+                                    className="
+                                        truncate
+                                        text-[15px]
+                                        font-semibold
+                                        leading-tight
+                                        tracking-[-0.025em]
+                                        text-zinc-100
+                                    "
+                                >
+                                    Rizky Maulana
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-0.5
+                                        truncate
+                                        text-xs
+                                        font-normal
+                                        tracking-[-0.01em]
+                                        text-zinc-600
+                                    "
+                                >
+                                    Full Stack Developer
+                                </p>
+                            </div>
                         </a>
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            onClick={() => setNavOpen(prev => !prev)}
-                            // Tombol diubah menjadi kotak warna cyan padat
-                            className='md:hidden w-12 h-12
-                            border-4 border-black
-                            bg-cyan-400 text-black
-                            grid place-items-center
-                            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-                            transition-all duration-100
-                            hover:bg-yellow-400
-                            active:translate-y-[4px] active:translate-x-[4px] active:shadow-none'
-                        >
-                            <span className='material-symbols-rounded font-black'>
-                                {navOpen ? 'close' : 'menu'}
-                            </span>
-                        </button>
+                        <div className="hidden md:flex md:items-center">
+                            <Navbar />
+                        </div>
 
+                        <div className="hidden md:flex md:items-center">
+                            <a
+                                href="#contact"
+                                className="
+                                    group
+                                    inline-flex h-10
+                                    items-center gap-2
+                                    border border-white/[0.1]
+                                    bg-white/[0.04]
+                                    px-4
+                                    text-sm font-medium
+                                    tracking-[-0.015em]
+                                    text-zinc-200
+                                    transition-all duration-200
+                                    hover:border-white/[0.18]
+                                    hover:bg-white/[0.07]
+                                    hover:text-white
+                                    active:scale-[0.98]
+                                "
+                                style={{
+                                    borderRadius: '11px'
+                                }}
+                            >
+                                Let&apos;s Talk
+
+                                <span
+                                    className="
+                                        material-symbols-rounded
+                                        text-[18px]
+                                        transition-transform duration-200
+                                        group-hover:translate-x-0.5
+                                        group-hover:-translate-y-0.5
+                                    "
+                                    aria-hidden="true"
+                                >
+                                    arrow_outward
+                                </span>
+                            </a>
+                        </div>
                     </div>
-
                 </div>
+            </header>
 
-                {/* Mobile Navbar Dropdown */}
-                <div
-                    className={`
-                        md:hidden overflow-hidden
-                        transition-all duration-300 origin-top
-                        ${navOpen
-                            ? 'max-h-[500px] opacity-100 scale-y-100 mt-4'
-                            : 'max-h-0 opacity-0 scale-y-0'
-                        }
-                    `}
-                >
-                    {/* Wadah menu mobile dengan gaya brutal */}
-                    <div
-                        className='border-4 border-black
-                        bg-yellow-400
-                        shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-                        p-6 mb-4'
-                    >
-                        <Navbar mobile />
-                    </div>
-                </div>
-
-            </div>
-        </header>
+            <Navbar mobile />
+        </>
     )
 }
 

@@ -1,99 +1,242 @@
 import React from 'react'
 
 const aboutItems = [
-  {
-    label: 'Projects Completed',
-    number: '5'
-  },
-  // {
-  //   label: 'Happy Clients',
-  //   number: '0'
-  // },
-  {
-    label: 'Years Experience',
-    number: '1'
-  }
+    {
+        label: 'Projects Completed',
+        number: '5+'
+    },
+    {
+        label: 'Years Experience',
+        number: '1+'
+    }
 ]
 
 const About = () => {
-  return (
-    <section
-      id='about'
-      className='section relative overflow-hidden bg-white py-20'
-    >
-      <div className="container mx-auto px-4 relative z-10">
-        <div className='grid lg:grid-cols-[1fr,0.8fr] gap-12 items-center'>
+    return (
+        <section
+            id="about"
+            className="
+                section
+                section-divider
+            "
+        >
+            <div className="container">
+                <div
+                    className="
+                        grid
+                        gap-14
+                        lg:grid-cols-[0.85fr_1.15fr]
+                        lg:gap-20
+                        xl:gap-28
+                    "
+                >
+                    <div className="reveal-up">
+                        <div
+                            className="
+                                mb-8
+                                flex items-center
+                                gap-4
+                                text-xs
+                                font-medium
+                                tracking-[0.12em]
+                                text-zinc-600
+                            "
+                        >
+                            <span>
+                                02
+                            </span>
 
-          {/* LEFT CONTENT */}
-          <div className='reveal-up'>
+                            <span
+                                className="
+                                    h-px
+                                    w-10
+                                    bg-white/[0.12]
+                                "
+                                aria-hidden="true"
+                            />
 
-            <span className='inline-flex items-center gap-2 px-5 py-2 bg-pink-400 border-2 border-black text-sm font-bold text-black uppercase tracking-wider mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
-              About Me
-            </span>
+                            <span>
+                                About
+                            </span>
+                        </div>
 
-            <h2 className='text-4xl md:text-5xl font-black text-black mb-6 uppercase tracking-tight max-w-[15ch]'>
-              Building modern digital experiences for the future.
-            </h2>
-
-            <p className='text-black font-medium text-base md:text-lg leading-relaxed max-w-[60ch] mb-6 border-l-4 border-black pl-5'>
-              A Computer Science student and experienced Full Stack Developer with a strong 
-              background in IT infrastructure. Proficient in building robust web applications 
-              using Laravel, PHP, and React, supported by efficient MySQL database management and Tailwind CSS. 
-              Alongside development, I possess professional expertise in networking, system maintenance, and IT support. A versatile tech professional who bridges the gap between software development and IT infrastructure.
-            </p>
-          </div>
-
-          {/* RIGHT CARD */}
-          <div className='reveal-up'>
-
-            {/* Bentuk card dibuat lebih kaku (rounded-none) atau sesuai selera brutalism */}
-            <div className='relative border-4 border-black bg-cyan-300 p-8 md:p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]'>
-
-              <div className='relative z-10'>
-
-                {/* Karena foto hilang, nama dan jabatan menjadi fokus utama di header card */}
-                <div className='mb-10'>
-                  <h3 className='text-4xl font-black text-black uppercase tracking-tight mb-2'>
-                    Rizky Maulana
-                  </h3>
-                  
-                  {/* Jabatan diperbesar dan border bawah ditebalkan */}
-                  <p className='text-black font-bold uppercase tracking-widest border-b-4 border-black inline-block mt-1'>
-                    Full Stack Developer
-                  </p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-6'>
-
-                  {aboutItems.map(({ label, number }, key) => (
-                    <div
-                      key={key}
-                      className='bg-white border-4 border-black p-5 text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300'
-                    >
-                      <h4 className='text-4xl md:text-5xl font-black text-black mb-2'>
-                        {number}
-                        <span className='text-pink-500 ml-1'>+</span>
-                      </h4>
-
-                      <p className='text-sm font-bold text-black uppercase leading-tight'>
-                        {label}
-                      </p>
+                        <h2
+                            className="
+                                headline-2
+                                max-w-[16ch]
+                            "
+                        >
+                            Bridging software development and IT infrastructure.
+                        </h2>
                     </div>
-                  ))}
 
+                    <div className="reveal-up">
+                        <div
+                            className="
+                                max-w-3xl
+                                text-[15px]
+                                leading-7
+                                text-zinc-400
+                                sm:text-base
+                                sm:leading-8
+                            "
+                        >
+                            <p>
+                                I&apos;m a Computer Science student and Full Stack Developer
+                                with experience across web development and IT infrastructure.
+                                My work focuses on building reliable digital products with
+                                thoughtful interfaces and scalable backend systems.
+                            </p>
+
+                            <p className="mt-5">
+                                I work primarily with Laravel, PHP, React, MySQL, and
+                                Tailwind CSS. Beyond development, I also have hands-on
+                                experience with networking, system maintenance,
+                                troubleshooting, and IT support.
+                            </p>
+
+                            <p className="mt-5">
+                                That combination gives me a broader perspective when
+                                building technology. I understand both the software users
+                                interact with and the infrastructure supporting it behind
+                                the scenes.
+                            </p>
+                        </div>
+
+                        <div
+                            className="
+                                mt-12
+                                border-y
+                                border-white/[0.08]
+                                sm:mt-14
+                            "
+                        >
+                            {aboutItems.map(({ label, number }, index) => (
+                                <div
+                                    key={label}
+                                    className="
+                                        group
+                                        grid
+                                        grid-cols-[90px_1fr]
+                                        items-center
+                                        gap-6
+                                        border-b
+                                        border-white/[0.08]
+                                        py-6
+                                        last:border-b-0
+                                        sm:grid-cols-[130px_1fr]
+                                        sm:py-7
+                                    "
+                                >
+                                    <p
+                                        className="
+                                            text-3xl
+                                            font-semibold
+                                            tracking-[-0.05em]
+                                            text-zinc-100
+                                            transition-transform
+                                            duration-300
+                                            group-hover:translate-x-1
+                                            sm:text-4xl
+                                        "
+                                    >
+                                        {number}
+                                    </p>
+
+                                    <div
+                                        className="
+                                            flex
+                                            items-center
+                                            justify-between
+                                            gap-4
+                                        "
+                                    >
+                                        <p
+                                            className="
+                                                text-sm
+                                                text-zinc-500
+                                                transition-colors
+                                                duration-200
+                                                group-hover:text-zinc-300
+                                            "
+                                        >
+                                            {label}
+                                        </p>
+
+                                        <span
+                                            className="
+                                                material-symbols-rounded
+                                                text-[18px]
+                                                text-zinc-800
+                                                transition-all
+                                                duration-300
+                                                group-hover:translate-x-1
+                                                group-hover:text-zinc-500
+                                            "
+                                            aria-hidden="true"
+                                        >
+                                            east
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div
+                            className="
+                                mt-10
+                                grid
+                                gap-7
+                                border-t
+                                border-white/[0.08]
+                                pt-8
+                                sm:grid-cols-2
+                                lg:mt-12
+                            "
+                        >
+                            <div>
+                                <p className="eyebrow">
+                                    Focus
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-3
+                                        max-w-[26ch]
+                                        text-sm
+                                        leading-6
+                                        text-zinc-400
+                                    "
+                                >
+                                    Full stack web development, UI/UX, backend systems,
+                                    and product-focused engineering.
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="eyebrow">
+                                    Beyond code
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-3
+                                        max-w-[26ch]
+                                        text-sm
+                                        leading-6
+                                        text-zinc-400
+                                    "
+                                >
+                                    Networking, infrastructure, system maintenance,
+                                    troubleshooting, and IT support.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-              </div>
-
             </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-  )
+        </section>
+    )
 }
 
 export default About

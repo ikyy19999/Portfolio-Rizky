@@ -2,11 +2,31 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 const navItems = [
-    { label: 'Home', link: '#home' },
-    { label: 'About', link: '#about' },
-    { label: 'Skills', link: '#skills' },
-    { label: 'Projects', link: '#work' },
-    { label: 'Contact', link: '#contact' }
+    {
+        label: 'Home',
+        link: '#home',
+        icon: 'home'
+    },
+    {
+        label: 'About',
+        link: '#about',
+        icon: 'person'
+    },
+    {
+        label: 'Skills',
+        link: '#skills',
+        icon: 'code'
+    },
+    {
+        label: 'Projects',
+        link: '#work',
+        icon: 'grid_view'
+    },
+    {
+        label: 'Contact',
+        link: '#contact',
+        icon: 'mail'
+    }
 ]
 
 const Navbar = ({ mobile = false }) => {
@@ -14,62 +34,121 @@ const Navbar = ({ mobile = false }) => {
 
     useEffect(() => {
         const handleScroll = () => {
-            const sections = navItems.map(item =>
-                document.querySelector(item.link)
-            )
-            
-            sections.forEach(section => {
+            const scrollPosition = window.scrollY + 180
+            let currentSection = '#home'
+
+            navItems.forEach((item) => {
+                const section = document.querySelector(item.link)
+
                 if (!section) return
-                const rect = section.getBoundingClientRect()
-                // Perbaikan: Menambahkan backtick agar string interpolation berjalan
-                if (rect.top <= 120 && rect.bottom >= 120) {
-                    setActiveSection(`#${section.id}`)
+
+                if (scrollPosition >= section.offsetTop) {
+                    currentSection = item.link
                 }
             })
+
+            setActiveSection(currentSection)
         }
-        
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
+
+        handleScroll()
+
+        window.addEventListener('scroll', handleScroll, {
+            passive: true
+        })
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
     }, [])
+
+    const handleNavigation = (event, link) => {
+        event.preventDefault()
+
+        const section = document.querySelector(link)
+
+        if (!section) return
+
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        })
+
+        setActiveSection(link)
+    }
+
+    if (mobile) {
+        return (
+            <nav
+                className="mobile-bottom-nav"
+                aria-label="Mobile navigation"
+            >
+                {navItems.map((item) => {
+                    const isActive = activeSection === item.link
+
+                    return (
+                        <a
+                            key={item.link}
+                            href={item.link}
+                            onClick={(event) =>
+                                handleNavigation(event, item.link)
+                            }
+                            className={`mobile-nav-link ${
+                                isActive ? 'active' : ''
+                            }`}
+                            aria-current={
+                                isActive ? 'page' : undefined
+                            }
+                        >
+                            {isActive && (
+                                <span
+                                    className="mobile-nav-indicator"
+                                    aria-hidden="true"
+                                />
+                            )}
+
+                            <span
+                                className="material-symbols-rounded"
+                                aria-hidden="true"
+                            >
+                                {item.icon}
+                            </span>
+
+                            <span>
+                                {item.label}
+                            </span>
+                        </a>
+                    )
+                })}
+            </nav>
+        )
+    }
 
     return (
         <nav
-            // Perbaikan: Menambahkan backtick pada class container
-            className={`flex ${mobile ? 'flex-col gap-4' : 'items-center gap-4'}`}
+            className="navbar"
+            aria-label="Primary navigation"
         >
-            {navItems.map((item, key) => (
-                // Perbaikan: Menambahkan tag pembuka <a> yang hilang
-                <a
-                    key={key}
-                    href={item.link}
-                    className={`
-                        block px-5 py-3 rounded-md
-                        border-2 border-black
-                        text-sm font-bold uppercase tracking-wider
-                        transition-all duration-200 ease-in-out
-                        ${activeSection === item.link
-                            ? `
-                                /* STATE AKTIF: Efek ditekan (pressed) */
-                                bg-yellow-400 
-                                text-black
-                                translate-x-[4px] translate-y-[4px]
-                                shadow-none
-                            `
-                            : `
-                                /* STATE TIDAK AKTIF: Melayang dengan bayangan solid */
-                                bg-white 
-                                text-black
-                                shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-                                hover:bg-cyan-300
-                                hover:-translate-y-[2px] hover:-translate-x-[2px]
-                                hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
-                            `
+            {navItems.map((item) => {
+                const isActive = activeSection === item.link
+
+                return (
+                    <a
+                        key={item.link}
+                        href={item.link}
+                        onClick={(event) =>
+                            handleNavigation(event, item.link)
                         }
-                    `}
-                >
-                    {item.label}
-                </a>
-            ))}
+                        className={`nav-link ${
+                            isActive ? 'active' : ''
+                        }`}
+                        aria-current={
+                            isActive ? 'page' : undefined
+                        }
+                    >
+                        {item.label}
+                    </a>
+                )
+            })}
         </nav>
     )
 }

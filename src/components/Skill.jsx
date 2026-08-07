@@ -1,132 +1,477 @@
-import React, { useState } from 'react';
-import SkillCard from './SkillCard';
+import React, { useMemo, useState } from 'react'
+import SkillCard from './SkillCard'
 
-// Array of skill items with their details
 const skillItem = [
-    { imgSrc: '/assets/html.png', label: 'HTML', desc: 'Web Structure', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/css3.svg', label: 'CSS', desc: 'User Interface', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/javascript.svg', label: 'JavaScript', desc: 'Web Interaction', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/php.png', label: 'PHP', desc: 'Backend Development', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/Laravel.png', label: 'Laravel', desc: 'Backend Framework', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/react.svg', label: 'React', desc: 'Frontend Framework', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/tailwindcss.svg', label: 'Tailwind CSS', desc: 'UI Framework', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/mysql.png', label: 'MySQL', desc: 'Database', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/linux.jpg', label: 'Linux', desc: 'Operating System', category: 'system', tag: 'Work' },
-    { imgSrc: '/assets/windows.jpg', label: 'Windows', desc: 'Operating System', category: 'system', tag: 'Work' },
-    { imgSrc: '/assets/git.jpg', label: 'Git & GitHub', desc: 'Version Control', category: 'web', tag: 'Project' },
-    { imgSrc: '/assets/cisco logo.jpg', label: 'Networking', desc: 'LAN/WAN & Troubleshooting', category: 'network', tag: 'Work' },
-    { imgSrc: '/assets/cctv.jpg', label: 'CCTV Systems', desc: 'Installation & Maintenance', category: 'network', tag: 'Internship' }
-];
+    {
+        imgSrc: '/assets/html.png',
+        label: 'HTML',
+        desc: 'Web Structure',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/css3.svg',
+        label: 'CSS',
+        desc: 'User Interface',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/javascript.svg',
+        label: 'JavaScript',
+        desc: 'Web Interaction',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/php.png',
+        label: 'PHP',
+        desc: 'Backend Development',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/Laravel.png',
+        label: 'Laravel',
+        desc: 'Backend Framework',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/react.svg',
+        label: 'React',
+        desc: 'Frontend Framework',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/tailwindcss.svg',
+        label: 'Tailwind CSS',
+        desc: 'UI Framework',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/mysql.png',
+        label: 'MySQL',
+        desc: 'Database',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/linux.jpg',
+        label: 'Linux',
+        desc: 'Operating System',
+        category: 'system',
+        tag: 'Work'
+    },
+    {
+        imgSrc: '/assets/windows.jpg',
+        label: 'Windows',
+        desc: 'Operating System',
+        category: 'system',
+        tag: 'Work'
+    },
+    {
+        imgSrc: '/assets/git.jpg',
+        label: 'Git & GitHub',
+        desc: 'Version Control',
+        category: 'web',
+        tag: 'Project'
+    },
+    {
+        imgSrc: '/assets/cisco logo.jpg',
+        label: 'Networking',
+        desc: 'LAN/WAN & Troubleshooting',
+        category: 'network',
+        tag: 'Work'
+    },
+    {
+        imgSrc: '/assets/cctv.jpg',
+        label: 'CCTV Systems',
+        desc: 'Installation & Maintenance',
+        category: 'network',
+        tag: 'Internship'
+    }
+]
+
+const filters = [
+    {
+        label: 'All',
+        value: 'all'
+    },
+    {
+        label: 'Web Development',
+        value: 'web'
+    },
+    {
+        label: 'Networking',
+        value: 'network'
+    },
+    {
+        label: 'Systems',
+        value: 'system'
+    }
+]
 
 const Skill = () => {
-    const [filter, setFilter] = useState('all');
-    const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('all')
+    const [search, setSearch] = useState('')
 
-    const filteredSkills = skillItem.filter(skill => {
-        const matchCategory = filter === 'all' || skill.category === filter;
-        const matchSearch = skill.label.toLowerCase().includes(search.toLowerCase());
-        return matchCategory && matchSearch;
-    });
+    const filteredSkills = useMemo(() => {
+        const normalizedSearch = search.trim().toLowerCase()
 
-    // Helper function untuk style tombol filter (Aktif vs Tidak Aktif)
-    const getFilterBtnStyle = (currentFilter) => {
-        const baseStyle = "px-6 py-3 border-4 border-black font-black uppercase tracking-wider transition-all duration-100";
-        
-        if (filter === currentFilter) {
-            // STATE AKTIF: Warna pink, efek tertekan (shadow hilang, posisi bergeser)
-            return `${baseStyle} bg-pink-400 translate-x-[4px] translate-y-[4px] shadow-none text-black`;
-        } else {
-            // STATE TIDAK AKTIF: Warna putih, shadow solid, efek hover memantul
-            return `${baseStyle} bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-black hover:bg-yellow-300 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`;
-        }
-    };
+        return skillItem.filter((skill) => {
+            const matchCategory =
+                filter === 'all' || skill.category === filter
+
+            const matchSearch =
+                normalizedSearch === '' ||
+                skill.label.toLowerCase().includes(normalizedSearch) ||
+                skill.desc.toLowerCase().includes(normalizedSearch) ||
+                skill.tag.toLowerCase().includes(normalizedSearch)
+
+            return matchCategory && matchSearch
+        })
+    }, [filter, search])
 
     return (
-        <section id="skills" className="section relative overflow-hidden bg-white py-20 border-b-8 border-black">
-            <div className="container mx-auto px-4">
+        <section
+            id="skills"
+            className="
+                section
+                section-divider
+                relative
+                overflow-hidden
+            "
+        >
+            <div className="container">
+                <div
+                    className="
+                        reveal-up
+                        grid
+                        gap-10
+                        lg:grid-cols-[0.85fr_1.15fr]
+                        lg:gap-20
+                        xl:gap-28
+                    "
+                >
+                    <div>
+                        <div
+                            className="
+                                mb-8
+                                flex
+                                items-center
+                                gap-4
+                                text-xs
+                                font-medium
+                                tracking-[0.12em]
+                                text-zinc-600
+                            "
+                        >
+                            <span>03</span>
 
-                {/* Section Headline */}
-                <div className='mb-12 reveal-up'>
-                    <span className='inline-block bg-yellow-400 border-2 border-black text-black font-black uppercase tracking-[0.2em] px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
-                        My Arsenal
-                    </span>
+                            <span
+                                className="
+                                    h-px
+                                    w-10
+                                    bg-white/[0.12]
+                                "
+                                aria-hidden="true"
+                            />
 
-                    <h2 className='text-4xl md:text-5xl lg:text-6xl font-black text-black uppercase tracking-tight max-w-[20ch] mb-6 leading-[1.1]'>
-                        Primary Instruments I Depend On
-                    </h2>
+                            <span>Skills</span>
+                        </div>
 
-                    <p className='text-black font-bold text-lg border-l-8 border-cyan-400 pl-5 bg-gray-50 py-3 pr-3 max-w-[50ch]'>
-                        Explore the tools and technologies I use across web development,
-                        networking, and IT support.
+                        <h2 className="headline-2 max-w-[16ch]">
+                            Technologies I use across product development and infrastructure.
+                        </h2>
+
+                        <p
+                            className="
+                                mt-6
+                                max-w-lg
+                                text-[15px]
+                                leading-7
+                                text-zinc-500
+                                sm:text-base
+                                sm:leading-8
+                            "
+                        >
+                            My toolkit covers frontend, backend,
+                            databases, networking, operating systems,
+                            and the technologies behind reliable web
+                            products.
+                        </p>
+                    </div>
+
+                    <div
+                        className="
+                            flex
+                            flex-col
+                            justify-end
+                            gap-8
+                        "
+                    >
+                        <div>
+                            <label
+                                htmlFor="skill-search"
+                                className="eyebrow"
+                            >
+                                Search
+                            </label>
+
+                            <div className="relative mt-3 max-w-lg">
+                                <span
+                                    className="
+                                        material-symbols-rounded
+                                        pointer-events-none
+                                        absolute
+                                        left-0
+                                        top-1/2
+                                        z-10
+                                        -translate-y-1/2
+                                        text-[20px]
+                                        text-zinc-600
+                                    "
+                                    aria-hidden="true"
+                                >
+                                    search
+                                </span>
+
+                                <input
+                                    id="skill-search"
+                                    type="search"
+                                    value={search}
+                                    placeholder="Search technologies"
+                                    autoComplete="off"
+                                    onChange={(event) =>
+                                        setSearch(event.target.value)
+                                    }
+                                    className="
+                                        line-input
+                                        pl-9
+                                        pr-9
+                                    "
+                                />
+
+                                {search.length > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setSearch('')}
+                                        className="
+                                            absolute
+                                            right-0
+                                            top-1/2
+                                            z-10
+                                            grid
+                                            h-8
+                                            w-8
+                                            -translate-y-1/2
+                                            place-items-center
+                                            text-zinc-600
+                                            transition-colors
+                                            duration-200
+                                            hover:text-zinc-300
+                                            focus:outline-none
+                                        "
+                                        aria-label="Clear search"
+                                    >
+                                        <span
+                                            className="
+                                                material-symbols-rounded
+                                                text-[18px]
+                                            "
+                                            aria-hidden="true"
+                                        >
+                                            close
+                                        </span>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <p className="eyebrow">
+                                Category
+                            </p>
+
+                            <div
+                                className="
+                                    mt-4
+                                    flex
+                                    gap-x-7
+                                    overflow-x-auto
+                                    border-b
+                                    border-white/[0.08]
+                                    sm:flex-wrap
+                                    sm:overflow-visible
+                                "
+                                aria-label="Skill categories"
+                            >
+                                {filters.map((item) => {
+                                    const isActive =
+                                        filter === item.value
+
+                                    return (
+                                        <button
+                                            key={item.value}
+                                            type="button"
+                                            onClick={() =>
+                                                setFilter(item.value)
+                                            }
+                                            className={`
+                                                relative
+                                                shrink-0
+                                                pb-3
+                                                text-sm
+                                                font-medium
+                                                tracking-[-0.015em]
+                                                transition-colors
+                                                duration-200
+                                                ${
+                                                    isActive
+                                                        ? 'text-zinc-100'
+                                                        : 'text-zinc-600 hover:text-zinc-300'
+                                                }
+                                            `}
+                                            aria-pressed={isActive}
+                                        >
+                                            {item.label}
+
+                                            <span
+                                                className={`
+                                                    absolute
+                                                    bottom-0
+                                                    left-0
+                                                    h-px
+                                                    bg-zinc-100
+                                                    transition-all
+                                                    duration-300
+                                                    ${
+                                                        isActive
+                                                            ? 'w-full opacity-100'
+                                                            : 'w-0 opacity-0'
+                                                    }
+                                                `}
+                                                aria-hidden="true"
+                                            />
+                                        </button>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className="
+                        reveal-up
+                        mt-14
+                        flex
+                        items-center
+                        justify-between
+                        border-b
+                        border-white/[0.08]
+                        pb-4
+                        sm:mt-16
+                    "
+                >
+                    <p
+                        className="
+                            text-sm
+                            font-medium
+                            tracking-[-0.015em]
+                            text-zinc-400
+                        "
+                    >
+                        Technology index
+                    </p>
+
+                    <p className="text-xs text-zinc-700">
+                        {filteredSkills.length} / {skillItem.length}
                     </p>
                 </div>
 
-                {/* Search & Filter Controls */}
-                <div className="mb-14 reveal-up">
-                    
-                    {/* Search Input gaya Brutalism */}
-                    <input
-                        type="text"
-                        placeholder="SEARCH SKILLS..."
-                        className="w-full max-w-md p-4 mb-8 bg-white border-4 border-black text-black font-black uppercase placeholder-gray-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-[4px] focus:translate-y-[4px] focus:shadow-none transition-all duration-100"
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-
-                    {/* Filter Buttons */}
-                    <div className="flex gap-4 flex-wrap">
-                        <button
-                            onClick={() => setFilter('all')}
-                            className={getFilterBtnStyle('all')}
-                        >
-                            All
-                        </button>
-                        <button
-                            onClick={() => setFilter('web')}
-                            className={getFilterBtnStyle('web')}
-                        >
-                            Web Dev
-                        </button>
-                        <button
-                            onClick={() => setFilter('network')}
-                            className={getFilterBtnStyle('network')}
-                        >
-                            Networking
-                        </button>
-                        <button
-                            onClick={() => setFilter('system')}
-                            className={getFilterBtnStyle('system')}
-                        >
-                            System
-                        </button>
-                    </div>
-
-                </div>
-
-                {/* Skill Grid */}
-                {/* Asumsi komponen SkillCard nantinya juga akan diubah ke gaya neubrutalism secara terpisah */}
-                <div className='grid gap-6 grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))]'>
+                <div
+                    className="
+                        grid
+                        grid-cols-1
+                        border-b
+                        border-white/[0.08]
+                        sm:grid-cols-2
+                        lg:grid-cols-3
+                    "
+                >
                     {filteredSkills.length > 0 ? (
-                        filteredSkills.map(({ imgSrc, label, desc, tag }, key) => (
-                            <SkillCard
-                                key={key}
-                                imgSrc={imgSrc}
-                                label={label}
-                                desc={`${desc} • ${tag}`}
-                                classes='reveal-up'
-                            />
-                        ))
+                        filteredSkills.map(
+                            ({
+                                imgSrc,
+                                label,
+                                desc,
+                                tag
+                            }) => (
+                                <SkillCard
+                                    key={label}
+                                    imgSrc={imgSrc}
+                                    label={label}
+                                    desc={`${desc} · ${tag}`}
+                                />
+                            )
+                        )
                     ) : (
-                        // Tampilan jika pencarian tidak menemukan hasil
-                        <div className="col-span-full p-8 border-4 border-black bg-yellow-400 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-                            <h3 className="text-2xl font-black text-black uppercase">No Skills Found</h3>
-                            <p className="font-bold text-black mt-2">Try adjusting your search or filter.</p>
+                        <div
+                            className="
+                                col-span-full
+                                flex
+                                min-h-[240px]
+                                flex-col
+                                items-center
+                                justify-center
+                                py-16
+                                text-center
+                            "
+                        >
+                            <span
+                                className="
+                                    material-symbols-rounded
+                                    text-[28px]
+                                    text-zinc-700
+                                "
+                                aria-hidden="true"
+                            >
+                                search_off
+                            </span>
+
+                            <h3
+                                className="
+                                    mt-4
+                                    text-lg
+                                    font-medium
+                                    tracking-[-0.025em]
+                                    text-zinc-300
+                                "
+                            >
+                                No technologies found
+                            </h3>
+
+                            <p
+                                className="
+                                    mt-2
+                                    max-w-sm
+                                    text-sm
+                                    leading-6
+                                    text-zinc-600
+                                "
+                            >
+                                Try another keyword or switch to a different category.
+                            </p>
                         </div>
                     )}
                 </div>
-
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default Skill;
+export default Skill

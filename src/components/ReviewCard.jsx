@@ -1,93 +1,193 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ratings = new Array(5).fill({
-  icon: 'star'
-})
+const ratings = Array.from({ length: 5 }, (_, index) => index)
 
 const ReviewCard = ({
-  content,
-  name,
-  company
+    content,
+    name,
+    company,
+    index = 1
 }) => {
+    const reviewNumber = String(index).padStart(2, '0')
 
-  return (
-    <div
-      className='group relative flex flex-col justify-between
-      min-w-[320px] lg:min-w-[430px] h-full
-      border-4 border-black
-      bg-white
-      p-8
-      shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-      transition-all duration-200 ease-in-out
-      hover:-translate-y-2 hover:-translate-x-2
-      hover:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)]
-      hover:bg-cyan-300'
-    >
-
-      {/* Quote Icon - Diubah menjadi hitam pekat dengan opacity sebagai background */}
-      <div
-        className='absolute top-2 right-4 text-black
-        text-8xl font-black opacity-10 pointer-events-none select-none
-        group-hover:opacity-30 transition-opacity duration-200'
-      >
-        "
-      </div>
-
-      <div>
-        {/* Rating */}
-        <div className='relative z-10 flex items-center gap-1 mb-8'>
-
-          {ratings.map(({ icon }, key) => (
-            <span
-              key={key}
-              // Bintang diberi efek text-shadow hitam untuk mensimulasikan border
-              className='material-symbols-rounded text-yellow-400 text-[24px] md:text-[28px]'
-              style={{
-                fontVariationSettings: '"FILL" 1',
-                textShadow: '2px 2px 0px rgba(0,0,0,1)'
-              }}
-            >
-              {icon}
-            </span>
-          ))}
-
-        </div>
-
-        {/* Content */}
-        {/* Teks hitam tebal dengan aksen garis di sebelah kiri */}
-        <p
-          className='relative z-10 text-black font-bold leading-relaxed
-          text-lg md:text-xl mb-10 border-l-4 border-black pl-5'
+    return (
+        <article
+            className="
+                group
+                relative
+                flex
+                min-h-[320px]
+                flex-col
+                border-b
+                border-white/[0.08]
+                py-8
+                transition-colors
+                duration-300
+                hover:bg-white/[0.015]
+                md:w-[420px]
+                md:shrink-0
+                md:border-b-0
+                md:border-r
+                md:px-8
+                md:py-9
+                lg:w-[470px]
+                lg:px-10
+                lg:py-10
+            "
         >
-          {content}
-        </p>
-      </div>
+            <div
+                className="
+                    flex
+                    items-start
+                    justify-between
+                    gap-6
+                "
+            >
+                <div
+                    className="
+                        flex
+                        items-center
+                        gap-1
+                    "
+                    aria-label="5 out of 5 stars"
+                >
+                    {ratings.map((rating) => (
+                        <span
+                            key={rating}
+                            className="
+                                material-symbols-rounded
+                                text-[17px]
+                                text-zinc-500
+                                transition-colors
+                                duration-300
+                                group-hover:text-zinc-300
+                            "
+                            style={{
+                                fontVariationSettings:
+                                    '"FILL" 1, "wght" 400, "GRAD" 0, "opsz" 20'
+                            }}
+                            aria-hidden="true"
+                        >
+                            star
+                        </span>
+                    ))}
+                </div>
 
-      {/* User Information */}
-      {/* Menggunakan border-top tebal sebagai pemisah karena foto sudah tidak ada */}
-      <div className='relative z-10 mt-auto pt-6 border-t-4 border-black'>
+                <span
+                    className="
+                        text-xs
+                        font-medium
+                        tracking-[0.1em]
+                        text-zinc-700
+                    "
+                >
+                    {reviewNumber}
+                </span>
+            </div>
 
-        <h3 className='text-2xl md:text-3xl font-black text-black uppercase tracking-tight mb-3'>
-          {name}
-        </h3>
+            <blockquote
+                className="
+                    mt-8
+                    flex-1
+                    text-lg
+                    font-medium
+                    leading-8
+                    tracking-[-0.025em]
+                    text-zinc-300
+                    sm:text-xl
+                    sm:leading-9
+                    lg:text-[1.35rem]
+                "
+            >
+                <span
+                    className="
+                        mr-1
+                        text-zinc-600
+                    "
+                    aria-hidden="true"
+                >
+                    “
+                </span>
 
-        {/* Jabatan/Perusahaan dibuat menjadi label stiker bergaya brutalisme */}
-        <p className='text-black font-black uppercase tracking-widest text-xs md:text-sm bg-yellow-400 inline-block px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'>
-          {company}
-        </p>
+                {content}
 
-      </div>
+                <span
+                    className="
+                        ml-1
+                        text-zinc-600
+                    "
+                    aria-hidden="true"
+                >
+                    ”
+                </span>
+            </blockquote>
 
-    </div>
-  )
+            <footer
+                className="
+                    mt-10
+                    border-t
+                    border-white/[0.08]
+                    pt-5
+                "
+            >
+                <div
+                    className="
+                        flex
+                        items-end
+                        justify-between
+                        gap-6
+                    "
+                >
+                    <div>
+                        <p
+                            className="
+                                text-sm
+                                font-medium
+                                tracking-[-0.015em]
+                                text-zinc-200
+                            "
+                        >
+                            {name}
+                        </p>
+
+                        <p
+                            className="
+                                mt-1
+                                text-xs
+                                text-zinc-600
+                            "
+                        >
+                            {company}
+                        </p>
+                    </div>
+
+                    <span
+                        className="
+                            select-none
+                            font-serif
+                            text-4xl
+                            leading-none
+                            text-zinc-800
+                            transition-colors
+                            duration-300
+                            group-hover:text-zinc-700
+                        "
+                        aria-hidden="true"
+                    >
+                        ”
+                    </span>
+                </div>
+            </footer>
+        </article>
+    )
 }
 
 ReviewCard.propTypes = {
-  content: PropTypes.string.isRequired,
-  // Prop imgSrc dihapus karena sudah tidak digunakan
-  name: PropTypes.string.isRequired,
-  company: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    company: PropTypes.string.isRequired,
+    index: PropTypes.number
 }
 
 export default ReviewCard

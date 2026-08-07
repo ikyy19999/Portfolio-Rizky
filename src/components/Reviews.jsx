@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import ReviewCard from './ReviewCard'
 
 import gsap from 'gsap'
@@ -7,109 +7,243 @@ import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Array data telah diperbarui dengan menghapus properti imgSrc
 const reviews = [
-  // {
-  //   content:
-  //     'Exceptional fullstack development with modern UI/UX execution and scalable backend architecture.',
-  //   name: 'Sophia Ramirez',
-  //   company: 'PixelForge'
-  // },
-  // {
-  //   content:
-  //     'Delivered an elegant and responsive application with impressive performance optimization.',
-  //   name: 'Ethan Caldwell',
-  //   company: 'NexaWave'
-  // },
-  // {
-  //   content:
-  //     'Very professional workflow, clean code structure, and excellent communication throughout the project.',
-  //   name: 'Liam Bennett',
-  //   company: 'CodeCraft'
-  // },
-  // {
-  //   content:
-  //     'The interface design feels premium and modern. Highly recommended for frontend and backend projects.',
-  //   name: 'Ava Thompson',
-  //   company: 'BrightWeb'
-  // },
-  // {
-  //   content:
-  //     'Fast delivery, scalable system architecture, and smooth user experience on every device.',
-  //   name: 'Jonathan Lee',
-  //   company: 'Skyline Digital'
-  // }
+    // {
+    //     content:
+    //         'Exceptional fullstack development with modern UI/UX execution and scalable backend architecture.',
+    //     name: 'Sophia Ramirez',
+    //     company: 'PixelForge'
+    // },
+    // {
+    //     content:
+    //         'Delivered an elegant and responsive application with impressive performance optimization.',
+    //     name: 'Ethan Caldwell',
+    //     company: 'NexaWave'
+    // }
 ]
 
 const Reviews = () => {
+    const sectionRef = useRef(null)
+    const trackRef = useRef(null)
 
-  useGSAP(() => {
-    const mm = gsap.matchMedia()
+    useGSAP(
+        () => {
+            if (reviews.length === 0) return
 
-    mm.add('(min-width: 768px)', () => {
-      gsap.to('.reviews-track', {
-        x: () => -(document.querySelector('.reviews-track').scrollWidth - window.innerWidth + 100),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.reviews-section',
-          start: 'top top',
-          end: '+=2500',
-          scrub: true,
-          pin: true
+            const track = trackRef.current
+            const section = sectionRef.current
+
+            if (!track || !section) return
+
+            const mm = gsap.matchMedia()
+
+            mm.add('(min-width: 768px)', () => {
+                const getScrollDistance = () => {
+                    const overflow =
+                        track.scrollWidth - track.clientWidth
+
+                    return Math.max(0, overflow)
+                }
+
+                if (getScrollDistance() <= 0) return
+
+                const animation = gsap.to(track, {
+                    x: () => -getScrollDistance(),
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top top',
+                        end: () =>
+                            `+=${Math.max(
+                                getScrollDistance() * 1.25,
+                                900
+                            )}`,
+                        scrub: 0.8,
+                        pin: true,
+                        invalidateOnRefresh: true
+                    }
+                })
+
+                return () => {
+                    animation.scrollTrigger?.kill()
+                    animation.kill()
+                }
+            })
+
+            return () => {
+                mm.revert()
+            }
+        },
+        {
+            scope: sectionRef,
+            dependencies: []
         }
-      })
-    })
-  })
+    )
 
-  return (
-    <section
-      id='reviews'
-      // Memberikan background terang dengan garis pembatas hitam tebal di bawah
-      className='reviews-section relative overflow-hidden bg-white py-20 border-b-8 border-black'
-    >
+    if (reviews.length === 0) {
+        return null
+    }
 
-      <div className='container mx-auto px-4 relative z-10'>
+    return (
+        <section
+            ref={sectionRef}
+            id="reviews"
+            className="
+                reviews-section
+                section
+                section-divider
+                relative
+                overflow-hidden
+            "
+        >
+            <div className="container">
+                <div
+                    className="
+                        reveal-up
+                        grid
+                        gap-10
+                        lg:grid-cols-[0.85fr_1.15fr]
+                        lg:gap-20
+                        xl:gap-28
+                    "
+                >
+                    <div>
+                        <div
+                            className="
+                                mb-8
+                                flex
+                                items-center
+                                gap-4
+                                text-xs
+                                font-medium
+                                tracking-[0.12em]
+                                text-zinc-600
+                            "
+                        >
+                            <span>
+                                05
+                            </span>
 
-        {/* Header */}
-        <div className='mb-16 reveal-up'>
+                            <span
+                                className="
+                                    h-px
+                                    w-10
+                                    bg-white/[0.12]
+                                "
+                                aria-hidden="true"
+                            />
 
-          {/* Label diubah menjadi badge solid kotak bergaya brutal */}
-          <span className='inline-block bg-pink-400 border-2 border-black text-black font-black uppercase tracking-[0.2em] px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
-            Testimonials
-          </span>
+                            <span>
+                                Testimonials
+                            </span>
+                        </div>
 
-          {/* Tipografi headline ditebalkan dan dikapitalisasi penuh */}
-          <h2 className='text-4xl md:text-5xl lg:text-6xl font-black text-black uppercase tracking-tight max-w-[16ch] mb-6 leading-[1.1]'>
-            Trusted by clients who value quality experiences
-          </h2>
+                        <h2
+                            className="
+                                headline-2
+                                max-w-[16ch]
+                            "
+                        >
+                            Words from people I&apos;ve worked with.
+                        </h2>
+                    </div>
 
-          {/* Deskripsi ditebalkan dan diberi aksen pinggir */}
-          <p className='text-black font-bold text-lg md:text-xl max-w-2xl border-l-8 border-yellow-400 pl-5 bg-gray-50 py-3 pr-3'>
-            Feedback from clients and collaborators who experienced
-            my development workflow, communication, and product quality.
-          </p>
+                    <div
+                        className="
+                            flex
+                            items-end
+                        "
+                    >
+                        <p
+                            className="
+                                max-w-xl
+                                text-[15px]
+                                leading-7
+                                text-zinc-500
+                                sm:text-base
+                                sm:leading-8
+                            "
+                        >
+                            Feedback from clients and collaborators
+                            on the process, communication, and
+                            quality behind the work.
+                        </p>
+                    </div>
+                </div>
 
-        </div>
+                <div
+                    className="
+                        reveal-up
+                        mt-14
+                        flex
+                        items-center
+                        justify-between
+                        border-b
+                        border-white/[0.08]
+                        pb-4
+                        sm:mt-16
+                    "
+                >
+                    <p
+                        className="
+                            text-sm
+                            font-medium
+                            tracking-[-0.015em]
+                            text-zinc-400
+                        "
+                    >
+                        Client feedback
+                    </p>
 
-        {/* Reviews */}
-        {/* Padding ditambahkan (py-4 pr-4) agar saat card di-hover (memantul naik dan mengeluarkan shadow), shadownya tidak terpotong oleh overflow */}
-        <div className='reviews-track flex gap-6 lg:gap-8 w-max py-4 pr-4'>
+                    <p
+                        className="
+                            text-xs
+                            text-zinc-700
+                        "
+                    >
+                        {String(reviews.length).padStart(2, '0')} reviews
+                    </p>
+                </div>
 
-          {reviews.map(({ content, name, company }, key) => (
-            <ReviewCard
-              key={key}
-              content={content}
-              name={name}
-              company={company}
-            />
-          ))}
-
-        </div>
-
-      </div>
-
-    </section>
-  )
+                <div
+                    className="
+                        mt-8
+                        overflow-visible
+                        sm:mt-10
+                        md:overflow-hidden
+                    "
+                >
+                    <div
+                        ref={trackRef}
+                        className="
+                            reviews-track
+                            grid
+                            grid-cols-1
+                            gap-0
+                            md:flex
+                            md:w-max
+                        "
+                    >
+                        {reviews.map(
+                            ({
+                                content,
+                                name,
+                                company
+                            }, index) => (
+                                <ReviewCard
+                                    key={`${name}-${company}`}
+                                    content={content}
+                                    name={name}
+                                    company={company}
+                                    index={index + 1}
+                                />
+                            )
+                        )}
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
 }
 
 export default Reviews

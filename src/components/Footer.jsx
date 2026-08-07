@@ -1,170 +1,508 @@
 import React from 'react'
-import { ButtonPrimary } from './Button'
 
 const sitemap = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Work', href: '#work' },
-  { label: 'Reviews', href: '#reviews' },
-  { label: 'Contact', href: '#contact' }
+    {
+        label: 'Home',
+        href: '#home'
+    },
+    {
+        label: 'About',
+        href: '#about'
+    },
+    {
+        label: 'Skills',
+        href: '#skills'
+    },
+    {
+        label: 'Projects',
+        href: '#work'
+    },
+    {
+        label: 'Contact',
+        href: '#contact'
+    }
 ]
 
 const socials = [
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Instagram', href: 'https://www.instagram.com/thinkaboutky___' },
-  { label: 'Email', href: 'mailto:hello@madebyrizky.my.id' }
+    {
+        label: 'LinkedIn',
+        href: '#',
+        external: false
+    },
+    {
+        label: 'Instagram',
+        href: 'https://www.instagram.com/thinkaboutky___',
+        external: true
+    },
+    {
+        label: 'Email',
+        href: 'mailto:hello@madebyrizky.my.id',
+        external: false
+    }
 ]
 
 const Footer = () => {
-  return (
-    // Background putih dengan border atas tebal sebagai pembatas antar section
-    <footer className='relative overflow-hidden pt-32 pb-10 bg-white border-t-8 border-black'>
+    const currentYear = new Date().getFullYear()
 
-      <div className='container mx-auto px-4 relative z-10'>
+    const handleNavigation = (event, href) => {
+        if (!href.startsWith('#')) return
 
-        {/* Top CTA */}
-        {/* Card diubah menjadi kuning solid dengan border hitam dan shadow brutalism */}
-        <div className='rounded-none border-4 border-black bg-yellow-400 p-8 lg:p-14 mb-16 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] reveal-up'>
+        event.preventDefault()
 
-          <div className='lg:flex lg:items-center lg:justify-between gap-10'>
+        const section = document.querySelector(href)
 
-            <div className='mb-10 lg:mb-0'>
+        if (!section) return
 
-              {/* Label diganti menjadi badge kotak pink */}
-              <span className='inline-block bg-pink-400 border-2 border-black text-black font-black uppercase tracking-[0.2em] px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>
-                Let&apos;s Connect
-              </span>
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        })
+    }
 
-              <h2 className='text-4xl md:text-5xl font-black text-black uppercase tracking-tight max-w-[15ch] mb-6 leading-tight'>
-                Ready to build your next digital experience?
-              </h2>
+    return (
+        <footer
+            className="
+                relative
+                border-t
+                border-white/[0.08]
+                pb-28
+                pt-16
+                sm:pt-20
+                md:pb-10
+                lg:pt-24
+            "
+        >
+            <div className="container">
+                <div
+                    className="
+                        reveal-up
+                        grid
+                        gap-10
+                        border-b
+                        border-white/[0.08]
+                        pb-14
+                        sm:pb-16
+                        lg:grid-cols-[1fr_auto]
+                        lg:items-end
+                        lg:gap-20
+                    "
+                >
+                    <div>
+                        <p
+                            className="
+                                text-xs
+                                font-medium
+                                tracking-[0.12em]
+                                text-zinc-600
+                            "
+                        >
+                            Have something in mind?
+                        </p>
 
-              <p className='text-black font-bold text-lg max-w-[60ch] border-l-4 border-black pl-4 bg-white/50 p-2'>
-                I create modern, scalable, and visually engaging web applications
-                with clean architecture and premium user experiences.
-              </p>
+                        <h2
+                            className="
+                                mt-5
+                                max-w-[15ch]
+                                text-3xl
+                                font-semibold
+                                leading-[1.02]
+                                tracking-[-0.045em]
+                                text-zinc-50
+                                sm:text-4xl
+                                lg:text-5xl
+                            "
+                        >
+                            Let&apos;s create something thoughtful
+                            and useful.
+                        </h2>
 
+                        <p
+                            className="
+                                mt-6
+                                max-w-xl
+                                text-[15px]
+                                leading-7
+                                text-zinc-500
+                                sm:text-base
+                                sm:leading-8
+                            "
+                        >
+                            From product interfaces to scalable web
+                            applications, I&apos;m open to projects
+                            where thoughtful design and solid
+                            engineering matter.
+                        </p>
+                    </div>
+
+                    <a
+                        href="mailto:hello@madebyrizky.my.id"
+                        className="
+                            group
+                            inline-flex
+                            h-12
+                            w-full
+                            items-center
+                            justify-between
+                            gap-5
+                            bg-zinc-50
+                            px-5
+                            text-sm
+                            font-medium
+                            tracking-[-0.015em]
+                            text-zinc-950
+                            transition-all
+                            duration-200
+                            hover:bg-white
+                            active:scale-[0.99]
+                            sm:w-auto
+                            sm:min-w-[180px]
+                        "
+                        style={{
+                            borderRadius: '11px'
+                        }}
+                    >
+                        <span>
+                            Start a project
+                        </span>
+
+                        <span
+                            className="
+                                material-symbols-rounded
+                                text-[18px]
+                                transition-transform
+                                duration-300
+                                group-hover:translate-x-0.5
+                                group-hover:-translate-y-0.5
+                            "
+                            aria-hidden="true"
+                        >
+                            arrow_outward
+                        </span>
+                    </a>
+                </div>
+
+                <div
+                    className="
+                        grid
+                        gap-12
+                        py-12
+                        sm:py-14
+                        md:grid-cols-2
+                        lg:grid-cols-[1.2fr_0.7fr_0.7fr]
+                        lg:gap-16
+                    "
+                >
+                    <div className="reveal-up">
+                        <a
+                            href="#home"
+                            onClick={(event) =>
+                                handleNavigation(event, '#home')
+                            }
+                            className="
+                                group
+                                inline-flex
+                                items-center
+                                gap-3
+                            "
+                        >
+                            <div
+                                className="
+                                    flex
+                                    h-10
+                                    w-10
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    overflow-hidden
+                                    border
+                                    border-white/[0.08]
+                                    bg-white/[0.03]
+                                    transition-colors
+                                    duration-300
+                                    group-hover:border-white/[0.14]
+                                    group-hover:bg-white/[0.05]
+                                "
+                                style={{
+                                    borderRadius: '11px'
+                                }}
+                            >
+                                <img
+                                    src="/assets/favicon.ico"
+                                    width={28}
+                                    height={28}
+                                    alt="Rizky Maulana"
+                                    className="
+                                        h-7
+                                        w-7
+                                        object-contain
+                                        transition-transform
+                                        duration-300
+                                        group-hover:scale-105
+                                    "
+                                />
+                            </div>
+
+                            <div>
+                                <p
+                                    className="
+                                        text-[15px]
+                                        font-semibold
+                                        leading-tight
+                                        tracking-[-0.025em]
+                                        text-zinc-100
+                                    "
+                                >
+                                    Rizky Maulana
+                                </p>
+
+                                <p
+                                    className="
+                                        mt-1
+                                        text-xs
+                                        text-zinc-600
+                                    "
+                                >
+                                    Full Stack Developer
+                                </p>
+                            </div>
+                        </a>
+
+                        <p
+                            className="
+                                mt-6
+                                max-w-sm
+                                text-sm
+                                leading-7
+                                text-zinc-600
+                            "
+                        >
+                            Building modern digital products across
+                            frontend, backend, interface design, and
+                            IT infrastructure.
+                        </p>
+
+                        <a
+                            href="mailto:hello@madebyrizky.my.id"
+                            className="
+                                mt-6
+                                inline-flex
+                                items-center
+                                gap-2
+                                text-sm
+                                text-zinc-400
+                                transition-colors
+                                duration-200
+                                hover:text-white
+                            "
+                        >
+                            hello@madebyrizky.my.id
+
+                            <span
+                                className="
+                                    material-symbols-rounded
+                                    text-[16px]
+                                "
+                                aria-hidden="true"
+                            >
+                                north_east
+                            </span>
+                        </a>
+                    </div>
+
+                    <div className="reveal-up">
+                        <p className="eyebrow">
+                            Navigation
+                        </p>
+
+                        <nav
+                            className="
+                                mt-5
+                                border-t
+                                border-white/[0.08]
+                            "
+                            aria-label="Footer navigation"
+                        >
+                            {sitemap.map(({ label, href }) => (
+                                <a
+                                    key={href}
+                                    href={href}
+                                    onClick={(event) =>
+                                        handleNavigation(event, href)
+                                    }
+                                    className="
+                                        group
+                                        flex
+                                        items-center
+                                        justify-between
+                                        gap-5
+                                        border-b
+                                        border-white/[0.08]
+                                        py-3.5
+                                        text-sm
+                                        text-zinc-500
+                                        transition-colors
+                                        duration-200
+                                        hover:text-zinc-100
+                                    "
+                                >
+                                    <span>
+                                        {label}
+                                    </span>
+
+                                    <span
+                                        className="
+                                            material-symbols-rounded
+                                            translate-x-1
+                                            text-[16px]
+                                            text-zinc-800
+                                            opacity-0
+                                            transition-all
+                                            duration-300
+                                            group-hover:translate-x-0
+                                            group-hover:text-zinc-500
+                                            group-hover:opacity-100
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        east
+                                    </span>
+                                </a>
+                            ))}
+                        </nav>
+                    </div>
+
+                    <div className="reveal-up">
+                        <p className="eyebrow">
+                            Connect
+                        </p>
+
+                        <div
+                            className="
+                                mt-5
+                                border-t
+                                border-white/[0.08]
+                            "
+                        >
+                            {socials.map(
+                                ({
+                                    label,
+                                    href,
+                                    external
+                                }) => (
+                                    <a
+                                        key={label}
+                                        href={href}
+                                        target={
+                                            external
+                                                ? '_blank'
+                                                : undefined
+                                        }
+                                        rel={
+                                            external
+                                                ? 'noopener noreferrer'
+                                                : undefined
+                                        }
+                                        className="
+                                            group
+                                            flex
+                                            items-center
+                                            justify-between
+                                            gap-5
+                                            border-b
+                                            border-white/[0.08]
+                                            py-3.5
+                                            text-sm
+                                            text-zinc-500
+                                            transition-colors
+                                            duration-200
+                                            hover:text-zinc-100
+                                        "
+                                    >
+                                        <span>
+                                            {label}
+                                        </span>
+
+                                        <span
+                                            className="
+                                                material-symbols-rounded
+                                                text-[16px]
+                                                text-zinc-800
+                                                transition-all
+                                                duration-300
+                                                group-hover:translate-x-0.5
+                                                group-hover:-translate-y-0.5
+                                                group-hover:text-zinc-500
+                                            "
+                                            aria-hidden="true"
+                                        >
+                                            north_east
+                                        </span>
+                                    </a>
+                                )
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className="
+                        reveal-up
+                        flex
+                        flex-col
+                        gap-4
+                        border-t
+                        border-white/[0.08]
+                        pt-6
+                        text-xs
+                        text-zinc-700
+                        sm:flex-row
+                        sm:items-center
+                        sm:justify-between
+                    "
+                >
+                    <p>
+                        © {currentYear} Rizky Maulana. All rights reserved.
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            })
+                        }}
+                        className="
+                            group
+                            flex
+                            w-fit
+                            items-center
+                            gap-2
+                            text-zinc-600
+                            transition-colors
+                            duration-200
+                            hover:text-zinc-300
+                        "
+                    >
+                        Back to top
+
+                        <span
+                            className="
+                                material-symbols-rounded
+                                text-[16px]
+                                transition-transform
+                                duration-300
+                                group-hover:-translate-y-0.5
+                            "
+                            aria-hidden="true"
+                        >
+                            north
+                        </span>
+                    </button>
+                </div>
             </div>
-
-            <div className='shrink-0'>
-              {/* Asumsi komponen ButtonPrimary sudah menggunakan gaya neubrutalism sebelumnya */}
-              <ButtonPrimary
-                href='mailto:hello@madebyrizky.my.id'
-                label='START PROJECT'
-                icon='arrow_forward'
-                classes='text-lg py-4 px-8'
-              />
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* Footer Links */}
-        <div className='grid md:grid-cols-3 gap-12 border-t-4 border-black pt-12'>
-
-          {/* Brand */}
-          <div className='reveal-up'>
-
-            <a
-              href='/'
-              className='flex items-center gap-4 mb-6 group'
-            >
-              <img
-                src='/assets/favicon.ico'
-                width={45}
-                height={45}
-                alt='Logo'
-                // Gambar diberi border tebal
-                className='border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform group-hover:-translate-y-1 group-hover:-translate-x-1'
-              />
-
-              <div>
-                <h3 className='text-xl font-black text-black uppercase tracking-wide'>
-                  Rizky Maulana
-                </h3>
-
-                <p className='text-black font-bold border-b-2 border-black inline-block'>
-                  Full Stack Developer
-                </p>
-              </div>
-
-            </a>
-
-            <p className='text-black font-semibold leading-relaxed'>
-              Passionate about building modern web applications,
-              elegant interfaces, and scalable backend systems.
-            </p>
-
-          </div>
-
-          {/* Sitemap */}
-          <div className='reveal-up'>
-
-            <p className='text-black font-black uppercase tracking-widest text-lg mb-6 border-b-4 border-black pb-2 inline-block'>
-              Sitemap
-            </p>
-
-            <ul className='space-y-4'>
-              {sitemap.map(({ label, href }, key) => (
-                <li key={key}>
-                  <a
-                    href={href}
-                    // Efek hover menjadi blok interaktif ala brutalism
-                    className='block w-fit text-black font-bold uppercase tracking-wider border-2 border-transparent px-3 py-1 transition-all duration-100 hover:border-black hover:bg-cyan-300 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1'
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-          </div>
-
-          {/* Social */}
-          <div className='reveal-up'>
-
-            <p className='text-black font-black uppercase tracking-widest text-lg mb-6 border-b-4 border-black pb-2 inline-block'>
-              Socials
-            </p>
-
-            <ul className='space-y-4'>
-              {socials.map(({ label, href }, key) => (
-                <li key={key}>
-                  <a
-                    href={href}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    // Efek hover interaktif
-                    className='block w-fit text-black font-bold uppercase tracking-wider border-2 border-transparent px-3 py-1 transition-all duration-100 hover:border-black hover:bg-pink-400 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1'
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-          </div>
-
-        </div>
-
-        {/* Bottom */}
-        <div className='flex flex-col md:flex-row items-center justify-between gap-4 border-t-4 border-black mt-16 pt-8 reveal-up'>
-
-          <p className='text-black font-bold uppercase text-sm tracking-wider'>
-            © {new Date().getFullYear()} Rizky Maulana. All rights reserved.
-          </p>
-
-          {/* <p className='text-black font-bold uppercase text-sm tracking-wider bg-yellow-300 px-3 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'>
-            Designed & Developed with passion.
-          </p> */}
-
-        </div>
-
-      </div>
-
-    </footer>
-  )
+        </footer>
+    )
 }
 
 export default Footer

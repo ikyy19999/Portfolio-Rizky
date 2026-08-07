@@ -12,82 +12,109 @@ const SkillCard = ({
             className={`
                 group
                 relative
-                overflow-hidden
-                border-4 border-black bg-white
-                p-5
-                shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
-                transition-all duration-200 ease-in-out
-                hover:-translate-y-1 hover:-translate-x-1
-                hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]
-                hover:bg-cyan-300
+                border-b
+                border-white/[0.08]
+                px-0
+                py-6
+                transition-colors
+                duration-300
+                hover:bg-white/[0.018]
+                sm:border-r
+                sm:px-6
+                sm:py-7
+                lg:px-7
                 ${classes}
             `}
         >
-            {/* Glow Effect DIHAPUS - Diganti dengan Background Solid di parent */}
-
-            {/* Content */}
-            <div className='relative z-10 flex items-start gap-4'>
-
-                {/* Icon */}
+            <div className="flex items-center gap-4">
                 <figure
-                    className='
-                        flex items-center justify-center
-                        w-14 h-14 shrink-0
-                        border-4 border-black bg-white
-                        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-                        transition-transform duration-200
-                        group-hover:scale-105
-                        group-hover:-rotate-3
-                    '
+                    className="
+                        flex
+                        h-11
+                        w-11
+                        shrink-0
+                        items-center
+                        justify-center
+                    "
                 >
                     <img
                         src={imgSrc}
-                        width={32}
-                        height={32}
+                        width={30}
+                        height={30}
                         alt={label}
-                        className='object-contain'
+                        loading="lazy"
+                        className="
+                            h-7
+                            w-7
+                            object-contain
+                            opacity-80
+                            transition-all
+                            duration-300
+                            group-hover:scale-105
+                            group-hover:opacity-100
+                        "
                     />
                 </figure>
 
-                {/* Text */}
-                <div className='flex-1 overflow-hidden'>
-
-                    <div className='flex items-start justify-between gap-2 mb-1'>
-
-                        {/* Judul diubah ke hitam pekat, uppercase, dan font-black */}
-                        <h3 className='text-black text-lg md:text-xl font-black uppercase tracking-tight truncate'>
+                <div className="min-w-0 flex-1">
+                    <div
+                        className="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                        "
+                    >
+                        <h3
+                            className="
+                                truncate
+                                text-base
+                                font-medium
+                                tracking-[-0.02em]
+                                text-zinc-300
+                                transition-colors
+                                duration-200
+                                group-hover:text-white
+                                sm:text-[17px]
+                            "
+                        >
                             {label}
                         </h3>
 
-                        {/* Badge "Active" diubah jadi stiker hijau stabilo */}
                         <span
-                            className='
+                            className="
+                                material-symbols-rounded
                                 shrink-0
-                                text-[10px]
-                                font-black
-                                text-black
-                                uppercase
-                                tracking-widest
-                                bg-green-400
-                                border-2 border-black
-                                px-2 py-1
-                                shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
-                            '
+                                translate-x-1
+                                text-[17px]
+                                text-zinc-800
+                                opacity-0
+                                transition-all
+                                duration-300
+                                group-hover:translate-x-0
+                                group-hover:text-zinc-500
+                                group-hover:opacity-100
+                            "
+                            aria-hidden="true"
                         >
-                            Active
+                            north_east
                         </span>
-
                     </div>
 
-                    {/* Deskripsi diubah ke hitam tebal dengan aksen garis bawah */}
-                    <p className='text-black text-xs font-bold uppercase tracking-wider leading-relaxed border-b-2 border-black inline-block pb-0.5 truncate max-w-full'>
+                    <p
+                        className="
+                            mt-1
+                            truncate
+                            text-xs
+                            leading-5
+                            text-zinc-600
+                            sm:text-sm
+                        "
+                    >
                         {desc}
                     </p>
-
                 </div>
-
             </div>
-
         </div>
     )
 }

@@ -1,18 +1,47 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion'
+import PropTypes from 'prop-types'
 
-export default function Reveal({ children, delay = 0 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 60, filter: 'blur(10px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-100px' }} // Triggers when 100px into view
-      transition={{
-        duration: 0.8,
-        delay: delay,
-        ease: [0.22, 1, 0.36, 1] // Premium easing curve
-      }}
-    >
-      {children}
-    </motion.div>
-  );
+const Reveal = ({
+    children,
+    delay = 0,
+    className = ''
+}) => {
+    const reduceMotion = useReducedMotion()
+
+    return (
+        <motion.div
+            className={className}
+            initial={
+                reduceMotion
+                    ? false
+                    : {
+                        opacity: 0,
+                        y: 28
+                    }
+            }
+            whileInView={{
+                opacity: 1,
+                y: 0
+            }}
+            viewport={{
+                once: true,
+                amount: 0.15
+            }}
+            transition={{
+                duration: 0.65,
+                delay,
+                ease: [0.22, 1, 0.36, 1]
+            }}
+        >
+            {children}
+        </motion.div>
+    )
 }
+
+Reveal.propTypes = {
+    children: PropTypes.node.isRequired,
+    delay: PropTypes.number,
+    className: PropTypes.string
+}
+
+export default Reveal
