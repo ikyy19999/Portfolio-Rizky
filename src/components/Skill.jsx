@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useMemo, useState } from "react";
 import SkillCard from "./SkillCard";
 
 const skillItems = [
@@ -205,166 +199,6 @@ const filters = [
 const Skill = () => {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const filterListRef = useRef(null);
-  const filterDragRef = useRef({
-    active: false,
-    didDrag: false,
-    startX: 0,
-    startScroll: 0,
-  });
-  const [filterScroll, setFilterScroll] = useState({
-    hasOverflow: false,
-    canGoBack: false,
-    canGoForward: false,
-  });
-
-  const updateFilterScroll = useCallback(() => {
-    const filterList = filterListRef.current;
-
-    if (!filterList) return;
-
-    const maxScroll = filterList.scrollWidth - filterList.clientWidth;
-
-    const nextScrollState = {
-      hasOverflow: maxScroll > 2,
-      canGoBack: filterList.scrollLeft > 2,
-      canGoForward: filterList.scrollLeft < maxScroll - 2,
-    };
-
-    setFilterScroll((currentScrollState) => {
-      const stateUnchanged = Object.keys(nextScrollState).every(
-        (key) => currentScrollState[key] === nextScrollState[key],
-      );
-
-      return stateUnchanged ? currentScrollState : nextScrollState;
-    });
-  }, []);
-
-  useEffect(() => {
-    const filterList = filterListRef.current;
-
-    if (!filterList) return undefined;
-
-    const resizeObserver =
-      typeof ResizeObserver === "function"
-        ? new ResizeObserver(updateFilterScroll)
-        : null;
-    const updateFrame = window.requestAnimationFrame(updateFilterScroll);
-
-    filterList.addEventListener("scroll", updateFilterScroll, {
-      passive: true,
-    });
-    window.addEventListener("resize", updateFilterScroll, {
-      passive: true,
-    });
-    resizeObserver?.observe(filterList);
-
-    return () => {
-      window.cancelAnimationFrame(updateFrame);
-      filterList.removeEventListener("scroll", updateFilterScroll);
-      window.removeEventListener("resize", updateFilterScroll);
-      resizeObserver?.disconnect();
-    };
-  }, [updateFilterScroll]);
-
-  const scrollFilters = (direction) => {
-    const filterList = filterListRef.current;
-
-    if (!filterList) return;
-
-    filterList.scrollBy({
-      left: direction * Math.max(filterList.clientWidth * 0.72, 160),
-      behavior: "smooth",
-    });
-  };
-
-  const handleFilterWheel = (event) => {
-    const filterList = filterListRef.current;
-
-    if (
-      !filterList ||
-      filterList.scrollWidth <= filterList.clientWidth ||
-      Math.abs(event.deltaY) <= Math.abs(event.deltaX)
-    ) {
-      return;
-    }
-
-    const maxScroll = filterList.scrollWidth - filterList.clientWidth;
-    const scrollingBack = event.deltaY < 0;
-    const reachedEdge = scrollingBack
-      ? filterList.scrollLeft <= 0
-      : filterList.scrollLeft >= maxScroll - 1;
-
-    if (reachedEdge) return;
-
-    event.preventDefault();
-    filterList.scrollBy({
-      left: event.deltaY,
-      behavior: "auto",
-    });
-  };
-
-  const handleFilterPointerDown = (event) => {
-    if (event.pointerType !== "mouse" || event.button !== 0) return;
-
-    const filterList = filterListRef.current;
-
-    if (!filterList || filterList.scrollWidth <= filterList.clientWidth) {
-      return;
-    }
-
-    filterDragRef.current = {
-      active: true,
-      didDrag: false,
-      startX: event.clientX,
-      startScroll: filterList.scrollLeft,
-    };
-
-    filterList.setPointerCapture(event.pointerId);
-  };
-
-  const handleFilterPointerMove = (event) => {
-    const filterList = filterListRef.current;
-    const dragState = filterDragRef.current;
-
-    if (!filterList || !dragState.active) return;
-
-    const dragDistance = event.clientX - dragState.startX;
-
-    if (Math.abs(dragDistance) > 4) {
-      dragState.didDrag = true;
-    }
-
-    if (!dragState.didDrag) return;
-
-    event.preventDefault();
-    filterList.scrollLeft = dragState.startScroll - dragDistance;
-  };
-
-  const stopFilterDragging = (event) => {
-    const filterList = filterListRef.current;
-
-    filterDragRef.current.active = false;
-
-    if (filterList?.hasPointerCapture(event.pointerId)) {
-      filterList.releasePointerCapture(event.pointerId);
-    }
-  };
-
-  const selectFilter = (event, value) => {
-    if (filterDragRef.current.didDrag) {
-      event.preventDefault();
-      filterDragRef.current.didDrag = false;
-      return;
-    }
-
-    setFilter(value);
-    event.currentTarget.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  };
 
   const filteredSkills = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -465,73 +299,28 @@ const Skill = () => {
               </div>
 
               <div className="skills-filter-group">
-                <div className="skills-filter-heading">
-                  <p>Category</p>
+                <p>Category</p>
 
-                  <div
-                    className={`skills-filter-navigation ${
-                      filterScroll.hasOverflow ? "is-visible" : ""
-                    }`}
-                    aria-label="Scroll skill categories"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => scrollFilters(-1)}
-                      disabled={!filterScroll.canGoBack}
-                      aria-label="Previous categories"
-                    >
-                      <span
-                        className="material-symbols-rounded"
-                        aria-hidden="true"
+                <div
+                  className="skills-filter-list"
+                  role="group"
+                  aria-label="Skill categories"
+                >
+                  {filters.map((item) => {
+                    const isActive = filter === item.value;
+
+                    return (
+                      <button
+                        key={item.value}
+                        type="button"
+                        className={isActive ? "is-active" : ""}
+                        aria-pressed={isActive}
+                        onClick={() => setFilter(item.value)}
                       >
-                        chevron_left
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => scrollFilters(1)}
-                      disabled={!filterScroll.canGoForward}
-                      aria-label="Next categories"
-                    >
-                      <span
-                        className="material-symbols-rounded"
-                        aria-hidden="true"
-                      >
-                        chevron_right
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="skills-filter-viewport">
-                  <div
-                    ref={filterListRef}
-                    className="skills-filter-list"
-                    role="group"
-                    aria-label="Skill categories"
-                    onWheel={handleFilterWheel}
-                    onPointerDown={handleFilterPointerDown}
-                    onPointerMove={handleFilterPointerMove}
-                    onPointerUp={stopFilterDragging}
-                    onPointerCancel={stopFilterDragging}
-                  >
-                    {filters.map((item) => {
-                      const isActive = filter === item.value;
-
-                      return (
-                        <button
-                          key={item.value}
-                          type="button"
-                          className={isActive ? "is-active" : ""}
-                          aria-pressed={isActive}
-                          onClick={(event) => selectFilter(event, item.value)}
-                        >
-                          {item.label}
-                        </button>
-                      );
-                    })}
-                  </div>
+                        {item.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
