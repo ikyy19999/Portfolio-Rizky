@@ -5047,3 +5047,159 @@ textarea.text-field {
     transition: none;
   }
 }
+
+/* Theme transition */
+
+.theme-toggle {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.theme-toggle:disabled {
+  cursor: wait;
+}
+
+.theme-toggle-icons {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.theme-toggle-icons
+  .material-symbols-rounded {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  font-size: 19px;
+  transition:
+    opacity 320ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-toggle-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.45);
+}
+
+.theme-toggle-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+:root[data-theme="dark"]
+  .theme-toggle-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+:root[data-theme="dark"]
+  .theme-toggle-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.45);
+}
+
+.theme-toggle.is-changing {
+  animation: theme-toggle-press 650ms
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+html.theme-transitioning::view-transition-new(root) {
+  animation: theme-circular-reveal 650ms
+    cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+html.theme-fallback-out .site-shell {
+  opacity: 0.18;
+  filter: blur(5px);
+  transform: scale(0.995);
+  transition:
+    opacity 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+html.theme-fallback-in .site-shell {
+  animation: theme-fallback-enter 320ms
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes theme-circular-reveal {
+  from {
+    clip-path: circle(
+      0 at var(--theme-transition-x)
+        var(--theme-transition-y)
+    );
+  }
+
+  to {
+    clip-path: circle(
+      var(--theme-transition-radius) at
+        var(--theme-transition-x)
+        var(--theme-transition-y)
+    );
+  }
+}
+
+@keyframes theme-toggle-press {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  28% {
+    transform: scale(0.86) rotate(-6deg);
+  }
+
+  62% {
+    transform: scale(1.04) rotate(3deg);
+  }
+}
+
+@keyframes theme-fallback-enter {
+  from {
+    opacity: 0.18;
+    filter: blur(5px);
+    transform: scale(0.995);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-icons
+    .material-symbols-rounded,
+  .theme-toggle.is-changing,
+  html.theme-fallback-in .site-shell {
+    animation: none;
+    transition: none;
+  }
+}
