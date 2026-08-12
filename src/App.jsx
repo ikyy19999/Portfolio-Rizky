@@ -2,8 +2,10 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useRef,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import ReactLenis from "lenis/react";
 import PropTypes from "prop-types";
 import gsap from "gsap";
@@ -20,10 +22,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 
-gsap.registerPlugin(
-  useGSAP,
-  ScrollTrigger,
-);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const INTRO_TEXT = "hello";
 
@@ -32,47 +31,33 @@ const getInitialTheme = () => {
     return "light";
   }
 
-  const savedTheme =
-    window.localStorage.getItem(
-      "portfolio-theme",
-    );
+  const savedTheme = window.localStorage.getItem("portfolio-theme");
 
-  if (
-    savedTheme === "light" ||
-    savedTheme === "dark"
-  ) {
+  if (savedTheme === "light" || savedTheme === "dark") {
     return savedTheme;
   }
 
-  return window.matchMedia(
-    "(prefers-color-scheme: dark)",
-  ).matches
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 };
 
-const HandwritingIntro = ({
-  onComplete,
-}) => {
-  const [fontReady, setFontReady] =
-    useState(false);
+const HandwritingIntro = ({ onComplete }) => {
+  const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
     let active = true;
 
-    const fontTimeout =
-      window.setTimeout(() => {
-        if (active) {
-          setFontReady(true);
-        }
-      }, 2500);
+    const fontTimeout = window.setTimeout(() => {
+      if (active) {
+        setFontReady(true);
+      }
+    }, 2500);
 
     const loadFont = async () => {
       try {
         if (document.fonts) {
-          await document.fonts.load(
-            '1em "Birthstone"',
-          );
+          await document.fonts.load('1em "Birthstone"');
         }
       } finally {
         if (active) {
@@ -86,9 +71,7 @@ const HandwritingIntro = ({
     return () => {
       active = false;
 
-      window.clearTimeout(
-        fontTimeout,
-      );
+      window.clearTimeout(fontTimeout);
     };
   }, []);
 
@@ -97,10 +80,7 @@ const HandwritingIntro = ({
       return undefined;
     }
 
-    const timer = window.setTimeout(
-      onComplete,
-      4300,
-    );
+    const timer = window.setTimeout(onComplete, 4300);
 
     return () => {
       window.clearTimeout(timer);
@@ -109,26 +89,17 @@ const HandwritingIntro = ({
 
   return (
     <div
-      className={`intro-screen ${
-        fontReady ? "is-ready" : ""
-      }`}
+      className={`intro-screen ${fontReady ? "is-ready" : ""}`}
       role="status"
       aria-label={`${INTRO_TEXT}, welcome`}
     >
-      <div
-        className="intro-word-wrap"
-        aria-hidden="true"
-      >
-        <span className="intro-word">
-          {INTRO_TEXT}
-        </span>
+      <div className="intro-word-wrap" aria-hidden="true">
+        <span className="intro-word">{INTRO_TEXT}</span>
 
         <span className="intro-pen" />
       </div>
 
-      <p className="intro-caption">
-        made by rizky
-      </p>
+      <p className="intro-caption">made by rizky</p>
     </div>
   );
 };
@@ -138,49 +109,33 @@ HandwritingIntro.propTypes = {
 };
 
 const App = () => {
-  const [theme, setTheme] = useState(
-    getInitialTheme,
-  );
+  const [theme, setTheme] = useState(getInitialTheme);
+  const themeTransitionRef = useRef(false);
 
-  const [showIntro, setShowIntro] =
-    useState(true);
+  const [showIntro, setShowIntro] = useState(true);
 
-  const completeIntro =
-    useCallback(() => {
-      setShowIntro(false);
-    }, []);
+  const completeIntro = useCallback(() => {
+    setShowIntro(false);
+  }, []);
 
   useLayoutEffect(() => {
-    document.documentElement.dataset.theme =
-      theme;
+    document.documentElement.dataset.theme = theme;
 
-    document.documentElement.style.colorScheme =
-      theme;
+    document.documentElement.style.colorScheme = theme;
 
-    window.localStorage.setItem(
-      "portfolio-theme",
-      theme,
-    );
+    window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
 
   useEffect(() => {
-    document.body.classList.toggle(
-      "intro-active",
-      showIntro,
-    );
+    document.body.classList.toggle("intro-active", showIntro);
 
     return () => {
-      document.body.classList.remove(
-        "intro-active",
-      );
+      document.body.classList.remove("intro-active");
     };
   }, [showIntro]);
 
   useGSAP(() => {
-    const elements =
-      gsap.utils.toArray(
-        ".reveal-up",
-      );
+    const elements = gsap.utils.toArray(".reveal-up");
 
     elements.forEach((element) => {
       gsap.to(element, {
@@ -202,27 +157,92 @@ const App = () => {
       return undefined;
     }
 
-    const refreshFrame =
-      window.requestAnimationFrame(
-        () => {
-          ScrollTrigger.refresh();
-        },
-      );
+    const refreshFrame = window.requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
 
     return () => {
-      window.cancelAnimationFrame(
-        refreshFrame,
-      );
+      window.cancelAnimationFrame(refreshFrame);
     };
   }, [showIntro]);
 
-  const toggleTheme = () => {
-    setTheme((currentTheme) =>
-      currentTheme === "dark"
-        ? "light"
-        : "dark",
-    );
-  };
+  const toggleTheme = useCallback(
+    async ({ x, y } = {}) => {
+      if (themeTransitionRef.current) {
+        return Promise.resolve();
+      }
+
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const canUseViewTransition =
+        typeof document.startViewTransition === "function";
+
+      if (reduceMotion) {
+        setTheme(nextTheme);
+        return;
+      }
+
+      const originX = typeof x === "number" ? x : window.innerWidth / 2;
+      const originY = typeof y === "number" ? y : window.innerHeight / 2;
+      const radius = Math.hypot(
+        Math.max(originX, window.innerWidth - originX),
+        Math.max(originY, window.innerHeight - originY),
+      );
+      const root = document.documentElement;
+
+      themeTransitionRef.current = true;
+
+      root.style.setProperty("--theme-transition-x", `${originX}px`);
+      root.style.setProperty("--theme-transition-y", `${originY}px`);
+      root.style.setProperty("--theme-transition-radius", `${radius}px`);
+
+      if (!canUseViewTransition) {
+        root.classList.add("theme-fallback-out");
+
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, 180);
+        });
+
+        flushSync(() => {
+          setTheme(nextTheme);
+        });
+
+        root.classList.remove("theme-fallback-out");
+        root.classList.add("theme-fallback-in");
+
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, 320);
+        });
+
+        root.classList.remove("theme-fallback-in");
+        root.style.removeProperty("--theme-transition-x");
+        root.style.removeProperty("--theme-transition-y");
+        root.style.removeProperty("--theme-transition-radius");
+        themeTransitionRef.current = false;
+
+        return;
+      }
+
+      root.classList.add("theme-transitioning");
+
+      const transition = document.startViewTransition(() => {
+        flushSync(() => {
+          setTheme(nextTheme);
+        });
+      });
+
+      await transition.finished.finally(() => {
+        themeTransitionRef.current = false;
+        root.classList.remove("theme-transitioning");
+        root.style.removeProperty("--theme-transition-x");
+        root.style.removeProperty("--theme-transition-y");
+        root.style.removeProperty("--theme-transition-radius");
+      });
+    },
+    [theme],
+  );
 
   return (
     <ReactLenis
@@ -233,25 +253,12 @@ const App = () => {
         touchMultiplier: 1.1,
       }}
     >
-      {showIntro && (
-        <HandwritingIntro
-          onComplete={completeIntro}
-        />
-      )}
+      {showIntro && <HandwritingIntro onComplete={completeIntro} />}
 
-      <div
-        className={`site-shell ${
-          showIntro
-            ? "is-loading"
-            : "is-ready"
-        }`}
-      >
+      <div className={`site-shell ${showIntro ? "is-loading" : "is-ready"}`}>
         {/* <CursorFollower /> */}
 
-        <Header
-          theme={theme}
-          onToggleTheme={toggleTheme}
-        />
+        <Header theme={theme} onToggleTheme={toggleTheme} />
 
         <main>
           <Hero />
