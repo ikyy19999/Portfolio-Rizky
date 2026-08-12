@@ -5310,18 +5310,6 @@ html.theme-fallback-in .site-shell {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .skills-filter-list {
-    cursor: grab;
-  }
-
-  .skills-filter-list:active {
-    cursor: grabbing;
-  }
-
-  .skills-filter-list button {
-    cursor: pointer;
-  }
-
   .skills-filter-navigation
     button:not(:disabled):hover {
     color: var(--accent);
@@ -5360,5 +5348,28 @@ html.theme-fallback-in .site-shell {
 @media (prefers-reduced-motion: reduce) {
   .skills-filter-list {
     scroll-behavior: auto;
+  }
+}
+
+/* Prevent the skills section itself from becoming a horizontal scroll container */
+
+.skills-section {
+  overflow: clip;
+}
+
+@media (max-width: 639px) {
+  .skills-section .container,
+  .skills-layout,
+  .skills-content,
+  .skills-controls {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .skills-layout,
+  .skills-content,
+  .skills-controls {
+    width: 100%;
   }
 }
