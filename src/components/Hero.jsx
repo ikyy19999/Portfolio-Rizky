@@ -38,12 +38,16 @@ const techStack = [
   "Vercel",
 ];
 
+const heroStatements = [
+  "Engineering impact.",
+  "Building experiences.",
+  "Creating momentum.",
+];
+
 const scrollOptions = {
   duration: 1.2,
   easing: (progress) =>
-    progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - (-2 * progress + 2) ** 3 / 2,
+    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
 const Hero = () => {
@@ -73,15 +77,9 @@ const Hero = () => {
 
   return (
     <section id="home" className="ax-hero">
-      <div
-        className="ax-hero-glow"
-        aria-hidden="true"
-      />
+      <div className="ax-hero-glow" aria-hidden="true" />
 
-      <div
-        className="ax-hero-grid"
-        aria-hidden="true"
-      />
+      <div className="ax-hero-grid" aria-hidden="true" />
 
       <div className="container ax-hero-container">
         <div className="ax-hero-intro reveal-up">
@@ -97,15 +95,29 @@ const Hero = () => {
         <div className="ax-hero-main">
           <div className="ax-hero-message">
             <h1 className="ax-hero-title reveal-up">
-              Designing clarity.
-              <span>Engineering impact.</span>
+              <span className="ax-hero-title-static">Designing clarity.</span>
+
+              <span
+                className="ax-hero-title-rotator"
+                aria-label={heroStatements.join(" ")}
+              >
+                {heroStatements.map((statement, index) => (
+                  <span
+                    key={statement}
+                    className="ax-hero-title-rotator-item"
+                    style={{ "--rotator-index": index }}
+                    aria-hidden="true"
+                  >
+                    {statement}
+                  </span>
+                ))}
+              </span>
             </h1>
 
             <div className="ax-hero-description reveal-up">
               <p>
-                Building polished web experiences, reliable
-                backend systems, and the infrastructure that
-                keeps them moving.
+                Building polished web experiences, reliable backend systems, and
+                the infrastructure that keeps them moving.
               </p>
 
               <div className="ax-hero-actions">
@@ -118,13 +130,9 @@ const Hero = () => {
                 <a
                   href="#work"
                   className="ax-button ax-button-outline"
-                  onClick={(event) =>
-                    scrollToSection(event, "#work")
-                  }
+                  onClick={(event) => scrollToSection(event, "#work")}
                 >
-                  <span className="ax-button-label">
-                    View Projects
-                  </span>
+                  <span className="ax-button-label">View Projects</span>
 
                   <span
                     className="material-symbols-rounded ax-button-icon"
@@ -149,13 +157,8 @@ const Hero = () => {
 
             <div className="ax-stack-grid">
               {techStack.map((tech, index) => (
-                <div
-                  className="ax-stack-item"
-                  key={tech}
-                >
-                  <small>
-                    {String(index + 1).padStart(2, "0")}
-                  </small>
+                <div className="ax-stack-item" key={tech}>
+                  <small>{String(index + 1).padStart(2, "0")}</small>
 
                   <strong>{tech}</strong>
                 </div>
@@ -172,45 +175,28 @@ const Hero = () => {
 
         <div className="ax-hero-bottom reveal-up">
           <div className="ax-hero-stats">
-            {stats.map(
-              ({ number, label }, index) => (
-                <div
-                  className="ax-stat"
-                  key={label}
-                >
-                  <small>
-                    {String(index + 1).padStart(
-                      2,
-                      "0",
-                    )}
-                  </small>
+            {stats.map(({ number, label }, index) => (
+              <div className="ax-stat" key={label}>
+                <small>{String(index + 1).padStart(2, "0")}</small>
 
-                  <strong>{number}</strong>
-                  <span>{label}</span>
-                </div>
-              ),
-            )}
+                <strong>{number}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
           </div>
 
           <a
             href="#about"
             className="ax-hero-explore"
-            onClick={(event) =>
-              scrollToSection(event, "#about")
-            }
+            onClick={(event) => scrollToSection(event, "#about")}
           >
             <span>
               <small>Continue</small>
               Explore portfolio
             </span>
 
-            <span
-              className="ax-explore-icon"
-              aria-hidden="true"
-            >
-              <span className="material-symbols-rounded">
-                south
-              </span>
+            <span className="ax-explore-icon" aria-hidden="true">
+              <span className="material-symbols-rounded">south</span>
             </span>
           </a>
         </div>
