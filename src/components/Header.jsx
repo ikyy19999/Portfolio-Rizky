@@ -6,14 +6,13 @@ import Navbar from "./Navbar";
 const smoothScrollOptions = {
   duration: 1.2,
   easing: (progress) =>
-    progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - (-2 * progress + 2) ** 3 / 2,
+    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
 const Header = ({ theme, onToggleTheme }) => {
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
+  const [themeChanging, setThemeChanging] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,30 +52,36 @@ const Header = ({ theme, onToggleTheme }) => {
     });
   };
 
+  const handleThemeToggle = async (event) => {
+    if (themeChanging) return;
+
+    const buttonBounds = event.currentTarget.getBoundingClientRect();
+
+    setThemeChanging(true);
+
+    try {
+      await onToggleTheme({
+        x: buttonBounds.left + buttonBounds.width / 2,
+        y: buttonBounds.top + buttonBounds.height / 2,
+      });
+    } finally {
+      setThemeChanging(false);
+    }
+  };
+
   return (
     <>
-      <header
-        className={`site-header ${
-          scrolled ? "is-scrolled" : ""
-        }`}
-      >
+      <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="container">
           <div className="header-inner">
             <a
               href="#home"
-              onClick={(event) =>
-                handleNavigation(event, "#home")
-              }
+              onClick={(event) => handleNavigation(event, "#home")}
               className="brand"
               aria-label="Go to home"
             >
               <span className="brand-mark">
-                <img
-                  src="/assets/favicon.ico"
-                  alt=""
-                  width={30}
-                  height={30}
-                />
+                <img src="/assets/favicon.ico" alt="" width={30} height={30} />
               </span>
 
               <span className="brand-copy">
@@ -92,38 +97,32 @@ const Header = ({ theme, onToggleTheme }) => {
             <div className="header-actions">
               <button
                 type="button"
-                className="theme-toggle"
-                onClick={onToggleTheme}
+                className={`theme-toggle ${themeChanging ? "is-changing" : ""}`}
+                onClick={handleThemeToggle}
+                disabled={themeChanging}
                 aria-label={`Switch to ${
                   theme === "dark" ? "light" : "dark"
                 } mode`}
-                title={`Switch to ${
-                  theme === "dark" ? "light" : "dark"
-                } mode`}
+                title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
               >
-                <span
-                  className="material-symbols-rounded"
-                  aria-hidden="true"
-                >
-                  {theme === "dark"
-                    ? "light_mode"
-                    : "dark_mode"}
+                <span className="theme-toggle-icons" aria-hidden="true">
+                  <span className="material-symbols-rounded theme-toggle-sun">
+                    light_mode
+                  </span>
+
+                  <span className="material-symbols-rounded theme-toggle-moon">
+                    dark_mode
+                  </span>
                 </span>
               </button>
 
               <a
                 href="#contact"
-                onClick={(event) =>
-                  handleNavigation(event, "#contact")
-                }
+                onClick={(event) => handleNavigation(event, "#contact")}
                 className="header-contact"
               >
                 Let&apos;s Talk
-
-                <span
-                  className="material-symbols-rounded"
-                  aria-hidden="true"
-                >
+                <span className="material-symbols-rounded" aria-hidden="true">
                   arrow_outward
                 </span>
               </a>
