@@ -24,19 +24,7 @@ import CursorFollower from "./components/CursorFollower";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const getIntroGreeting = () => {
-  const hour = new Date().getHours();
-
-  if (hour >= 5 && hour < 12) {
-    return "hello, good morning.";
-  }
-
-  if (hour >= 12 && hour < 17) {
-    return "hello, good afternoon.";
-  }
-
-  return "hello, good evening.";
-};
+const INTRO_TEXT = "hello";
 
 const getInitialTheme = () => {
   if (typeof window === "undefined") {
@@ -56,7 +44,6 @@ const getInitialTheme = () => {
 
 const HandwritingIntro = ({ onComplete }) => {
   const [fontReady, setFontReady] = useState(false);
-  const [introText] = useState(getIntroGreeting);
 
   useEffect(() => {
     let active = true;
@@ -93,7 +80,7 @@ const HandwritingIntro = ({ onComplete }) => {
       return undefined;
     }
 
-    const timer = window.setTimeout(onComplete, 5200);
+    const timer = window.setTimeout(onComplete, 4300);
 
     return () => {
       window.clearTimeout(timer);
@@ -104,10 +91,10 @@ const HandwritingIntro = ({ onComplete }) => {
     <div
       className={`intro-screen ${fontReady ? "is-ready" : ""}`}
       role="status"
-      aria-label={`${introText} welcome`}
+      aria-label={`${INTRO_TEXT}, welcome`}
     >
       <div className="intro-word-wrap" aria-hidden="true">
-        <span className="intro-word intro-word-greeting">{introText}</span>
+        <span className="intro-word">{INTRO_TEXT}</span>
 
         <span className="intro-pen" />
       </div>
