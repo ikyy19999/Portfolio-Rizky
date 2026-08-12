@@ -1,192 +1,145 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { useLenis } from "lenis/react";
+import Navbar from "./Navbar";
 
-const Header = () => {
-    const [scrolled, setScrolled] = useState(false)
+const smoothScrollOptions = {
+  duration: 1.2,
+  easing: (progress) =>
+    progress < 0.5
+      ? 4 * progress ** 3
+      : 1 - (-2 * progress + 2) ** 3 / 2,
+};
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 24)
-        }
+const Header = ({ theme, onToggleTheme }) => {
+  const lenis = useLenis();
+  const [scrolled, setScrolled] = useState(false);
 
-        handleScroll()
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 24);
+    };
 
-        window.addEventListener('scroll', handleScroll, {
-            passive: true
-        })
+    handleScroll();
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
-    const handleHomeClick = (event) => {
-        event.preventDefault()
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
-        const section = document.querySelector('#home')
+  const handleNavigation = (event, target) => {
+    event.preventDefault();
 
-        if (!section) return
+    const section = document.querySelector(target);
 
-        section.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        })
+    if (!section) return;
+
+    if (lenis) {
+      lenis.scrollTo(section, {
+        ...smoothScrollOptions,
+        offset: target === "#home" ? 0 : -96,
+      });
+
+      return;
     }
 
-    return (
-        <>
-            <header
-                className={`
-                    fixed left-0 top-0 z-50 w-full
-                    transition-all duration-300
-                    ${scrolled ? 'pt-3' : 'pt-4 sm:pt-5'}
-                `}
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  return (
+    <>
+      <header
+        className={`site-header ${
+          scrolled ? "is-scrolled" : ""
+        }`}
+      >
+        <div className="container">
+          <div className="header-inner">
+            <a
+              href="#home"
+              onClick={(event) =>
+                handleNavigation(event, "#home")
+              }
+              className="brand"
+              aria-label="Go to home"
             >
-                <div className="container">
-                    <div
-                        className={`
-                            flex items-center justify-between
-                            transition-all duration-300
-                            ${
-                                scrolled
-                                    ? `
-                                        liquid-glass
-                                        px-3 py-2
-                                        sm:px-4
-                                        md:px-5
-                                    `
-                                    : `
-                                        border border-transparent
-                                        bg-transparent
-                                        px-0 py-2
-                                    `
-                            }
-                        `}
-                        style={{
-                            borderRadius: scrolled ? '16px' : '0px'
-                        }}
-                    >
-                        <a
-                            href="#home"
-                            onClick={handleHomeClick}
-                            className="
-                                group
-                                flex min-w-0
-                                items-center gap-3
-                                focus:outline-none
-                            "
-                            aria-label="Go to home"
-                        >
-                            <div
-                                className="
-                                    relative
-                                    flex h-10 w-10
-                                    shrink-0
-                                    items-center justify-center
-                                    overflow-hidden
-                                    border border-white/[0.08]
-                                    bg-white/[0.035]
-                                    transition-all duration-300
-                                    group-hover:border-white/[0.15]
-                                    group-hover:bg-white/[0.055]
-                                "
-                                style={{
-                                    borderRadius: '11px'
-                                }}
-                            >
-                                <img
-                                    src="/assets/favicon.ico"
-                                    alt="Rizky Maulana"
-                                    width={30}
-                                    height={30}
-                                    className="
-                                        h-7 w-7
-                                        object-contain
-                                        transition-transform duration-300
-                                        group-hover:scale-[1.05]
-                                    "
-                                />
-                            </div>
+              <span className="brand-mark">
+                <img
+                  src="/assets/favicon.ico"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
+              </span>
 
-                            <div className="hidden min-w-0 sm:block">
-                                <p
-                                    className="
-                                        truncate
-                                        text-[15px]
-                                        font-semibold
-                                        leading-tight
-                                        tracking-[-0.025em]
-                                        text-zinc-100
-                                    "
-                                >
-                                    Rizky Maulana
-                                </p>
+              <span className="brand-copy">
+                <strong>Rizky Maulana</strong>
+                <small>Full Stack Developer</small>
+              </span>
+            </a>
 
-                                <p
-                                    className="
-                                        mt-0.5
-                                        truncate
-                                        text-xs
-                                        font-normal
-                                        tracking-[-0.01em]
-                                        text-zinc-600
-                                    "
-                                >
-                                    Full Stack Developer
-                                </p>
-                            </div>
-                        </a>
+            <div className="header-navigation">
+              <Navbar />
+            </div>
 
-                        <div className="hidden md:flex md:items-center">
-                            <Navbar />
-                        </div>
+            <div className="header-actions">
+              <button
+                type="button"
+                className="theme-toggle"
+                onClick={onToggleTheme}
+                aria-label={`Switch to ${
+                  theme === "dark" ? "light" : "dark"
+                } mode`}
+                title={`Switch to ${
+                  theme === "dark" ? "light" : "dark"
+                } mode`}
+              >
+                <span
+                  className="material-symbols-rounded"
+                  aria-hidden="true"
+                >
+                  {theme === "dark"
+                    ? "light_mode"
+                    : "dark_mode"}
+                </span>
+              </button>
 
-                        <div className="hidden md:flex md:items-center">
-                            <a
-                                href="#contact"
-                                className="
-                                    group
-                                    inline-flex h-10
-                                    items-center gap-2
-                                    border border-white/[0.1]
-                                    bg-white/[0.04]
-                                    px-4
-                                    text-sm font-medium
-                                    tracking-[-0.015em]
-                                    text-zinc-200
-                                    transition-all duration-200
-                                    hover:border-white/[0.18]
-                                    hover:bg-white/[0.07]
-                                    hover:text-white
-                                    active:scale-[0.98]
-                                "
-                                style={{
-                                    borderRadius: '11px'
-                                }}
-                            >
-                                Let&apos;s Talk
+              <a
+                href="#contact"
+                onClick={(event) =>
+                  handleNavigation(event, "#contact")
+                }
+                className="header-contact"
+              >
+                Let&apos;s Talk
 
-                                <span
-                                    className="
-                                        material-symbols-rounded
-                                        text-[18px]
-                                        transition-transform duration-200
-                                        group-hover:translate-x-0.5
-                                        group-hover:-translate-y-0.5
-                                    "
-                                    aria-hidden="true"
-                                >
-                                    arrow_outward
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
+                <span
+                  className="material-symbols-rounded"
+                  aria-hidden="true"
+                >
+                  arrow_outward
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
 
-            <Navbar mobile />
-        </>
-    )
-}
+      <Navbar mobile />
+    </>
+  );
+};
 
-export default Header
+Header.propTypes = {
+  theme: PropTypes.oneOf(["light", "dark"]).isRequired,
+  onToggleTheme: PropTypes.func.isRequired,
+};
+
+export default Header;

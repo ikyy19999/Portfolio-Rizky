@@ -1,282 +1,394 @@
-import React, { useEffect, useRef } from 'react'
+import React, {
+  useEffect,
+  useRef,
+} from "react";
+
+const INTERACTIVE_SELECTOR =
+  "a, button, input, textarea, select, [data-cursor]";
 
 const CursorFollower = () => {
-    const followerRef = useRef(null)
-    const dotRef = useRef(null)
-    const labelRef = useRef(null)
+  const lensRef = useRef(null);
+  const dotRef = useRef(null);
+  const labelRef = useRef(null);
 
-    useEffect(() => {
-        const follower = followerRef.current
-        const dot = dotRef.current
-        const label = labelRef.current
+  useEffect(() => {
+    const lens = lensRef.current;
+    const dot = dotRef.current;
+    const label = labelRef.current;
 
-        if (!follower || !dot || !label) return
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    );
 
-        let mouseX = 0
-        let mouseY = 0
+    if (
+      !lens ||
+      !dot ||
+      !label ||
+      !finePointer.matches
+    ) {
+      return undefined;
+    }
 
-        let followerX = 0
-        let followerY = 0
+    let pointerX =
+      window.innerWidth / 2;
 
-        let velocityX = 0
-        let velocityY = 0
+    let pointerY =
+      window.innerHeight / 2;
 
-        let previousX = 0
-        let previousY = 0
+    let lensX = pointerX;
+    let lensY = pointerY;
+    let previousX = pointerX;
+    let previousY = pointerY;
+    let velocityX = 0;
+    let velocityY = 0;
+    let frameId = 0;
+    let hasMoved = false;
+    let isPressed = false;
 
-        let rotation = 0
-        let targetRotation = 0
+    const setVisibility = (visible) => {
+      lens.dataset.visible =
+        String(visible);
 
-        let animationFrameId = null
-        let hasMouseMoved = false
+      dot.dataset.visible =
+        String(visible);
+    };
 
-        const showCursor = () => {
-            follower.style.opacity = '1'
-            dot.style.opacity = '1'
-        }
+    const resetState = () => {
+      lens.dataset.state = "default";
+      label.textContent = "";
+    };
 
-        const hideCursor = () => {
-            follower.style.opacity = '0'
-            dot.style.opacity = '0'
-        }
+    const getInteractiveElement = (
+      target,
+    ) => {
+      if (!(target instanceof Element)) {
+        return null;
+      }
 
-        const handleMouseMove = (event) => {
-            mouseX = event.clientX
-            mouseY = event.clientY
+      return target.closest(
+        INTERACTIVE_SELECTOR,
+      );
+    };
 
-            if (!hasMouseMoved) {
-                followerX = mouseX
-                followerY = mouseY
-                previousX = mouseX
-                previousY = mouseY
-                hasMouseMoved = true
-            }
+    const updateState = (element) => {
+      if (!element) {
+        resetState();
+        return;
+      }
 
-            velocityX = mouseX - previousX
-            velocityY = mouseY - previousY
+      const cursorType =
+        element.dataset.cursor;
 
-            if (
-                Math.abs(velocityX) > 0.1 ||
-                Math.abs(velocityY) > 0.1
-            ) {
-                targetRotation =
-                    Math.atan2(velocityY, velocityX) *
-                    (180 / Math.PI)
-            }
+      if (cursorType === "view") {
+        lens.dataset.state = "view";
 
-            previousX = mouseX
-            previousY = mouseY
+        label.textContent =
+          element.dataset.cursorLabel ||
+          "VIEW";
 
-            dot.style.transform = `
-                translate3d(
-                    ${mouseX - 2.5}px,
-                    ${mouseY - 2.5}px,
-                    0
-                )
-            `
+        return;
+      }
 
-            showCursor()
-        }
+      lens.dataset.state =
+        "interactive";
 
-        const handleMouseOver = (event) => {
-            const interactive = event.target.closest(
-                'a, button, [data-cursor]'
-            )
+      label.textContent = "";
+    };
 
-            if (!interactive) return
+    const handlePointerMove = (
+      event,
+    ) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
 
-            const cursorType =
-                interactive.getAttribute('data-cursor')
+      if (!hasMoved) {
+        lensX = pointerX;
+        lensY = pointerY;
+        previousX = pointerX;
+        previousY = pointerY;
+        hasMoved = true;
+      }
 
-            if (cursorType === 'view') {
-                follower.dataset.state = 'view'
-                label.textContent = 'VIEW'
-                return
-            }
+      velocityX =
+        pointerX - previousX;
 
-            follower.dataset.state = 'interactive'
-            label.textContent = ''
-        }
+      velocityY =
+        pointerY - previousY;
 
-        const handleMouseOut = (event) => {
-            const interactive = event.target.closest(
-                'a, button, [data-cursor]'
-            )
+      previousX = pointerX;
+      previousY = pointerY;
 
-            if (!interactive) return
-
-            follower.dataset.state = 'default'
-            label.textContent = ''
-        }
-
-        const animate = () => {
-            if (hasMouseMoved) {
-                followerX +=
-                    (mouseX - followerX) * 0.16
-
-                followerY +=
-                    (mouseY - followerY) * 0.16
-
-                let rotationDifference =
-                    targetRotation - rotation
-
-                if (rotationDifference > 180) {
-                    rotationDifference -= 360
-                }
-
-                if (rotationDifference < -180) {
-                    rotationDifference += 360
-                }
-
-                rotation += rotationDifference * 0.08
-
-                const speed = Math.min(
-                    Math.sqrt(
-                        velocityX * velocityX +
-                        velocityY * velocityY
-                    ),
-                    35
-                )
-
-                const stretch = speed / 180
-
-                const scaleX = 1 + stretch
-                const scaleY = 1 - stretch * 0.3
-
-                const state =
-                    follower.dataset.state || 'default'
-
-                let size = 46
-
-                if (state === 'interactive') {
-                    size = 56
-                }
-
-                if (state === 'view') {
-                    size = 82
-                }
-
-                follower.style.width = `${size}px`
-                follower.style.height = `${size}px`
-
-                follower.style.transform = `
-                    translate3d(
-                        ${followerX - size / 2}px,
-                        ${followerY - size / 2}px,
-                        0
-                    )
-                    rotate(${rotation}deg)
-                    scale(${scaleX}, ${scaleY})
-                `
-
-                velocityX *= 0.88
-                velocityY *= 0.88
-            }
-
-            animationFrameId =
-                requestAnimationFrame(animate)
-        }
-
-        window.addEventListener(
-            'mousemove',
-            handleMouseMove,
-            { passive: true }
+      dot.style.transform = `
+        translate3d(
+          ${pointerX - 3}px,
+          ${pointerY - 3}px,
+          0
         )
+      `;
 
-        document.addEventListener(
-            'mouseover',
-            handleMouseOver
-        )
+      setVisibility(true);
+    };
 
-        document.addEventListener(
-            'mouseout',
-            handleMouseOut
-        )
+    const handlePointerOver = (
+      event,
+    ) => {
+      const currentElement =
+        getInteractiveElement(
+          event.target,
+        );
 
-        document.documentElement.addEventListener(
-            'mouseleave',
-            hideCursor
-        )
+      const previousElement =
+        getInteractiveElement(
+          event.relatedTarget,
+        );
 
-        animationFrameId =
-            requestAnimationFrame(animate)
+      if (
+        currentElement === previousElement
+      ) {
+        return;
+      }
 
-        return () => {
-            window.removeEventListener(
-                'mousemove',
-                handleMouseMove
-            )
+      updateState(currentElement);
+    };
 
-            document.removeEventListener(
-                'mouseover',
-                handleMouseOver
-            )
+    const handlePointerOut = (
+      event,
+    ) => {
+      const currentElement =
+        getInteractiveElement(
+          event.target,
+        );
 
-            document.removeEventListener(
-                'mouseout',
-                handleMouseOut
-            )
+      const nextElement =
+        getInteractiveElement(
+          event.relatedTarget,
+        );
 
-            document.documentElement.removeEventListener(
-                'mouseleave',
-                hideCursor
-            )
+      if (
+        currentElement === nextElement
+      ) {
+        return;
+      }
 
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId)
-            }
+      updateState(nextElement);
+    };
+
+    const handlePointerDown = () => {
+      isPressed = true;
+
+      lens.dataset.pressed = "true";
+      dot.dataset.pressed = "true";
+    };
+
+    const handlePointerUp = () => {
+      isPressed = false;
+
+      lens.dataset.pressed = "false";
+      dot.dataset.pressed = "false";
+    };
+
+    const hideCursor = () => {
+      setVisibility(false);
+      handlePointerUp();
+      resetState();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        hideCursor();
+      }
+    };
+
+    const animate = () => {
+      if (hasMoved) {
+        lensX +=
+          (pointerX - lensX) * 0.17;
+
+        lensY +=
+          (pointerY - lensY) * 0.17;
+
+        const speed = Math.min(
+          Math.hypot(
+            velocityX,
+            velocityY,
+          ),
+          36,
+        );
+
+        const stretch = speed / 210;
+
+        const state =
+          lens.dataset.state ||
+          "default";
+
+        let size = 38;
+
+        if (state === "interactive") {
+          size = 52;
         }
-    }, [])
 
-    return (
-        <>
-            <div
-                ref={followerRef}
-                data-state="default"
-                className="cursor-spatial-lens"
-                aria-hidden="true"
-            >
-                <span
-                    className="
-                        cursor-spatial-marker
-                        cursor-spatial-marker-top
-                    "
-                />
+        if (state === "view") {
+          size = 88;
+        }
 
-                <span
-                    className="
-                        cursor-spatial-marker
-                        cursor-spatial-marker-right
-                    "
-                />
+        const pressScale = isPressed
+          ? 0.86
+          : 1;
 
-                <span
-                    className="
-                        cursor-spatial-marker
-                        cursor-spatial-marker-bottom
-                    "
-                />
+        const scaleX =
+          (1 + stretch) * pressScale;
 
-                <span
-                    className="
-                        cursor-spatial-marker
-                        cursor-spatial-marker-left
-                    "
-                />
+        const scaleY =
+          (1 - stretch * 0.28) *
+          pressScale;
 
-                <span
-                    ref={labelRef}
-                    className="cursor-spatial-label"
-                />
-            </div>
+        lens.style.width = `${size}px`;
+        lens.style.height = `${size}px`;
 
-            <div
-                ref={dotRef}
-                className="cursor-spatial-dot"
-                aria-hidden="true"
-            />
-        </>
-    )
-}
+        lens.style.transform = `
+          translate3d(
+            ${lensX - size / 2}px,
+            ${lensY - size / 2}px,
+            0
+          )
+          scale(
+            ${scaleX},
+            ${scaleY}
+          )
+        `;
 
-export default CursorFollower
+        velocityX *= 0.86;
+        velocityY *= 0.86;
+      }
+
+      frameId =
+        window.requestAnimationFrame(
+          animate,
+        );
+    };
+
+    window.addEventListener(
+      "pointermove",
+      handlePointerMove,
+      {
+        passive: true,
+      },
+    );
+
+    document.addEventListener(
+      "pointerover",
+      handlePointerOver,
+    );
+
+    document.addEventListener(
+      "pointerout",
+      handlePointerOut,
+    );
+
+    document.addEventListener(
+      "pointerdown",
+      handlePointerDown,
+    );
+
+    document.addEventListener(
+      "pointerup",
+      handlePointerUp,
+    );
+
+    document.documentElement.addEventListener(
+      "mouseleave",
+      hideCursor,
+    );
+
+    window.addEventListener(
+      "blur",
+      hideCursor,
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange,
+    );
+
+    frameId =
+      window.requestAnimationFrame(
+        animate,
+      );
+
+    return () => {
+      window.removeEventListener(
+        "pointermove",
+        handlePointerMove,
+      );
+
+      document.removeEventListener(
+        "pointerover",
+        handlePointerOver,
+      );
+
+      document.removeEventListener(
+        "pointerout",
+        handlePointerOut,
+      );
+
+      document.removeEventListener(
+        "pointerdown",
+        handlePointerDown,
+      );
+
+      document.removeEventListener(
+        "pointerup",
+        handlePointerUp,
+      );
+
+      document.documentElement.removeEventListener(
+        "mouseleave",
+        hideCursor,
+      );
+
+      window.removeEventListener(
+        "blur",
+        hideCursor,
+      );
+
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange,
+      );
+
+      window.cancelAnimationFrame(
+        frameId,
+      );
+    };
+  }, []);
+
+  return (
+    <>
+      <div
+        ref={lensRef}
+        className="ax-cursor-lens"
+        data-state="default"
+        data-visible="false"
+        data-pressed="false"
+        aria-hidden="true"
+      >
+        <span className="ax-cursor-highlight" />
+
+        <span
+          ref={labelRef}
+          className="ax-cursor-label"
+        />
+      </div>
+
+      <div
+        ref={dotRef}
+        className="ax-cursor-dot"
+        data-visible="false"
+        data-pressed="false"
+        aria-hidden="true"
+      />
+    </>
+  );
+};
+
+export default CursorFollower;

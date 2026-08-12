@@ -1,129 +1,67 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
 const SkillCard = ({
-    imgSrc,
-    label,
-    desc,
-    classes = ''
+  index,
+  imgSrc,
+  label,
+  desc,
+  category,
+  tag,
+  classes = "",
 }) => {
-    return (
-        <div
-            className={`
-                group
-                relative
-                border-b
-                border-white/[0.08]
-                px-0
-                py-6
-                transition-colors
-                duration-300
-                hover:bg-white/[0.018]
-                sm:border-r
-                sm:px-6
-                sm:py-7
-                lg:px-7
-                ${classes}
-            `}
-        >
-            <div className="flex items-center gap-4">
-                <figure
-                    className="
-                        flex
-                        h-11
-                        w-11
-                        shrink-0
-                        items-center
-                        justify-center
-                    "
-                >
-                    <img
-                        src={imgSrc}
-                        width={30}
-                        height={30}
-                        alt={label}
-                        loading="lazy"
-                        className="
-                            h-7
-                            w-7
-                            object-contain
-                            opacity-80
-                            transition-all
-                            duration-300
-                            group-hover:scale-105
-                            group-hover:opacity-100
-                        "
-                    />
-                </figure>
+  const cardNumber = String(index).padStart(2, "0");
 
-                <div className="min-w-0 flex-1">
-                    <div
-                        className="
-                            flex
-                            items-center
-                            justify-between
-                            gap-4
-                        "
-                    >
-                        <h3
-                            className="
-                                truncate
-                                text-base
-                                font-medium
-                                tracking-[-0.02em]
-                                text-zinc-300
-                                transition-colors
-                                duration-200
-                                group-hover:text-white
-                                sm:text-[17px]
-                            "
-                        >
-                            {label}
-                        </h3>
+  return (
+    <article
+      className={`skill-card ${classes}`.trim()}
+      style={{ "--skill-order": index - 1 }}
+    >
+      <div className="skill-card-top">
+        <figure className="skill-card-icon">
+          <img
+            src={imgSrc}
+            width={34}
+            height={34}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
 
-                        <span
-                            className="
-                                material-symbols-rounded
-                                shrink-0
-                                translate-x-1
-                                text-[17px]
-                                text-zinc-800
-                                opacity-0
-                                transition-all
-                                duration-300
-                                group-hover:translate-x-0
-                                group-hover:text-zinc-500
-                                group-hover:opacity-100
-                            "
-                            aria-hidden="true"
-                        >
-                            north_east
-                        </span>
-                    </div>
+        <span className="skill-card-index" aria-hidden="true">
+          {cardNumber}
+        </span>
+      </div>
 
-                    <p
-                        className="
-                            mt-1
-                            truncate
-                            text-xs
-                            leading-5
-                            text-zinc-600
-                            sm:text-sm
-                        "
-                    >
-                        {desc}
-                    </p>
-                </div>
-            </div>
+      <div className="skill-card-copy">
+        <h3>{label}</h3>
+        <p>{desc}</p>
+      </div>
+
+      <footer className="skill-card-footer">
+        <div className="skill-card-meta">
+          <span>{category}</span>
+          <span aria-hidden="true">/</span>
+          <span>{tag}</span>
         </div>
-    )
-}
+
+        <span className="material-symbols-rounded" aria-hidden="true">
+          north_east
+        </span>
+      </footer>
+    </article>
+  );
+};
 
 SkillCard.propTypes = {
-    imgSrc: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
-    classes: PropTypes.string,
-}
+  index: PropTypes.number.isRequired,
+  imgSrc: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  tag: PropTypes.string.isRequired,
+  classes: PropTypes.string,
+};
 
-export default SkillCard
+export default SkillCard;

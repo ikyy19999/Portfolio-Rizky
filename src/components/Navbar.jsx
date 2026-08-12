@@ -1,160 +1,159 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { useLenis } from "lenis/react";
 
 const navItems = [
-    {
-        label: 'Home',
-        link: '#home',
-        icon: 'home'
-    },
-    {
-        label: 'About',
-        link: '#about',
-        icon: 'person'
-    },
-    {
-        label: 'Skills',
-        link: '#skills',
-        icon: 'code'
-    },
-    {
-        label: 'Projects',
-        link: '#work',
-        icon: 'grid_view'
-    },
-    {
-        label: 'Contact',
-        link: '#contact',
-        icon: 'mail'
-    }
-]
+  {
+    label: "Home",
+    link: "#home",
+    icon: "home",
+  },
+  {
+    label: "About",
+    link: "#about",
+    icon: "person",
+  },
+  {
+    label: "Skills",
+    link: "#skills",
+    icon: "code",
+  },
+  {
+    label: "Projects",
+    link: "#work",
+    icon: "grid_view",
+  },
+  {
+    label: "Contact",
+    link: "#contact",
+    icon: "mail",
+  },
+];
+
+const smoothScrollOptions = {
+  duration: 1.2,
+  easing: (progress) =>
+    progress < 0.5
+      ? 4 * progress ** 3
+      : 1 - (-2 * progress + 2) ** 3 / 2,
+};
 
 const Navbar = ({ mobile = false }) => {
-    const [activeSection, setActiveSection] = useState('#home')
+  const lenis = useLenis();
+  const [activeSection, setActiveSection] = useState("#home");
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY + 180
-            let currentSection = '#home'
+  useEffect(() => {
+    const updateActiveSection = () => {
+      const scrollPosition = window.scrollY + 180;
+      let currentSection = "#home";
 
-            navItems.forEach((item) => {
-                const section = document.querySelector(item.link)
+      navItems.forEach(({ link }) => {
+        const section = document.querySelector(link);
 
-                if (!section) return
-
-                if (scrollPosition >= section.offsetTop) {
-                    currentSection = item.link
-                }
-            })
-
-            setActiveSection(currentSection)
+        if (section && scrollPosition >= section.offsetTop) {
+          currentSection = link;
         }
+      });
 
-        handleScroll()
+      setActiveSection(currentSection);
+    };
 
-        window.addEventListener('scroll', handleScroll, {
-            passive: true
-        })
+    updateActiveSection();
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
+    window.addEventListener("scroll", updateActiveSection, {
+      passive: true,
+    });
 
-    const handleNavigation = (event, link) => {
-        event.preventDefault()
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+    };
+  }, []);
 
-        const section = document.querySelector(link)
+  const handleNavigation = (event, link) => {
+    event.preventDefault();
 
-        if (!section) return
+    const section = document.querySelector(link);
 
-        section.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        })
+    if (!section) return;
 
-        setActiveSection(link)
+    if (lenis) {
+      lenis.scrollTo(section, {
+        ...smoothScrollOptions,
+        offset: link === "#home" ? 0 : -96,
+      });
+    } else {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
 
-    if (mobile) {
-        return (
-            <nav
-                className="mobile-bottom-nav"
-                aria-label="Mobile navigation"
-            >
-                {navItems.map((item) => {
-                    const isActive = activeSection === item.link
+    setActiveSection(link);
+  };
 
-                    return (
-                        <a
-                            key={item.link}
-                            href={item.link}
-                            onClick={(event) =>
-                                handleNavigation(event, item.link)
-                            }
-                            className={`mobile-nav-link ${
-                                isActive ? 'active' : ''
-                            }`}
-                            aria-current={
-                                isActive ? 'page' : undefined
-                            }
-                        >
-                            {isActive && (
-                                <span
-                                    className="mobile-nav-indicator"
-                                    aria-hidden="true"
-                                />
-                            )}
-
-                            <span
-                                className="material-symbols-rounded"
-                                aria-hidden="true"
-                            >
-                                {item.icon}
-                            </span>
-
-                            <span>
-                                {item.label}
-                            </span>
-                        </a>
-                    )
-                })}
-            </nav>
-        )
-    }
-
+  if (mobile) {
     return (
-        <nav
-            className="navbar"
-            aria-label="Primary navigation"
-        >
-            {navItems.map((item) => {
-                const isActive = activeSection === item.link
+      <nav
+        className="mobile-bottom-nav"
+        aria-label="Mobile navigation"
+      >
+        {navItems.map((item) => {
+          const isActive = activeSection === item.link;
 
-                return (
-                    <a
-                        key={item.link}
-                        href={item.link}
-                        onClick={(event) =>
-                            handleNavigation(event, item.link)
-                        }
-                        className={`nav-link ${
-                            isActive ? 'active' : ''
-                        }`}
-                        aria-current={
-                            isActive ? 'page' : undefined
-                        }
-                    >
-                        {item.label}
-                    </a>
-                )
-            })}
-        </nav>
-    )
-}
+          return (
+            <a
+              key={item.link}
+              href={item.link}
+              onClick={(event) =>
+                handleNavigation(event, item.link)
+              }
+              className={`mobile-nav-link ${
+                isActive ? "active" : ""
+              }`}
+              aria-current={isActive ? "page" : undefined}
+            >
+              <span
+                className="material-symbols-rounded"
+                aria-hidden="true"
+              >
+                {item.icon}
+              </span>
+
+              <span>{item.label}</span>
+            </a>
+          );
+        })}
+      </nav>
+    );
+  }
+
+  return (
+    <nav className="navbar" aria-label="Primary navigation">
+      {navItems.map((item) => {
+        const isActive = activeSection === item.link;
+
+        return (
+          <a
+            key={item.link}
+            href={item.link}
+            onClick={(event) =>
+              handleNavigation(event, item.link)
+            }
+            className={`nav-link ${
+              isActive ? "active" : ""
+            }`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  );
+};
 
 Navbar.propTypes = {
-    mobile: PropTypes.bool
-}
+  mobile: PropTypes.bool,
+};
 
-export default Navbar
+export default Navbar;
