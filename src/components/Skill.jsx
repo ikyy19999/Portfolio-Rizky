@@ -206,12 +206,6 @@ const Skill = () => {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const filterListRef = useRef(null);
-  const filterDragRef = useRef({
-    active: false,
-    didDrag: false,
-    startX: 0,
-    startScroll: 0,
-  });
   const [filterScroll, setFilterScroll] = useState({
     hasOverflow: false,
     canGoBack: false,
@@ -301,68 +295,6 @@ const Skill = () => {
     filterList.scrollBy({
       left: event.deltaY,
       behavior: "auto",
-    });
-  };
-
-  const handleFilterPointerDown = (event) => {
-    if (event.pointerType !== "mouse" || event.button !== 0) return;
-
-    const filterList = filterListRef.current;
-
-    if (!filterList || filterList.scrollWidth <= filterList.clientWidth) {
-      return;
-    }
-
-    filterDragRef.current = {
-      active: true,
-      didDrag: false,
-      startX: event.clientX,
-      startScroll: filterList.scrollLeft,
-    };
-
-    filterList.setPointerCapture(event.pointerId);
-  };
-
-  const handleFilterPointerMove = (event) => {
-    const filterList = filterListRef.current;
-    const dragState = filterDragRef.current;
-
-    if (!filterList || !dragState.active) return;
-
-    const dragDistance = event.clientX - dragState.startX;
-
-    if (Math.abs(dragDistance) > 4) {
-      dragState.didDrag = true;
-    }
-
-    if (!dragState.didDrag) return;
-
-    event.preventDefault();
-    filterList.scrollLeft = dragState.startScroll - dragDistance;
-  };
-
-  const stopFilterDragging = (event) => {
-    const filterList = filterListRef.current;
-
-    filterDragRef.current.active = false;
-
-    if (filterList?.hasPointerCapture(event.pointerId)) {
-      filterList.releasePointerCapture(event.pointerId);
-    }
-  };
-
-  const selectFilter = (event, value) => {
-    if (filterDragRef.current.didDrag) {
-      event.preventDefault();
-      filterDragRef.current.didDrag = false;
-      return;
-    }
-
-    setFilter(value);
-    event.currentTarget.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
     });
   };
 
@@ -511,10 +443,6 @@ const Skill = () => {
                     role="group"
                     aria-label="Skill categories"
                     onWheel={handleFilterWheel}
-                    onPointerDown={handleFilterPointerDown}
-                    onPointerMove={handleFilterPointerMove}
-                    onPointerUp={stopFilterDragging}
-                    onPointerCancel={stopFilterDragging}
                   >
                     {filters.map((item) => {
                       const isActive = filter === item.value;
@@ -525,7 +453,7 @@ const Skill = () => {
                           type="button"
                           className={isActive ? "is-active" : ""}
                           aria-pressed={isActive}
-                          onClick={(event) => selectFilter(event, item.value)}
+                          onClick={() => setFilter(item.value)}
                         >
                           {item.label}
                         </button>
