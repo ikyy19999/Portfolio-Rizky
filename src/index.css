@@ -5437,3 +5437,22 @@ html.theme-fallback-in .site-shell {
     opacity: 1;
   }
 }
+
+/* Time-aware handwriting greeting */
+
+.intro-screen.is-ready {
+  animation-delay: 4.4s;
+}
+
+.intro-word.intro-word-greeting {
+  font-size: clamp(2.25rem, 10vw, 8rem);
+}
+
+.intro-screen.is-ready .intro-word-greeting,
+.intro-screen.is-ready .intro-word-greeting + .intro-pen {
+  animation-duration: 2.75s;
+}
+
+.intro-screen.is-ready .intro-caption {
+  animation-delay: 1.5s;
+}
