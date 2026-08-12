@@ -5373,3 +5373,67 @@ html.theme-fallback-in .site-shell {
     width: 100%;
   }
 }
+
+/* Hero vertical text rotator */
+
+.ax-hero-title .ax-hero-title-static {
+  color: var(--text);
+}
+
+.ax-hero-title .ax-hero-title-rotator {
+  display: grid;
+  overflow: hidden;
+  color: var(--muted);
+  isolation: isolate;
+}
+
+.ax-hero-title .ax-hero-title-rotator-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translate3d(0, 42%, 0);
+  animation: ax-hero-title-rotate 12s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: calc(var(--rotator-index) * -8s);
+  will-change: opacity, filter, transform;
+}
+
+@keyframes ax-hero-title-rotate {
+  0%,
+  25% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  33% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, -42%, 0);
+  }
+
+  34%,
+  92% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, 42%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-hero-title .ax-hero-title-rotator-item {
+    opacity: 0;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .ax-hero-title .ax-hero-title-rotator-item:first-child {
+    opacity: 1;
+  }
+}
