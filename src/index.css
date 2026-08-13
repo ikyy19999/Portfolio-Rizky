@@ -35,10 +35,6 @@
   --glass-edge: rgba(22, 22, 23, 0.1);
   --glass-highlight: rgba(255, 255, 255, 0.82);
   --glass-shadow: 0 18px 60px rgba(24, 24, 27, 0.12);
-  --island-surface: rgba(20, 20, 23, 0.94);
-  --island-text: #ffffff;
-  --island-muted: rgba(255, 255, 255, 0.62);
-  --island-border: rgba(255, 255, 255, 0.12);
 
   --page: var(--color-bg-canvas);
   --page-soft: var(--color-bg-subtle);
@@ -89,10 +85,6 @@
   --glass-edge: rgba(255, 255, 255, 0.08);
   --glass-highlight: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 22px 68px rgba(0, 0, 0, 0.42);
-  --island-surface: rgba(244, 244, 247, 0.94);
-  --island-text: #17171a;
-  --island-muted: rgba(23, 23, 26, 0.58);
-  --island-border: rgba(255, 255, 255, 0.28);
 }
 
 html {
@@ -686,152 +678,6 @@ textarea:focus-visible {
 
 .mobile-bottom-nav {
   display: none;
-}
-
-.dynamic-island {
-  position: fixed;
-  top: 92px;
-  left: 50%;
-  z-index: 990;
-  display: grid;
-  width: 164px;
-  min-height: 48px;
-  grid-template-columns: 32px minmax(0, 1fr);
-  align-items: center;
-  gap: 9px;
-  overflow: hidden;
-  padding: 7px;
-  color: var(--island-text);
-  background:
-    radial-gradient(
-      circle at 18% -35%,
-      rgba(255, 255, 255, 0.2),
-      transparent 42%
-    ),
-    var(--island-surface);
-  border: 1px solid var(--island-border);
-  border-radius: 15px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 14px 44px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(28px) saturate(170%);
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
-  transform: translateX(-50%) translateY(0);
-  transition:
-    width 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    min-height 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    background 280ms ease,
-    color 280ms ease,
-    box-shadow 280ms ease;
-  isolation: isolate;
-}
-
-.dynamic-island.is-expanded {
-  width: 276px;
-  min-height: 62px;
-  border-radius: 17px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 20px 58px rgba(0, 0, 0, 0.24);
-}
-
-.dynamic-island-icon {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  color: var(--island-text);
-  background: color-mix(in srgb, var(--island-text) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--island-text) 12%, transparent);
-  border-radius: 9px;
-  transition:
-    background 280ms ease,
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.dynamic-island.is-expanded .dynamic-island-icon {
-  transform: rotate(-4deg) scale(1.04);
-}
-
-.dynamic-island.is-theme-state .dynamic-island-icon {
-  color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.dynamic-island-icon .material-symbols-rounded {
-  font-size: 18px;
-}
-
-.dynamic-island-copy {
-  display: grid;
-  min-width: 0;
-  gap: 2px;
-  padding-right: 3px;
-}
-
-.dynamic-island-copy strong,
-.dynamic-island-copy small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dynamic-island-copy strong {
-  font-size: 0.76rem;
-  font-weight: 650;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-}
-
-.dynamic-island-copy small {
-  max-height: 0;
-  color: var(--island-muted);
-  font-size: 0.61rem;
-  font-weight: 560;
-  line-height: 1.2;
-  opacity: 0;
-  transform: translateY(4px);
-  transition:
-    max-height 300ms ease,
-    opacity 240ms ease 70ms,
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1) 70ms;
-}
-
-.dynamic-island.is-expanded .dynamic-island-copy small {
-  max-height: 14px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dynamic-island-progress {
-  position: absolute;
-  right: 11px;
-  bottom: 7px;
-  left: 49px;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 3px;
-  opacity: 0;
-  transform: translateY(5px);
-  transition:
-    opacity 240ms ease 100ms,
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
-}
-
-.dynamic-island.is-expanded .dynamic-island-progress {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dynamic-island-progress > span {
-  height: 2px;
-  background: color-mix(in srgb, var(--island-text) 18%, transparent);
-  border-radius: 1px;
-}
-
-.dynamic-island-progress > span.is-active {
-  background: var(--accent);
 }
 
 .hero-section {
@@ -1981,38 +1827,6 @@ textarea.text-field {
     -webkit-backdrop-filter:
       blur(28px) saturate(175%);
     transform: translateX(-50%);
-  }
-
-  .dynamic-island {
-    top: 78px;
-    width: 146px;
-    min-height: 44px;
-    grid-template-columns: 30px minmax(0, 1fr);
-    gap: 8px;
-    padding: 6px;
-    border-radius: 14px;
-  }
-
-  .dynamic-island.is-expanded {
-    width: min(238px, calc(100vw - 48px));
-    min-height: 58px;
-    border-radius: 16px;
-  }
-
-  .dynamic-island-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-  }
-
-  .dynamic-island-copy strong {
-    font-size: 0.71rem;
-  }
-
-  .dynamic-island-progress {
-    right: 10px;
-    bottom: 6px;
-    left: 44px;
   }
 
   .mobile-nav-link {
@@ -5868,14 +5682,5 @@ html.theme-fallback-in .site-shell {
   .skills-controls,
   .contact-form {
     background: var(--surface-solid) !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dynamic-island,
-  .dynamic-island-icon,
-  .dynamic-island-copy small,
-  .dynamic-island-progress {
-    transition: none;
   }
 }
