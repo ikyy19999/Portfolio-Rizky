@@ -66,11 +66,11 @@ const createEdgePairs = (count, columns) => {
   const pairs = [];
 
   for (let index = 0; index < count; index += 1) {
-    if ((index + 1) % columns !== 0 && index + 1 < count) {
+    if (index % 2 === 0 && (index + 1) % columns !== 0 && index + 1 < count) {
       pairs.push([index, index + 1]);
     }
 
-    if (index + columns < count) {
+    if (index % 3 === 0 && index + columns < count) {
       pairs.push([index, index + columns]);
     }
   }
@@ -124,9 +124,14 @@ const ImmersiveScene = () => {
       const inRange =
         scrollTop + window.innerHeight > cachedBounds.start &&
         scrollTop < cachedBounds.visibleEnd;
+      const fadeDistance = Math.max(window.innerHeight * 0.72, 1);
+      const fadeProgress = clamp(
+        (cachedBounds.visibleEnd - scrollTop) / fadeDistance,
+      );
 
       sceneInRange = inRange;
       sceneHost.classList.toggle("is-in-range", inRange);
+      sceneHost.style.setProperty("--scene-visibility", fadeProgress);
 
       return clamp(
         (scrollTop - cachedBounds.start) /
@@ -183,7 +188,7 @@ const ImmersiveScene = () => {
       }
 
       const isCompact = () => window.innerWidth <= 767;
-      const pointCount = isCompact() ? 84 : 156;
+      const pointCount = isCompact() ? 48 : 104;
       const shapeData = createShapeData(pointCount);
       const edgePairs = createEdgePairs(pointCount, shapeData.columns);
       const displayPositions = shapeData.sphere.slice();
@@ -193,7 +198,7 @@ const ImmersiveScene = () => {
       const spatialGroup = new THREE.Group();
       const ringGroup = new THREE.Group();
 
-      camera.position.set(0, 0, 7.4);
+      camera.position.set(0, 0, 8);
       scene.add(spatialGroup);
       spatialGroup.add(ringGroup);
 
@@ -210,10 +215,10 @@ const ImmersiveScene = () => {
 
       const pointsMaterial = new THREE.PointsMaterial({
         color: 0x0071e3,
-        size: isCompact() ? 0.046 : 0.052,
+        size: isCompact() ? 0.038 : 0.044,
         sizeAttenuation: true,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.56,
         depthWrite: false,
       });
       const points = new THREE.Points(pointsGeometry, pointsMaterial);
@@ -227,7 +232,7 @@ const ImmersiveScene = () => {
       const linesMaterial = new THREE.LineBasicMaterial({
         color: 0x0071e3,
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.07,
         depthWrite: false,
       });
       const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
@@ -236,7 +241,7 @@ const ImmersiveScene = () => {
 
       const ringMaterials = [];
 
-      for (let ringIndex = 0; ringIndex < 3; ringIndex += 1) {
+      for (let ringIndex = 0; ringIndex < 2; ringIndex += 1) {
         const ringPositions = [];
         const segments = isCompact() ? 64 : 96;
         const radius = 2.08 + ringIndex * 0.2;
@@ -260,7 +265,7 @@ const ImmersiveScene = () => {
         const ringMaterial = new THREE.LineBasicMaterial({
           color: 0x0071e3,
           transparent: true,
-          opacity: 0.1 - ringIndex * 0.018,
+          opacity: 0.045 - ringIndex * 0.012,
           depthWrite: false,
         });
         const ring = new THREE.LineLoop(ringGeometry, ringMaterial);
@@ -296,10 +301,10 @@ const ImmersiveScene = () => {
           ringMaterials.forEach((material) => material.color.set(0x0071e3));
         }
 
-        pointsMaterial.opacity = darkTheme ? 0.94 : 0.82;
-        linesMaterial.opacity = darkTheme ? 0.24 : 0.16;
+        pointsMaterial.opacity = darkTheme ? 0.68 : 0.54;
+        linesMaterial.opacity = darkTheme ? 0.1 : 0.065;
         ringMaterials.forEach((material, index) => {
-          material.opacity = (darkTheme ? 0.15 : 0.09) - index * 0.018;
+          material.opacity = (darkTheme ? 0.065 : 0.04) - index * 0.012;
         });
       };
 
@@ -313,7 +318,7 @@ const ImmersiveScene = () => {
         renderer.setSize(width, height, false);
         camera.aspect = width / Math.max(height, 1);
         camera.updateProjectionMatrix();
-        pointsMaterial.size = isCompact() ? 0.046 : 0.052;
+        pointsMaterial.size = isCompact() ? 0.038 : 0.044;
       };
 
       const updateLinePositions = () => {
@@ -406,10 +411,10 @@ const ImmersiveScene = () => {
         const secondPath = easeInOut(clamp((currentProgress - 0.5) * 2));
         const desktopX =
           currentProgress <= 0.5
-            ? mix(2.15, -1.95, firstPath)
-            : mix(-1.95, 1.8, secondPath);
-        const baseScale = compact ? 0.64 : 0.94;
-        const breathingScale = 1 + Math.sin(currentProgress * Math.PI) * 0.08;
+            ? mix(2.4, 0, firstPath)
+            : mix(0, 2.2, secondPath);
+        const baseScale = compact ? 0.46 : 0.66;
+        const breathingScale = 1 + Math.sin(currentProgress * Math.PI) * 0.045;
 
         spatialGroup.position.x = compact
           ? currentMouseX * 0.08
@@ -430,7 +435,7 @@ const ImmersiveScene = () => {
         ringGroup.rotation.y = time * -0.00006 + currentProgress * 1.1;
         ringGroup.scale.setScalar(1 + Math.sin(time * 0.00055) * 0.025);
 
-        camera.position.z = mix(7.4, 6.8, Math.sin(currentProgress * Math.PI));
+        camera.position.z = mix(8, 7.55, Math.sin(currentProgress * Math.PI));
         renderer.render(scene, camera);
       };
 
