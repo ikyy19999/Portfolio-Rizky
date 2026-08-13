@@ -1,241 +1,683 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --text-primary: #ffffff;
-            --text-secondary: #64748b;
-            --accent-color: #3b82f6;
-            --hover-color: #2563eb;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff7df">
+  <title>Kinetic Calculator</title>
+  <meta name="description" content="A tiny calculator with an unreasonable amount of motion.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --font-display: "Space Grotesk"; --font-mono: "Space Mono"; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+:root {
+  --ink: #18111f;
+  --cream: #fff7df;
+  --purple: #7557ff;
+  --orange: #ff5c35;
+  --acid: #d8ff4f;
+  --pink: #ff8dcc;
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(145deg, var(--bg-primary), var(--bg-secondary));
-            color: var(--text-primary);
-            padding: 20px;
-        }
+* { box-sizing: border-box; }
+html { background: var(--cream); }
 
-        .calculator-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 450px;
-        }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), sans-serif;
+  overflow-x: hidden;
+}
 
-        .calculator {
-            background-color: var(--bg-secondary);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            width: 100%;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+button, output { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
 
-        #display {
-            width: 100%;
-            height: 90px;
-            background-color: var(--bg-primary);
-            border: none;
-            border-radius: 16px;
-            color: var(--text-primary);
-            font-size: 48px;
-            text-align: right;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            outline: none;
-        }
+.page-shell {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 17%, rgba(255, 141, 204, .85), transparent 24%),
+    radial-gradient(circle at 90% 27%, rgba(216, 255, 79, .7), transparent 25%),
+    linear-gradient(145deg, #fff9e8 0%, #f1e9ff 48%, #ffdec9 100%);
+  padding: 4.2rem 1rem 2rem;
+  isolation: isolate;
+}
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .13;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
 
-        button {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 16px;
-            font-size: 24px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
+.orb {
+  position: absolute;
+  z-index: -2;
+  border: 2px solid var(--ink);
+  border-radius: 42% 58% 62% 38% / 43% 35% 65% 57%;
+  filter: blur(.2px);
+  animation: blob 9s ease-in-out infinite alternate;
+}
 
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255,255,255,0.1);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
+.orb-one { width: 19rem; height: 19rem; top: 19rem; left: -11rem; background: var(--orange); }
+.orb-two { width: 18rem; height: 18rem; right: -11rem; top: 35rem; background: var(--purple); animation-delay: -3s; }
+.orb-three { display: none; background: var(--acid); animation-delay: -6s; }
 
-        button:hover::before {
-            opacity: 1;
-        }
+.ticker {
+  position: absolute;
+  top: 0;
+  left: -2%;
+  width: 104%;
+  height: 2.2rem;
+  overflow: hidden;
+  border-block: 2px solid var(--ink);
+  background: var(--acid);
+  font: 800 .72rem/2rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  transform: rotate(-1deg);
+}
 
-        button:active {
-            transform: scale(0.95);
-        }
+.ticker div { width: max-content; animation: marquee 11s linear infinite; }
 
-        .operator {
-            background-color: var(--accent-color);
-            color: white;
-        }
+.hero {
+  width: min(100%, 35rem);
+  margin: 0 auto 1.3rem;
+  text-align: center;
+}
 
-        .clear {
-            background-color: #ef4444;
-            color: white;
-        }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .65rem;
+  font: 700 .67rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
 
-        .equal {
-            background-color: #22c55e;
-            color: white;
-        }
+.eyebrow span {
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 4px rgba(255, 92, 53, .18);
+  animation: blink 1s steps(2) infinite;
+}
 
-        #backButton {
-            margin-top: 20px;
-            padding: 15px 30px;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.45rem, 12vw, 5.8rem);
+  font-weight: 700;
+  line-height: .84;
+  letter-spacing: -.085em;
+  text-wrap: balance;
+  transform: rotate(-1.5deg);
+}
 
-        #backButton:hover {
-            background-color: var(--hover-color);
-        }
+.hero h1 span {
+  display: block;
+  width: fit-content;
+  margin: .15em auto 0;
+  padding: .05em .14em .12em;
+  color: var(--cream);
+  background: var(--purple);
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  letter-spacing: -.075em;
+  transform: rotate(2deg);
+}
 
-        footer {
-            margin-top: 20px;
-            color: var(--text-secondary);
-            text-align: center;
-            font-size: 14px;
-        }
+.hero p {
+  margin: 1.15rem 0 0;
+  font: 600 .78rem var(--font-mono), monospace;
+  letter-spacing: -.03em;
+}
 
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .calculator {
-                padding: 20px;
-            }
+.calculator-stage {
+  position: relative;
+  width: min(100%, 23rem);
+  margin: 0 auto;
+  perspective: 1000px;
+}
 
-            #display {
-                font-size: 36px;
-                height: 70px;
-            }
+.shadow-plate {
+  position: absolute;
+  inset: .8rem -.45rem -.75rem .65rem;
+  border: 2px solid var(--ink);
+  border-radius: 2rem;
+  background: var(--orange);
+  transform: rotate(2.7deg);
+  animation: plate-wiggle 4s ease-in-out infinite;
+}
 
-            button {
-                font-size: 20px;
-                padding: 15px;
-            }
-        }
+.calculator {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  position: relative;
+  z-index: 2;
+  padding: 1rem;
+  overflow: visible;
+  border: 2px solid var(--ink);
+  border-radius: 1.65rem;
+  background: #f4efdf;
+  box-shadow: 0 14px 0 rgba(24, 17, 31, .14), 0 26px 44px rgba(73, 45, 97, .24);
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform .15s ease-out;
+}
 
-        @media (max-height: 700px) {
-            .calculator-container {
-                justify-content: flex-start;
-                padding-top: 50px;
-            }
-        }
-    </style>
+.calculator::before {
+  content: "";
+  position: absolute;
+  inset: .3rem;
+  z-index: -1;
+  border: 1px dashed rgba(24, 17, 31, .24);
+  border-radius: 1.3rem;
+  pointer-events: none;
+}
+
+.calculator-topline, .calculator-footer, .screen-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calculator-topline {
+  padding: 0 .15rem .7rem;
+  font: 700 .58rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.brand { font-family: var(--font-display), sans-serif; font-size: .85rem; letter-spacing: -.04em; }
+.brand span { font-size: .4rem; vertical-align: top; }
+.status { display: flex; align-items: center; gap: .35rem; }
+
+.status i {
+  width: .42rem;
+  height: .42rem;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: #4fdf84;
+  box-shadow: 0 0 8px #4fdf84;
+  animation: blink .8s steps(2) infinite;
+}
+
+.screen {
+  position: relative;
+  height: 8.3rem;
+  margin-bottom: .8rem;
+  padding: 1rem .85rem .6rem;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 1.05rem;
+  color: var(--acid);
+  background: #22182f;
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .05), inset 0 -14px 30px #09060f;
+  animation: screen-in .28s cubic-bezier(.2, 1.8, .4, 1);
+}
+
+.screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.12) 47%, transparent 64%);
+  transform: translateX(-130%);
+  animation: screen-shine 5s ease-in-out infinite;
+}
+
+.screen.solved { animation: solved .48s cubic-bezier(.2, 1.8, .4, 1); }
+
+.screen-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .15;
+  background-image: linear-gradient(rgba(216,255,79,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(216,255,79,.3) 1px, transparent 1px);
+  background-size: 15px 15px;
+  animation: grid-slide 4s linear infinite;
+}
+
+.history {
+  position: relative;
+  z-index: 1;
+  height: 1rem;
+  margin: 0;
+  color: rgba(216, 255, 79, .55);
+  font: 500 .62rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.screen output {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 4.8rem;
+  overflow: hidden;
+  font: 600 clamp(2.15rem, 13vw, 3.8rem)/4.8rem var(--font-mono), monospace;
+  text-align: right;
+  letter-spacing: -.09em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 14px rgba(216, 255, 79, .35);
+}
+
+.screen-footer {
+  position: relative;
+  z-index: 1;
+  color: rgba(216, 255, 79, .48);
+  font: 500 .48rem var(--font-mono), monospace;
+  text-transform: uppercase;
+}
+
+.level-bars { display: flex; align-items: end; gap: 2px; height: .55rem; }
+.level-bars i { display: block; width: 3px; background: var(--acid); animation: bars .7s ease-in-out infinite alternate; }
+.level-bars i:nth-child(1) { height: 30%; }
+.level-bars i:nth-child(2) { height: 90%; animation-delay: -.2s; }
+.level-bars i:nth-child(3) { height: 55%; animation-delay: -.4s; }
+.level-bars i:nth-child(4) { height: 100%; animation-delay: -.6s; }
+
+.button-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .58rem; }
+
+.key {
+  position: relative;
+  height: clamp(3.3rem, 15vw, 4.15rem);
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: .95rem;
+  color: var(--ink);
+  background: #fffdf5;
+  box-shadow: 0 4px 0 var(--ink);
+  cursor: pointer;
+  font-size: 1.12rem;
+  font-weight: 700;
+  transition: transform .15s cubic-bezier(.2, 1.8, .4, 1), box-shadow .15s ease, filter .15s ease;
+}
+
+.key::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  aspect-ratio: 1;
+  left: -20%;
+  top: 100%;
+  border-radius: 50%;
+  background: rgba(117, 87, 255, .15);
+  transition: transform .35s cubic-bezier(.2, 1.8, .4, 1);
+}
+
+.key span {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transition: transform .18s cubic-bezier(.2, 1.8, .4, 1);
+}
+
+.key:hover::before, .key:focus-visible::before { transform: translateY(-60%); }
+.key:hover span, .key:focus-visible span { transform: rotate(-7deg) scale(1.12); }
+
+.key:active {
+  transform: translateY(4px) scale(.94) rotate(2deg);
+  box-shadow: 0 0 0 var(--ink);
+  filter: saturate(1.4);
+}
+
+.key:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+.key.utility { background: var(--pink); font-size: .83rem; }
+.key.operator { color: var(--cream); background: var(--purple); font-size: 1.35rem; }
+.key.operator::before { background: rgba(216, 255, 79, .3); }
+.key.equals { color: var(--ink); background: var(--acid); font-size: 1.5rem; }
+.key.equals span { animation: equal-dance 1.6s ease-in-out infinite; }
+
+.calculator-footer {
+  padding: .78rem .2rem 0;
+  color: rgba(24, 17, 31, .55);
+  font: 600 .48rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.confetti { position: absolute; inset: 40% 0 auto; pointer-events: none; z-index: 10; }
+
+.confetti i {
+  --angle: calc((var(--i) * 20deg) - 170deg);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: .5rem;
+  height: .8rem;
+  border: 1px solid var(--ink);
+  background: var(--acid);
+  animation: confetti .95s cubic-bezier(.1, .8, .2, 1) forwards;
+  transform: rotate(var(--angle));
+}
+
+.confetti i:nth-child(3n) { background: var(--pink); }
+.confetti i:nth-child(3n + 1) { background: var(--orange); border-radius: 50%; }
+
+.sticker {
+  display: none;
+  position: absolute;
+  z-index: 4;
+  width: 5.4rem;
+  height: 5.4rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--acid);
+  box-shadow: 5px 5px 0 var(--ink);
+  font-weight: 800;
+  line-height: .8;
+  text-transform: uppercase;
+  animation: float 3s ease-in-out infinite;
+}
+
+.sticker small { margin-top: .45rem; font: 700 .6rem var(--font-mono), monospace; letter-spacing: .08em; }
+.sticker-right { background: var(--pink); animation-delay: -1.4s; }
+
+.page-footer {
+  display: flex;
+  justify-content: center;
+  gap: .55rem;
+  margin-top: 1.75rem;
+  font: 600 .58rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+@media (min-width: 700px) {
+  .page-shell { padding-top: 5.5rem; padding-bottom: 3rem; }
+  .hero { margin-bottom: 2rem; }
+  .hero p { font-size: .9rem; }
+  .calculator-stage { width: 24rem; }
+  .calculator { padding: 1.15rem; }
+  .sticker { display: flex; }
+  .sticker-left { left: max(2rem, calc(50% - 23rem)); top: 22rem; transform: rotate(-13deg); }
+  .sticker-right { right: max(2rem, calc(50% - 23rem)); top: 31rem; transform: rotate(11deg); }
+  .orb-one { left: -5rem; }
+  .orb-two { right: -5rem; }
+  .orb-three { display: block; width: 17rem; height: 17rem; top: -9rem; right: 12%; }
+}
+
+@media (min-width: 1050px) {
+  .page-shell {
+    display: grid;
+    grid-template-columns: minmax(20rem, 35rem) minmax(23rem, 25rem);
+    grid-template-rows: 1fr auto;
+    place-content: center;
+    align-items: center;
+    column-gap: clamp(3rem, 8vw, 8rem);
+    padding-top: 4rem;
+  }
+  .hero { margin: 0; text-align: left; }
+  .hero h1 span { margin-left: -.05em; }
+  .hero p { margin-left: .2rem; }
+  .calculator-stage { margin: 0; }
+  .sticker-left { left: calc(50% - 33rem); top: auto; bottom: 7rem; }
+  .sticker-right { right: calc(50% - 33rem); top: 12%; }
+  .page-footer { grid-column: 1 / -1; margin-top: 3rem; }
+}
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes blob {
+  0% { transform: rotate(0deg) scale(1); border-radius: 42% 58% 62% 38% / 43% 35% 65% 57%; }
+  50% { transform: rotate(90deg) scale(1.08); border-radius: 60% 40% 39% 61% / 54% 65% 35% 46%; }
+  100% { transform: rotate(170deg) scale(.94); border-radius: 35% 65% 55% 45% / 65% 37% 63% 35%; }
+}
+@keyframes blink { 50% { opacity: .25; transform: scale(.75); } }
+@keyframes float { 50% { translate: 0 -12px; rotate: 7deg; } }
+@keyframes plate-wiggle { 50% { transform: rotate(-1deg) translateY(5px); } }
+@keyframes screen-in { 0% { filter: brightness(1.8); transform: scale(.985); } 55% { transform: scale(1.012); } }
+@keyframes screen-shine { 0%, 65% { transform: translateX(-130%); } 85%, 100% { transform: translateX(130%); } }
+@keyframes grid-slide { to { background-position: 15px 15px; } }
+@keyframes solved { 0% { transform: translateX(0); } 20% { transform: translateX(-6px) skewX(-3deg); } 40% { transform: translateX(5px) skewX(2deg); filter: hue-rotate(60deg); } 70% { transform: translateX(-2px); } }
+@keyframes bars { to { height: 15%; opacity: .45; } }
+@keyframes equal-dance { 50% { transform: rotate(12deg) scale(1.2); } }
+@keyframes confetti {
+  0% { opacity: 1; transform: rotate(var(--angle)) translateX(0) scale(0); }
+  45% { opacity: 1; transform: rotate(var(--angle)) translateX(9rem) scale(1) rotate(250deg); }
+  100% { opacity: 0; transform: rotate(var(--angle)) translateX(11rem) translateY(5rem) rotate(520deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+  </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <div class="calculator">
-            <input type="text" id="display" readonly>
-            <div class="buttons">
-                <button class="clear" onclick="clearDisplay()">C</button>
-                <button class="operator" onclick="appendToDisplay('/')">/</button>
-                <button class="operator" onclick="appendToDisplay('*')">×</button>
-                <button class="operator" onclick="appendToDisplay('-')">-</button>
-                
-                <button onclick="appendToDisplay('7')">7</button>
-                <button onclick="appendToDisplay('8')">8</button>
-                <button onclick="appendToDisplay('9')">9</button>
-                <button class="operator" onclick="appendToDisplay('+')">+</button>
-                
-                <button onclick="appendToDisplay('4')">4</button>
-                <button onclick="appendToDisplay('5')">5</button>
-                <button onclick="appendToDisplay('6')">6</button>
-                <button class="equal" onclick="calculateResult()">=</button>
-                
-                <button onclick="appendToDisplay('1')">1</button>
-                <button onclick="appendToDisplay('2')">2</button>
-                <button onclick="appendToDisplay('3')">3</button>
-                <button onclick="appendToDisplay('0')">0</button>
-            </div>
-        </div>
-        <button id="backButton" onclick="goBack()">Back to Page</button>
-        <footer>
-            <p>&copy; <span id="currentYear"></span> Rizky Maulana. All Rights Reserved.</p>
-        </footer>
+  <main class="page-shell">
+    <div class="noise" aria-hidden="true"></div>
+    <div class="orb orb-one" aria-hidden="true"></div>
+    <div class="orb orb-two" aria-hidden="true"></div>
+    <div class="orb orb-three" aria-hidden="true"></div>
+
+    <div class="ticker" aria-hidden="true">
+      <div>calculate irresponsibly ✦ numbers go brrr ✦ calculate irresponsibly ✦ numbers go brrr ✦ calculate irresponsibly ✦</div>
     </div>
 
-    <script>
-        function appendToDisplay(value) {
-            const display = document.getElementById("display");
-            // Prevent multiple operators
-            const lastChar = display.value.slice(-1);
-            const operators = ['+', '-', '*', '/'];
-            
-            if (operators.includes(lastChar) && operators.includes(value)) {
-                return;
-            }
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow"><span></span> pocket math machine</div>
+      <h1 id="page-title">make numbers<span>feel dramatic.</span></h1>
+      <p>tiny calculator. unnecessary amounts of motion.</p>
+    </section>
 
-            display.value += value;
+    <div class="sticker sticker-left" aria-hidden="true">100%<small>extra</small></div>
+    <div class="sticker sticker-right" aria-hidden="true">do the<small>math!</small></div>
+
+    <section class="calculator-stage" aria-label="calculator">
+      <div class="shadow-plate" aria-hidden="true"></div>
+      <div class="calculator" id="calculator">
+        <div class="calculator-topline">
+          <span class="brand">kinetic<span>®</span></span>
+          <span class="status"><i></i> overclocked</span>
+        </div>
+
+        <div class="screen" id="screen">
+          <div class="screen-grid" aria-hidden="true"></div>
+          <p class="history" id="history">ready for chaos</p>
+          <output id="display" aria-live="polite" aria-label="display 0">0</output>
+          <div class="screen-footer">
+            <span>m-01</span>
+            <span class="level-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+        </div>
+
+        <div class="button-grid">
+          <button class="key utility" type="button" data-value="clear" aria-label="clear calculator"><span>AC</span></button>
+          <button class="key utility" type="button" data-value="sign" aria-label="toggle sign"><span>+/−</span></button>
+          <button class="key utility" type="button" data-value="percent" aria-label="percentage"><span>%</span></button>
+          <button class="key operator" type="button" data-value="/" aria-label="divide"><span>÷</span></button>
+          <button class="key number" type="button" data-value="7"><span>7</span></button>
+          <button class="key number" type="button" data-value="8"><span>8</span></button>
+          <button class="key number" type="button" data-value="9"><span>9</span></button>
+          <button class="key operator" type="button" data-value="*" aria-label="multiply"><span>×</span></button>
+          <button class="key number" type="button" data-value="4"><span>4</span></button>
+          <button class="key number" type="button" data-value="5"><span>5</span></button>
+          <button class="key number" type="button" data-value="6"><span>6</span></button>
+          <button class="key operator" type="button" data-value="-" aria-label="subtract"><span>−</span></button>
+          <button class="key number" type="button" data-value="1"><span>1</span></button>
+          <button class="key number" type="button" data-value="2"><span>2</span></button>
+          <button class="key number" type="button" data-value="3"><span>3</span></button>
+          <button class="key operator" type="button" data-value="+" aria-label="add"><span>+</span></button>
+          <button class="key utility" type="button" data-value="backspace" aria-label="delete last digit"><span>⌫</span></button>
+          <button class="key number" type="button" data-value="0"><span>0</span></button>
+          <button class="key number" type="button" data-value="." aria-label="decimal point"><span>.</span></button>
+          <button class="key equals" type="button" data-value="equals" aria-label="calculate result"><span>=</span></button>
+        </div>
+
+        <div class="calculator-footer">
+          <span>press. calculate. repeat.</span>
+          <span>v2.06</span>
+        </div>
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <footer class="page-footer"><span>keyboard friendly</span><span>•</span><span>built for thumbs</span></footer>
+  </main>
+
+  <script>
+    (() => {
+      const display = document.getElementById("display");
+      const history = document.getElementById("history");
+      const screen = document.getElementById("screen");
+      const calculator = document.getElementById("calculator");
+      const confetti = document.getElementById("confetti");
+      const operators = ["+", "-", "*", "/"];
+      const pretty = { "*": "×", "/": "÷", "-": "−" };
+      let expression = "0";
+      let justSolved = false;
+
+      const format = value => [...value].map(char => pretty[char] || char).join("");
+      const sanitize = value => Number.isFinite(value) ? Number.parseFloat(value.toPrecision(12)).toString() : "error";
+
+      function evaluate(value) {
+        const safe = value.replace(/[+\-*/.]+$/, "");
+        if (!safe || !/^[0-9+\-*/.() ]+$/.test(safe)) return "error";
+        try {
+          return sanitize(Number(Function('"use strict"; return (' + safe + ')')()));
+        } catch {
+          return "error";
+        }
+      }
+
+      function render(solved = false) {
+        display.textContent = format(expression);
+        display.setAttribute("aria-label", "display " + format(expression));
+        screen.classList.remove("solved");
+        void screen.offsetWidth;
+        if (solved) screen.classList.add("solved");
+      }
+
+      function celebrate() {
+        confetti.replaceChildren();
+        for (let i = 0; i < 18; i += 1) {
+          const piece = document.createElement("i");
+          piece.style.setProperty("--i", i);
+          confetti.appendChild(piece);
+        }
+        window.setTimeout(() => confetti.replaceChildren(), 1000);
+      }
+
+      function input(value) {
+        if (/^\d$/.test(value)) {
+          expression = justSolved || expression === "0" || expression === "error"
+            ? value
+            : expression.length < 24 ? expression + value : expression;
+          justSolved = false;
+          render();
+          return;
         }
 
-        function clearDisplay() {
-            document.getElementById("display").value = "";
+        if (value === ".") {
+          if (justSolved || expression === "error") expression = "0.";
+          else {
+            const lastNumber = expression.split(/[+\-*/]/).pop() || "";
+            if (!lastNumber.includes(".") && expression.length < 24) expression += ".";
+          }
+          justSolved = false;
+          render();
+          return;
         }
 
-        function calculateResult() {
-            const display = document.getElementById("display");
-            try {
-                // Additional safety checks
-                const result = Function(`"use strict"; return (${display.value})`)();
-                display.value = isFinite(result) ? result : "Error";
-            } catch (e) {
-                display.value = "Error";
-            }
+        if (operators.includes(value)) {
+          if (expression === "error") expression = value === "-" ? "-" : "0";
+          else if (operators.includes(expression.slice(-1))) expression = expression.slice(0, -1) + value;
+          else if (expression.length < 24) expression += value;
+          justSolved = false;
+          render();
+          return;
         }
 
-        function goBack() {
-            window.history.back();
+        if (value === "clear") {
+          expression = "0";
+          history.textContent = "wiped clean";
+          justSolved = false;
+          render();
+          return;
         }
 
-        // Update footer year
-        document.getElementById("currentYear").textContent = new Date().getFullYear();
-    </script>
+        if (value === "backspace") {
+          expression = expression === "error" || expression.length <= 1 ? "0" : expression.slice(0, -1);
+          justSolved = false;
+          render();
+          return;
+        }
+
+        if (value === "sign") {
+          if (expression !== "0" && expression !== "error") expression = sanitize(-Number(evaluate(expression)));
+          justSolved = true;
+          render();
+          return;
+        }
+
+        if (value === "percent") {
+          const match = expression.match(/(-?\d*\.?\d+)$/);
+          if (match) expression = expression.slice(0, match.index) + sanitize(Number(match[0]) / 100);
+          render();
+          return;
+        }
+
+        if (value === "equals") {
+          history.textContent = format(expression) + " =";
+          expression = evaluate(expression);
+          justSolved = true;
+          render(true);
+          celebrate();
+        }
+      }
+
+      document.querySelectorAll("[data-value]").forEach(button => {
+        button.addEventListener("click", () => input(button.dataset.value));
+      });
+
+      window.addEventListener("keydown", event => {
+        let value = null;
+        if (/^\d$/.test(event.key) || operators.includes(event.key) || event.key === ".") value = event.key;
+        else if (event.key === "Enter" || event.key === "=") value = "equals";
+        else if (event.key === "Backspace") value = "backspace";
+        else if (event.key === "Escape") value = "clear";
+        else if (event.key === "%") value = "percent";
+        if (value) {
+          event.preventDefault();
+          input(value);
+        }
+      });
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        calculator.addEventListener("pointermove", event => {
+          const rect = calculator.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - .5;
+          const y = (event.clientY - rect.top) / rect.height - .5;
+          calculator.style.setProperty("--tilt-x", (-y * 3) + "deg");
+          calculator.style.setProperty("--tilt-y", (x * 4) + "deg");
+        });
+        calculator.addEventListener("pointerleave", () => {
+          calculator.style.setProperty("--tilt-x", "0deg");
+          calculator.style.setProperty("--tilt-y", "0deg");
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
