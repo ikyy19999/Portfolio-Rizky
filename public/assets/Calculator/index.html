@@ -450,11 +450,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
   display: block;
   width: 100%;
   height: 4.8rem;
-  overflow: hidden;
-  font: 600 clamp(2.2rem, 13vw, 3.8rem)/4.8rem var(--font-mono), monospace;
+  overflow: visible;
+  font: 600 3.8rem/4.8rem var(--font-mono), monospace;
   letter-spacing: -.1em;
   text-align: right;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
 }
 
@@ -852,9 +852,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
         });
       }
 
+      function fitDisplay() {
+        let size = 60.8;
+        display.style.fontSize = size + "px";
+
+        while (display.scrollWidth > display.clientWidth && size > 12) {
+          size -= 1;
+          display.style.fontSize = size + "px";
+        }
+      }
+
       function render(solved = false) {
         display.textContent = format(expression);
         display.setAttribute("aria-label", "display " + format(expression));
+        fitDisplay();
         screen.classList.remove("solved");
         void screen.offsetWidth;
         if (solved) screen.classList.add("solved");
@@ -942,6 +953,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
       document.querySelectorAll("[data-value]").forEach(button => {
         button.addEventListener("click", () => input(button.dataset.value));
       });
+
+      document.fonts?.ready.then(fitDisplay);
+      window.addEventListener("resize", fitDisplay);
 
       window.addEventListener("keydown", event => {
         let value = null;
