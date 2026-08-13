@@ -21,6 +21,7 @@ import Reviews from "./components/Reviews";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
+import ImmersiveScene from "./components/ImmersiveScene";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -257,6 +258,8 @@ const App = () => {
 
       <div className={`site-shell ${showIntro ? "is-loading" : "is-ready"}`}>
         {/* <CursorFollower /> */}
+
+        <ImmersiveScene />
 
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
