@@ -36,14 +36,6 @@ const smoothScrollOptions = {
     progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
-const announceNavigation = (item) => {
-  window.dispatchEvent(
-    new CustomEvent("portfolio:navigation", {
-      detail: item,
-    }),
-  );
-};
-
 const Navbar = ({ mobile = false }) => {
   const lenis = useLenis();
   const [activeSection, setActiveSection] = useState("#home");
@@ -97,13 +89,8 @@ const Navbar = ({ mobile = false }) => {
     event.preventDefault();
 
     const section = document.querySelector(link);
-    const selectedItem = navItems.find((item) => item.link === link);
 
     if (!section) return;
-
-    if (selectedItem) {
-      announceNavigation(selectedItem);
-    }
 
     if (lenis) {
       lenis.scrollTo(section, {
