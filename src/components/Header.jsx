@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
 import Navbar from "./Navbar";
@@ -9,10 +9,46 @@ const smoothScrollOptions = {
     progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
+const islandSections = [
+  { label: "Home", link: "#home", icon: "home" },
+  { label: "About", link: "#about", icon: "person" },
+  { label: "Skills", link: "#skills", icon: "code" },
+  { label: "Projects", link: "#work", icon: "grid_view" },
+  { label: "Contact", link: "#contact", icon: "mail" },
+];
+
+const createSectionState = (section, index) => ({
+  label: section.label,
+  detail: `${String(index + 1).padStart(2, "0")} / ${String(
+    islandSections.length,
+  ).padStart(2, "0")}`,
+  icon: section.icon,
+  index,
+  type: "section",
+});
+
 const Header = ({ theme, onToggleTheme }) => {
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [themeChanging, setThemeChanging] = useState(false);
+  const [islandExpanded, setIslandExpanded] = useState(false);
+  const [islandState, setIslandState] = useState(() =>
+    createSectionState(islandSections[0], 0),
+  );
+  const islandTimerRef = useRef(null);
+  const currentSectionRef = useRef(createSectionState(islandSections[0], 0));
+  const previousThemeRef = useRef(theme);
+
+  const showIsland = useCallback((nextState, duration = 1700) => {
+    window.clearTimeout(islandTimerRef.current);
+    setIslandState(nextState);
+    setIslandExpanded(true);
+
+    islandTimerRef.current = window.setTimeout(() => {
+      setIslandExpanded(false);
+      setIslandState(currentSectionRef.current);
+    }, duration);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,12 +66,118 @@ const Header = ({ theme, onToggleTheme }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const sections = islandSections.map((section) => ({
+      ...section,
+      element: document.querySelector(section.link),
+    }));
+    let scrollFrame = 0;
+
+    const updateCurrentSection = () => {
+      const scrollPosition = window.scrollY + 200;
+      let activeIndex = 0;
+
+      sections.forEach(({ element }, index) => {
+        if (element && scrollPosition >= element.offsetTop) {
+          activeIndex = index;
+        }
+      });
+
+      const nextState = createSectionState(
+        islandSections[activeIndex],
+        activeIndex,
+      );
+
+      if (currentSectionRef.current.index !== activeIndex) {
+        currentSectionRef.current = nextState;
+        showIsland(nextState);
+      }
+    };
+
+    const requestSectionUpdate = () => {
+      if (scrollFrame) return;
+
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        updateCurrentSection();
+      });
+    };
+
+    const handleNavigationAnnouncement = (event) => {
+      const targetIndex = islandSections.findIndex(
+        (section) => section.link === event.detail?.link,
+      );
+
+      if (targetIndex < 0) return;
+
+      const nextState = createSectionState(
+        islandSections[targetIndex],
+        targetIndex,
+      );
+
+      showIsland({
+        ...nextState,
+        label: `Opening ${nextState.label}`,
+      });
+    };
+
+    updateCurrentSection();
+    window.addEventListener("scroll", requestSectionUpdate, { passive: true });
+    window.addEventListener("resize", requestSectionUpdate, { passive: true });
+    window.addEventListener(
+      "portfolio:navigation",
+      handleNavigationAnnouncement,
+    );
+
+    return () => {
+      window.clearTimeout(islandTimerRef.current);
+      window.cancelAnimationFrame(scrollFrame);
+      window.removeEventListener("scroll", requestSectionUpdate);
+      window.removeEventListener("resize", requestSectionUpdate);
+      window.removeEventListener(
+        "portfolio:navigation",
+        handleNavigationAnnouncement,
+      );
+    };
+  }, [showIsland]);
+
+  useEffect(() => {
+    if (previousThemeRef.current === theme) return;
+
+    previousThemeRef.current = theme;
+    showIsland(
+      {
+        ...currentSectionRef.current,
+        label: theme === "dark" ? "Dark mode active" : "Light mode active",
+        detail: "Appearance updated",
+        icon: theme === "dark" ? "dark_mode" : "light_mode",
+        type: "theme",
+      },
+      1900,
+    );
+  }, [showIsland, theme]);
+
   const handleNavigation = (event, target) => {
     event.preventDefault();
 
     const section = document.querySelector(target);
+    const targetIndex = islandSections.findIndex(
+      (item) => item.link === target,
+    );
 
     if (!section) return;
+
+    if (targetIndex >= 0) {
+      const nextState = createSectionState(
+        islandSections[targetIndex],
+        targetIndex,
+      );
+
+      showIsland({
+        ...nextState,
+        label: `Opening ${nextState.label}`,
+      });
+    }
 
     if (lenis) {
       lenis.scrollTo(section, {
@@ -58,6 +200,16 @@ const Header = ({ theme, onToggleTheme }) => {
     const buttonBounds = event.currentTarget.getBoundingClientRect();
 
     setThemeChanging(true);
+    showIsland(
+      {
+        ...currentSectionRef.current,
+        label: "Switching appearance",
+        detail: theme === "dark" ? "Light mode" : "Dark mode",
+        icon: "routine",
+        type: "theme",
+      },
+      2200,
+    );
 
     try {
       await onToggleTheme({
@@ -130,6 +282,33 @@ const Header = ({ theme, onToggleTheme }) => {
           </div>
         </div>
       </header>
+
+      <div
+        className={`dynamic-island ${islandExpanded ? "is-expanded" : ""} ${
+          islandState.type === "theme" ? "is-theme-state" : ""
+        }`}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span className="dynamic-island-icon" aria-hidden="true">
+          <span className="material-symbols-rounded">{islandState.icon}</span>
+        </span>
+
+        <span className="dynamic-island-copy">
+          <strong>{islandState.label}</strong>
+          <small>{islandState.detail}</small>
+        </span>
+
+        <span className="dynamic-island-progress" aria-hidden="true">
+          {islandSections.map((section, index) => (
+            <span
+              key={section.link}
+              className={index <= islandState.index ? "is-active" : ""}
+            />
+          ))}
+        </span>
+      </div>
 
       <Navbar mobile />
     </>
