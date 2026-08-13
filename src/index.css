@@ -5437,3 +5437,111 @@ html.theme-fallback-in .site-shell {
     opacity: 1;
   }
 }
+
+/* Immersive spatial scroll scene */
+
+.immersive-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  contain: strict;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.immersive-scene.is-in-range {
+  opacity: 0.72;
+}
+
+:root[data-theme="dark"] .immersive-scene.is-in-range {
+  opacity: 0.82;
+}
+
+.immersive-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ax-hero > .ax-hero-container,
+.about-section > .container,
+.skills-section > .container {
+  position: relative;
+  z-index: 4;
+}
+
+.skills-section {
+  z-index: 4;
+}
+
+.immersive-scene.is-static::before,
+.immersive-scene.is-static::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(52vw, 620px);
+  aspect-ratio: 1;
+  content: "";
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(24deg);
+}
+
+.immersive-scene.is-static::after {
+  width: min(42vw, 500px);
+  background:
+    radial-gradient(circle at 35% 35%, var(--accent-soft), transparent 60%),
+    repeating-radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 13%, transparent) 0 1px,
+      transparent 1px 18px
+    );
+  transform: translate(-50%, -50%) rotate(-18deg);
+}
+
+@media (max-width: 767px) {
+  .immersive-scene.is-in-range {
+    opacity: 0.34;
+  }
+
+  :root[data-theme="dark"] .immersive-scene.is-in-range {
+    opacity: 0.42;
+  }
+
+  .immersive-scene {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 13%,
+      #000 82%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 13%,
+      #000 82%,
+      transparent 100%
+    );
+  }
+
+  .immersive-scene.is-static::before {
+    width: 82vw;
+  }
+
+  .immersive-scene.is-static::after {
+    width: 68vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .immersive-scene {
+    transition: none;
+  }
+
+  .immersive-scene.is-in-range {
+    opacity: 0.22;
+  }
+}
