@@ -33,9 +33,15 @@ const navItems = [
 const smoothScrollOptions = {
   duration: 1.2,
   easing: (progress) =>
-    progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - (-2 * progress + 2) ** 3 / 2,
+    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
+};
+
+const announceNavigation = (item) => {
+  window.dispatchEvent(
+    new CustomEvent("portfolio:navigation", {
+      detail: item,
+    }),
+  );
 };
 
 const Navbar = ({ mobile = false }) => {
@@ -43,14 +49,18 @@ const Navbar = ({ mobile = false }) => {
   const [activeSection, setActiveSection] = useState("#home");
 
   useEffect(() => {
+    const sections = navItems.map(({ link }) => ({
+      link,
+      element: document.querySelector(link),
+    }));
+    let scrollFrame = 0;
+
     const updateActiveSection = () => {
       const scrollPosition = window.scrollY + 180;
       let currentSection = "#home";
 
-      navItems.forEach(({ link }) => {
-        const section = document.querySelector(link);
-
-        if (section && scrollPosition >= section.offsetTop) {
+      sections.forEach(({ link, element }) => {
+        if (element && scrollPosition >= element.offsetTop) {
           currentSection = link;
         }
       });
@@ -58,14 +68,28 @@ const Navbar = ({ mobile = false }) => {
       setActiveSection(currentSection);
     };
 
+    const requestSectionUpdate = () => {
+      if (scrollFrame) return;
+
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        updateActiveSection();
+      });
+    };
+
     updateActiveSection();
 
-    window.addEventListener("scroll", updateActiveSection, {
+    window.addEventListener("scroll", requestSectionUpdate, {
+      passive: true,
+    });
+    window.addEventListener("resize", requestSectionUpdate, {
       passive: true,
     });
 
     return () => {
-      window.removeEventListener("scroll", updateActiveSection);
+      window.cancelAnimationFrame(scrollFrame);
+      window.removeEventListener("scroll", requestSectionUpdate);
+      window.removeEventListener("resize", requestSectionUpdate);
     };
   }, []);
 
@@ -73,8 +97,13 @@ const Navbar = ({ mobile = false }) => {
     event.preventDefault();
 
     const section = document.querySelector(link);
+    const selectedItem = navItems.find((item) => item.link === link);
 
     if (!section) return;
+
+    if (selectedItem) {
+      announceNavigation(selectedItem);
+    }
 
     if (lenis) {
       lenis.scrollTo(section, {
@@ -93,10 +122,7 @@ const Navbar = ({ mobile = false }) => {
 
   if (mobile) {
     return (
-      <nav
-        className="mobile-bottom-nav"
-        aria-label="Mobile navigation"
-      >
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
         {navItems.map((item) => {
           const isActive = activeSection === item.link;
 
@@ -104,18 +130,11 @@ const Navbar = ({ mobile = false }) => {
             <a
               key={item.link}
               href={item.link}
-              onClick={(event) =>
-                handleNavigation(event, item.link)
-              }
-              className={`mobile-nav-link ${
-                isActive ? "active" : ""
-              }`}
+              onClick={(event) => handleNavigation(event, item.link)}
+              className={`mobile-nav-link ${isActive ? "active" : ""}`}
               aria-current={isActive ? "page" : undefined}
             >
-              <span
-                className="material-symbols-rounded"
-                aria-hidden="true"
-              >
+              <span className="material-symbols-rounded" aria-hidden="true">
                 {item.icon}
               </span>
 
@@ -136,12 +155,8 @@ const Navbar = ({ mobile = false }) => {
           <a
             key={item.link}
             href={item.link}
-            onClick={(event) =>
-              handleNavigation(event, item.link)
-            }
-            className={`nav-link ${
-              isActive ? "active" : ""
-            }`}
+            onClick={(event) => handleNavigation(event, item.link)}
+            className={`nav-link ${isActive ? "active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
             {item.label}
