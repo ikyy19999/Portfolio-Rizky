@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
 import Navbar from "./Navbar";
@@ -12,30 +12,98 @@ const smoothScrollOptions = {
 
 const LanguageSwitcher = () => {
   const { language, languages, setLanguage, copy } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const switcherRef = useRef(null);
+  const activeLanguage =
+    languages.find(({ code }) => code === language) ?? languages[0];
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const handlePointerDown = (event) => {
+      if (!switcherRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  const handleLanguageChange = (code) => {
+    setLanguage(code);
+    setIsOpen(false);
+  };
 
   return (
-    <label className="language-select">
-      <span className="language-select-label">{copy.language.label}</span>
-
-      <select
-        value={language}
+    <div
+      ref={switcherRef}
+      className={`language-dropdown ${isOpen ? "is-open" : ""}`}
+    >
+      <button
+        type="button"
+        className="language-dropdown-trigger"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
         aria-label={copy.language.label}
-        onChange={(event) => setLanguage(event.target.value)}
+        onClick={() => setIsOpen((currentValue) => !currentValue)}
       >
-        {languages.map(({ code, shortLabel, label }) => (
-          <option key={code} value={code} title={label}>
-            {shortLabel}
-          </option>
-        ))}
-      </select>
+        <span>{activeLanguage.shortLabel}</span>
 
-      <span
-        className="material-symbols-rounded language-select-icon"
-        aria-hidden="true"
+        <span
+          className="material-symbols-rounded language-dropdown-chevron"
+          aria-hidden="true"
+        >
+          expand_more
+        </span>
+      </button>
+
+      <div
+        className="language-dropdown-menu"
+        role="listbox"
+        aria-label={copy.language.label}
+        aria-hidden={!isOpen}
       >
-        expand_more
-      </span>
-    </label>
+        {languages.map(({ code, shortLabel, label }) => {
+          const isActive = language === code;
+
+          return (
+            <button
+              key={code}
+              type="button"
+              className={`language-dropdown-option ${
+                isActive ? "is-active" : ""
+              }`}
+              role="option"
+              aria-selected={isActive}
+              tabIndex={isOpen ? 0 : -1}
+              onClick={() => handleLanguageChange(code)}
+            >
+              <span className="language-dropdown-code">{shortLabel}</span>
+              <span className="language-dropdown-name">{label}</span>
+
+              <span
+                className="material-symbols-rounded language-dropdown-check"
+                aria-hidden="true"
+              >
+                check
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
