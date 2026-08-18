@@ -22,7 +22,13 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ImmersiveScene from "./components/ImmersiveScene";
+import CommandPalette from "./components/CommandPalette";
+import WhatsNew from "./components/WhatsNew";
 import { useLanguage } from "./context/LanguageContext";
+import {
+  CURRENT_UPDATE_VERSION,
+  WHATS_NEW_STORAGE_KEY,
+} from "./data/updates";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -200,14 +206,48 @@ const LanguageTransitionOverlay = () => {
 };
 
 const App = () => {
-  const { language } = useLanguage();
+  const { language, isLanguageTransitioning } = useLanguage();
   const [theme, setTheme] = useState(getInitialTheme);
   const themeTransitionRef = useRef(false);
-
   const [showIntro, setShowIntro] = useState(true);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const [hasUnreadUpdates, setHasUnreadUpdates] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return (
+      window.localStorage.getItem(WHATS_NEW_STORAGE_KEY) !==
+      CURRENT_UPDATE_VERSION
+    );
+  });
 
   const completeIntro = useCallback(() => {
     setShowIntro(false);
+  }, []);
+
+  const openCommandPalette = useCallback(() => {
+    setWhatsNewOpen(false);
+    setCommandPaletteOpen(true);
+  }, []);
+
+  const closeCommandPalette = useCallback(() => {
+    setCommandPaletteOpen(false);
+  }, []);
+
+  const openWhatsNew = useCallback(() => {
+    setCommandPaletteOpen(false);
+    setWhatsNewOpen(true);
+    setHasUnreadUpdates(false);
+    window.localStorage.setItem(
+      WHATS_NEW_STORAGE_KEY,
+      CURRENT_UPDATE_VERSION,
+    );
+  }, []);
+
+  const closeWhatsNew = useCallback(() => {
+    setWhatsNewOpen(false);
   }, []);
 
   useLayoutEffect(() => {
@@ -225,6 +265,28 @@ const App = () => {
       document.body.classList.remove("intro-active");
     };
   }, [showIntro]);
+
+  useEffect(() => {
+    const handleCommandShortcut = (event) => {
+      const isCommandShortcut =
+        (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+
+      if (!isCommandShortcut) return;
+
+      event.preventDefault();
+
+      if (showIntro || isLanguageTransitioning) return;
+
+      setWhatsNewOpen(false);
+      setCommandPaletteOpen((currentValue) => !currentValue);
+    };
+
+    document.addEventListener("keydown", handleCommandShortcut);
+
+    return () => {
+      document.removeEventListener("keydown", handleCommandShortcut);
+    };
+  }, [isLanguageTransitioning, showIntro]);
 
   useGSAP(() => {
     const elements = gsap.utils.toArray(".reveal-up");
@@ -354,7 +416,11 @@ const App = () => {
 
         <ImmersiveScene />
 
-        <Header theme={theme} onToggleTheme={toggleTheme} />
+        <Header
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          onOpenCommandPalette={openCommandPalette}
+        />
 
         <main>
           <Hero />
@@ -365,8 +431,22 @@ const App = () => {
           <Contact />
         </main>
 
-        <Footer />
+        <Footer
+          hasUnreadUpdates={hasUnreadUpdates}
+          onOpenWhatsNew={openWhatsNew}
+        />
       </div>
+
+      <CommandPalette
+        open={commandPaletteOpen}
+        theme={theme}
+        hasUnreadUpdates={hasUnreadUpdates}
+        onClose={closeCommandPalette}
+        onOpenWhatsNew={openWhatsNew}
+        onToggleTheme={toggleTheme}
+      />
+
+      <WhatsNew open={whatsNewOpen} onClose={closeWhatsNew} />
     </ReactLenis>
   );
 };
