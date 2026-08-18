@@ -22,10 +22,9 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ImmersiveScene from "./components/ImmersiveScene";
+import { useLanguage } from "./context/LanguageContext";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-const INTRO_TEXT = "hello";
 
 const getInitialTheme = () => {
   if (typeof window === "undefined") {
@@ -44,6 +43,7 @@ const getInitialTheme = () => {
 };
 
 const HandwritingIntro = ({ onComplete }) => {
+  const { copy } = useLanguage();
   const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
@@ -92,15 +92,15 @@ const HandwritingIntro = ({ onComplete }) => {
     <div
       className={`intro-screen ${fontReady ? "is-ready" : ""}`}
       role="status"
-      aria-label={`${INTRO_TEXT}, welcome`}
+      aria-label={`${copy.intro.word}, ${copy.intro.welcome}`}
     >
       <div className="intro-word-wrap" aria-hidden="true">
-        <span className="intro-word">{INTRO_TEXT}</span>
+        <span className="intro-word">{copy.intro.word}</span>
 
         <span className="intro-pen" />
       </div>
 
-      <p className="intro-caption">made by rizky</p>
+      <p className="intro-caption">{copy.intro.caption}</p>
     </div>
   );
 };
@@ -110,6 +110,7 @@ HandwritingIntro.propTypes = {
 };
 
 const App = () => {
+  const { language } = useLanguage();
   const [theme, setTheme] = useState(getInitialTheme);
   const themeTransitionRef = useRef(false);
 
@@ -165,7 +166,7 @@ const App = () => {
     return () => {
       window.cancelAnimationFrame(refreshFrame);
     };
-  }, [showIntro]);
+  }, [language, showIntro]);
 
   const toggleTheme = useCallback(
     async ({ x, y } = {}) => {
