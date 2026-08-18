@@ -22,6 +22,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ImmersiveScene from "./components/ImmersiveScene";
+import CommandPalette from "./components/CommandPalette";
 import { useLanguage } from "./context/LanguageContext";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -353,6 +354,12 @@ const App = () => {
         {/* <CursorFollower /> */}
 
         <ImmersiveScene />
+
+        <CommandPalette
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          disabled={showIntro}
+        />
 
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
