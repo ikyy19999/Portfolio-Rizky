@@ -358,6 +358,20 @@ const Skill = () => {
                 <span>Core areas</span>
               </div>
             </div>
+
+            <div
+              className="section-illustration skills-illustration reveal-up"
+              aria-hidden="true"
+            >
+              <span className="section-illustration-index">Visual 02</span>
+
+              <img
+                src="/assets/illustrations/skills-illustration.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </header>
 
           <div className="skills-content">
