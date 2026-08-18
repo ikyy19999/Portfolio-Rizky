@@ -1,21 +1,7 @@
 import React from "react";
 import { useLenis } from "lenis/react";
 import { ButtonPrimary } from "./Button";
-
-const stats = [
-  {
-    number: "5+",
-    label: "Projects Completed",
-  },
-  {
-    number: "1+",
-    label: "Years Experience",
-  },
-  {
-    number: "99%",
-    label: "Responsive Design",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const techStack = [
   "Laravel",
@@ -38,12 +24,6 @@ const techStack = [
   "Vercel",
 ];
 
-const heroStatements = [
-  "Engineering impact.",
-  "Building experiences.",
-  "Creating momentum.",
-];
-
 const scrollOptions = {
   duration: 1.2,
   easing: (progress) =>
@@ -51,6 +31,7 @@ const scrollOptions = {
 };
 
 const Hero = () => {
+  const { copy } = useLanguage();
   const lenis = useLenis();
 
   const scrollToSection = (event, target) => {
@@ -86,22 +67,24 @@ const Hero = () => {
           <div className="ax-hero-identity">
             <span>Rizky Maulana</span>
             <span aria-hidden="true" />
-            <span>Jakarta, Indonesia</span>
+            <span>{copy.common.jakarta}</span>
           </div>
 
-          <p>Full Stack Developer</p>
+          <p>{copy.common.fullStackDeveloper}</p>
         </div>
 
         <div className="ax-hero-main">
           <div className="ax-hero-message">
             <h1 className="ax-hero-title reveal-up">
-              <span className="ax-hero-title-static">Designing clarity.</span>
+              <span className="ax-hero-title-static">
+                {copy.hero.staticTitle}
+              </span>
 
               <span
                 className="ax-hero-title-rotator"
-                aria-label={heroStatements.join(" ")}
+                aria-label={copy.hero.statements.join(" ")}
               >
-                {heroStatements.map((statement, index) => (
+                {copy.hero.statements.map((statement, index) => (
                   <span
                     key={statement}
                     className="ax-hero-title-rotator-item"
@@ -116,14 +99,13 @@ const Hero = () => {
 
             <div className="ax-hero-description reveal-up">
               <p>
-                Building polished web experiences, reliable backend systems, and
-                the infrastructure that keeps them moving.
+                {copy.hero.description}
               </p>
 
               <div className="ax-hero-actions">
                 <ButtonPrimary
                   href="/assets/CV - Rizky Maulana.pdf"
-                  label="Download CV"
+                  label={copy.hero.downloadCv}
                   icon="download"
                 />
 
@@ -132,7 +114,9 @@ const Hero = () => {
                   className="ax-button ax-button-outline"
                   onClick={(event) => scrollToSection(event, "#work")}
                 >
-                  <span className="ax-button-label">View Projects</span>
+                  <span className="ax-button-label">
+                    {copy.hero.viewProjects}
+                  </span>
 
                   <span
                     className="material-symbols-rounded ax-button-icon"
@@ -148,8 +132,8 @@ const Hero = () => {
           <aside className="ax-stack-card reveal-up">
             <div className="ax-stack-header">
               <div>
-                <span>Core stack</span>
-                <p>Tools behind the work</p>
+                <span>{copy.hero.coreStack}</span>
+                <p>{copy.hero.stackCaption}</p>
               </div>
 
               <small>2026</small>
@@ -166,16 +150,16 @@ const Hero = () => {
             </div>
 
             <div className="ax-stack-footer">
-              <span>Frontend</span>
-              <span>Backend</span>
-              <span>Infrastructure</span>
+              {copy.hero.stackAreas.map((area) => (
+                <span key={area}>{area}</span>
+              ))}
             </div>
           </aside>
         </div>
 
         <div className="ax-hero-bottom reveal-up">
           <div className="ax-hero-stats">
-            {stats.map(({ number, label }, index) => (
+            {copy.hero.stats.map(({ number, label }, index) => (
               <div className="ax-stat" key={label}>
                 <small>{String(index + 1).padStart(2, "0")}</small>
 
@@ -191,8 +175,8 @@ const Hero = () => {
             onClick={(event) => scrollToSection(event, "#about")}
           >
             <span>
-              <small>Continue</small>
-              Explore portfolio
+              <small>{copy.hero.continue}</small>
+              {copy.hero.explore}
             </span>
 
             <span className="ax-explore-icon" aria-hidden="true">
