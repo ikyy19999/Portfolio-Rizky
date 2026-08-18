@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import ProjectCard from "./ProjectCard";
+import { useLanguage } from "../context/LanguageContext";
 
 const works = [
   {
@@ -60,25 +61,33 @@ const works = [
   },
 ];
 
-const categoryLabels = {
-  web: "Web App",
-  tool: "Digital Tool",
-};
-
-const filters = [
-  { label: "All Projects", value: "all" },
-  { label: "Web Apps", value: "web" },
-  { label: "Tools", value: "tool" },
-];
-
 const Work = () => {
+  const { copy } = useLanguage();
   const [filter, setFilter] = useState("all");
 
+  const filters = useMemo(
+    () => [
+      { label: copy.work.filters.all, value: "all" },
+      { label: copy.work.filters.web, value: "web" },
+      { label: copy.work.filters.tool, value: "tool" },
+    ],
+    [copy],
+  );
+
+  const localizedProjects = useMemo(
+    () =>
+      works.map((project, index) => ({
+        ...project,
+        ...copy.work.projects[index],
+      })),
+    [copy],
+  );
+
   const filteredProjects = useMemo(() => {
-    return works.filter((project) => {
+    return localizedProjects.filter((project) => {
       return filter === "all" || project.category === filter;
     });
-  }, [filter]);
+  }, [filter, localizedProjects]);
 
   return (
     <section id="work" className="section section-divider work-section">
@@ -90,32 +99,50 @@ const Work = () => {
             <div className="section-index">
               <span>04</span>
               <span aria-hidden="true" />
-              <span>Selected Work</span>
+              <span>{copy.work.section}</span>
             </div>
 
             <h2 className="headline-2">
-              Digital products built around real ideas and useful experiences.
+              {copy.work.title}
             </h2>
           </div>
 
           <div className="work-heading-aside reveal-up">
             <p>
-              A selection of web applications and tools I&apos;ve designed and
-              developed across frontend, backend, database, and product
-              interface work.
+              {copy.work.intro}
             </p>
 
-            <div className="work-overview" aria-label="Project summary">
+            <div
+              className="section-illustration projects-illustration reveal-up"
+              aria-hidden="true"
+            >
+              <span className="section-illustration-index">Visual 03</span>
+
+              <img
+                src="/assets/illustrations/projects-illustration.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <div
+              className="work-overview"
+              aria-label={copy.work.summaryLabel}
+            >
               <div>
                 <strong>{String(works.length).padStart(2, "0")}</strong>
-                <span>Selected projects</span>
+                <span>{copy.work.selectedProjects}</span>
               </div>
 
               <div>
                 <strong>
-                  {String(Object.keys(categoryLabels).length).padStart(2, "0")}
+                  {String(Object.keys(copy.work.categories).length).padStart(
+                    2,
+                    "0",
+                  )}
                 </strong>
-                <span>Focus areas</span>
+                <span>{copy.work.focusAreas}</span>
               </div>
             </div>
           </div>
@@ -125,7 +152,7 @@ const Work = () => {
           <div
             className="work-filter-list"
             role="group"
-            aria-label="Project categories"
+            aria-label={copy.work.categoryLabel}
           >
             {filters.map((item) => {
               const isActive = filter === item.value;
@@ -145,7 +172,7 @@ const Work = () => {
           </div>
 
           <p className="work-result-count" aria-live="polite">
-            {String(filteredProjects.length).padStart(2, "0")} projects
+            {String(filteredProjects.length).padStart(2, "0")} {copy.work.resultSuffix}
           </p>
         </div>
 
@@ -153,12 +180,12 @@ const Work = () => {
           <div className="project-grid reveal-up">
             {filteredProjects.map((project, index) => (
               <ProjectCard
-                key={project.title}
+                key={project.demo}
                 imgSrc={project.imgSrc}
                 title={project.title}
                 desc={project.desc}
                 tags={project.tech}
-                category={categoryLabels[project.category]}
+                category={copy.work.categories[project.category]}
                 projectLink={project.demo}
                 index={index + 1}
                 featured={index === 0}
@@ -171,8 +198,8 @@ const Work = () => {
               folder_off
             </span>
 
-            <h3>No projects found</h3>
-            <p>Try another project category.</p>
+            <h3>{copy.work.emptyTitle}</h3>
+            <p>{copy.work.emptyText}</p>
           </div>
         )}
       </div>
