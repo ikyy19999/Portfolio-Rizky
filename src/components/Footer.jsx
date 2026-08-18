@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useLanguage } from "../context/LanguageContext";
 
 const sitemap = [
@@ -42,7 +43,7 @@ const socials = [
   },
 ];
 
-const Footer = () => {
+const Footer = ({ hasUnreadUpdates, onOpenWhatsNew }) => {
   const { copy } = useLanguage();
   const currentYear = new Date().getFullYear();
 
@@ -155,6 +156,29 @@ const Footer = () => {
                   </span>
                 </a>
               ))}
+
+              <button
+                type="button"
+                className="footer-feature-button"
+                onClick={onOpenWhatsNew}
+              >
+                <span className="footer-feature-label">
+                  what&apos;s new
+                  {hasUnreadUpdates ? (
+                    <span
+                      className="whats-new-unread-dot"
+                      aria-label="new updates available"
+                    />
+                  ) : null}
+                </span>
+
+                <span
+                  className="material-symbols-rounded"
+                  aria-hidden="true"
+                >
+                  new_releases
+                </span>
+              </button>
             </nav>
           </div>
 
@@ -218,6 +242,11 @@ const Footer = () => {
       </div>
     </footer>
   );
+};
+
+Footer.propTypes = {
+  hasUnreadUpdates: PropTypes.bool.isRequired,
+  onOpenWhatsNew: PropTypes.func.isRequired,
 };
 
 export default Footer;

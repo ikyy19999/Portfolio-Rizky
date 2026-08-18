@@ -123,7 +123,7 @@ LanguageSwitcher.propTypes = {
   disabled: PropTypes.bool.isRequired,
 };
 
-const Header = ({ theme, onToggleTheme }) => {
+const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
   const { copy, isLanguageTransitioning } = useLanguage();
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
@@ -214,6 +214,22 @@ const Header = ({ theme, onToggleTheme }) => {
 
               <button
                 type="button"
+                className="command-palette-trigger"
+                onClick={onOpenCommandPalette}
+                disabled={themeChanging || isLanguageTransitioning}
+                aria-label="open command palette"
+                aria-keyshortcuts="Control+K Meta+K"
+                title="command palette"
+              >
+                <span className="material-symbols-rounded" aria-hidden="true">
+                  search
+                </span>
+
+                <kbd aria-hidden="true">⌘K</kbd>
+              </button>
+
+              <button
+                type="button"
                 className={`theme-toggle ${themeChanging ? "is-changing" : ""}`}
                 onClick={handleThemeToggle}
                 disabled={themeChanging || isLanguageTransitioning}
@@ -262,6 +278,7 @@ const Header = ({ theme, onToggleTheme }) => {
 Header.propTypes = {
   theme: PropTypes.oneOf(["light", "dark"]).isRequired,
   onToggleTheme: PropTypes.func.isRequired,
+  onOpenCommandPalette: PropTypes.func.isRequired,
 };
 
 export default Header;
