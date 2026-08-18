@@ -42,9 +42,30 @@ const getInitialTheme = () => {
     : "light";
 };
 
+const getJavaneseGreeting = (hour) => {
+  if (hour >= 4 && hour < 11) {
+    return "sugeng enjing";
+  }
+
+  if (hour >= 11 && hour < 15) {
+    return "sugeng siyang";
+  }
+
+  if (hour >= 15 && hour < 18) {
+    return "sugeng sonten";
+  }
+
+  return "sugeng dalu";
+};
+
 const HandwritingIntro = ({ onComplete }) => {
-  const { copy } = useLanguage();
+  const { copy, language } = useLanguage();
   const [fontReady, setFontReady] = useState(false);
+  const [deviceHour] = useState(() => new Date().getHours());
+  const introWord =
+    language === "jv"
+      ? getJavaneseGreeting(deviceHour)
+      : copy.intro.word;
 
   useEffect(() => {
     let active = true;
@@ -92,10 +113,14 @@ const HandwritingIntro = ({ onComplete }) => {
     <div
       className={`intro-screen ${fontReady ? "is-ready" : ""}`}
       role="status"
-      aria-label={`${copy.intro.word}, ${copy.intro.welcome}`}
+      aria-label={`${introWord}, ${copy.intro.welcome}`}
     >
       <div className="intro-word-wrap" aria-hidden="true">
-        <span className="intro-word">{copy.intro.word}</span>
+        <span
+          className={`intro-word ${language === "jv" ? "is-long" : ""}`}
+        >
+          {introWord}
+        </span>
 
         <span className="intro-pen" />
       </div>
@@ -107,6 +132,71 @@ const HandwritingIntro = ({ onComplete }) => {
 
 HandwritingIntro.propTypes = {
   onComplete: PropTypes.func.isRequired,
+};
+
+const languageTransitionMessages = {
+  en: {
+    eyebrow: "switching language",
+    title: "one sec, switching to english.",
+    description: "hang tight, we're getting everything ready.",
+  },
+  id: {
+    eyebrow: "ganti bahasa",
+    title: "bentar ya, lagi siapin bahasa indonesia.",
+    description: "biar semuanya lebih enak dibaca.",
+  },
+  jv: {
+    eyebrow: "nggantos basa",
+    title: "sekedhap nggih, basa jawi saweg dipunsiapaken.",
+    description: "supados sedaya langkung trep dipunwaos.",
+  },
+};
+
+const LanguageTransitionOverlay = () => {
+  const { languageTransition } = useLanguage();
+  const [imageFailed, setImageFailed] = useState(false);
+  const targetLanguage = languageTransition.targetLanguage ?? "en";
+  const message = languageTransitionMessages[targetLanguage];
+
+  return (
+    <div
+      className={`language-transition-overlay ${
+        languageTransition.active ? "is-active" : ""
+      } is-${languageTransition.phase}`}
+      aria-hidden={!languageTransition.active}
+    >
+      <div className="language-transition-backdrop" aria-hidden="true" />
+
+      <div
+        className="language-transition-panel"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <div className="language-transition-visual" aria-hidden="true">
+          {imageFailed ? (
+            <span className="material-symbols-rounded">translate</span>
+          ) : (
+            <img
+              src="/assets/illustrations/language-transition.svg"
+              alt=""
+              onError={() => setImageFailed(true)}
+            />
+          )}
+        </div>
+
+        <p className="language-transition-eyebrow">{message.eyebrow}</p>
+        <p className="language-transition-title">{message.title}</p>
+        <p className="language-transition-description">
+          {message.description}
+        </p>
+
+        <span className="language-transition-progress" aria-hidden="true">
+          <span />
+        </span>
+      </div>
+    </div>
+  );
 };
 
 const App = () => {
@@ -256,6 +346,8 @@ const App = () => {
       }}
     >
       {showIntro && <HandwritingIntro onComplete={completeIntro} />}
+
+      <LanguageTransitionOverlay />
 
       <div className={`site-shell ${showIntro ? "is-loading" : "is-ready"}`}>
         {/* <CursorFollower /> */}
