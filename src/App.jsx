@@ -110,7 +110,7 @@ HandwritingIntro.propTypes = {
 };
 
 const App = () => {
-  const { language, languageTransition } = useLanguage();
+  const { language } = useLanguage();
   const [theme, setTheme] = useState(getInitialTheme);
   const themeTransitionRef = useRef(false);
 
@@ -119,18 +119,6 @@ const App = () => {
   const completeIntro = useCallback(() => {
     setShowIntro(false);
   }, []);
-
-  const languagePageClassName = [
-    "language-page",
-    languageTransition.phase !== "idle"
-      ? `is-${languageTransition.phase}`
-      : "",
-    languageTransition.active
-      ? `is-${languageTransition.direction}`
-      : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
 
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -276,26 +264,16 @@ const App = () => {
 
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
-        <div
-          className="language-stage"
-          aria-busy={languageTransition.active}
-        >
-          <div
-            className={languagePageClassName}
-            data-language={language}
-          >
-            <main>
-              <Hero />
-              <About />
-              <Skill />
-              <Work />
-              <Reviews />
-              <Contact />
-            </main>
+        <main>
+          <Hero />
+          <About />
+          <Skill />
+          <Work />
+          <Reviews />
+          <Contact />
+        </main>
 
-            <Footer />
-          </div>
-        </div>
+        <Footer />
       </div>
     </ReactLenis>
   );
