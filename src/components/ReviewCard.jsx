@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useLanguage } from '../context/LanguageContext'
 
 const ratings = Array.from({ length: 5 }, (_, index) => index)
 
@@ -9,6 +10,7 @@ const ReviewCard = ({
     company,
     index = 1
 }) => {
+    const { copy } = useLanguage()
     const reviewNumber = String(index).padStart(2, '0')
 
     return (
@@ -50,7 +52,7 @@ const ReviewCard = ({
                         items-center
                         gap-1
                     "
-                    aria-label="5 out of 5 stars"
+                    aria-label={copy.reviews.rating}
                 >
                     {ratings.map((rating) => (
                         <span
