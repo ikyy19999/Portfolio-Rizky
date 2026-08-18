@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { useLanguage } from "../context/LanguageContext";
 
 const socialLinks = [
   {
@@ -15,7 +16,7 @@ const socialLinks = [
     external: true,
   },
   {
-    href: "mailto:hello@madebyrizky.my.id",
+    href: "mailto:hello@madebyrizky.id",
     label: "Email",
     icon: "mail",
     external: false,
@@ -23,12 +24,13 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const { copy } = useLanguage();
   const [token, setToken] = useState("");
 
   const handleSubmit = (event) => {
     if (!token) {
       event.preventDefault();
-      alert("Please complete the verification first.");
+      alert(copy.contact.verificationAlert);
     }
   };
 
@@ -42,32 +44,29 @@ const Contact = () => {
             <div className="section-index">
               <span>05</span>
               <span aria-hidden="true" />
-              <span>Contact</span>
+              <span>{copy.contact.section}</span>
             </div>
 
             <h2 className="headline-2">
-              Let&apos;s build something worth using.
+              {copy.contact.title}
             </h2>
 
             <p className="contact-intro">
-              Have a project, product idea, or collaboration in mind? Send me
-              the details and I&apos;ll get back to you when I can.
+              {copy.contact.intro}
             </p>
           </div>
 
           <dl className="contact-details reveal-up">
             <div className="contact-detail-row">
-              <dt>Available for</dt>
-              <dd>
-                Freelance projects, full stack development, and collaboration.
-              </dd>
+              <dt>{copy.contact.availableFor}</dt>
+              <dd>{copy.contact.availableText}</dd>
             </div>
 
             <div className="contact-detail-row">
-              <dt>Status</dt>
+              <dt>{copy.contact.status}</dt>
               <dd className="contact-status">
                 <span aria-hidden="true" />
-                <span>Currently available for work</span>
+                <span>{copy.contact.statusText}</span>
               </dd>
             </div>
           </dl>
@@ -76,11 +75,28 @@ const Contact = () => {
         <div className="contact-content">
           <aside className="contact-channels reveal-up">
             <div className="contact-channels-heading">
-              <span>Connect</span>
+              <span>{copy.contact.connect}</span>
               <span>{String(socialLinks.length).padStart(2, "0")}</span>
             </div>
 
-            <nav className="contact-social-list" aria-label="Social links">
+            <div
+              className="section-illustration contact-illustration"
+              aria-hidden="true"
+            >
+              <span className="section-illustration-index">Visual 04</span>
+
+              <img
+                src="/assets/illustrations/contact-illustration.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <nav
+              className="contact-social-list"
+              aria-label={copy.contact.socialLinks}
+            >
               {socialLinks.map(({ href, label, icon, external }) => (
                 <a
                   key={label}
@@ -97,7 +113,7 @@ const Contact = () => {
                       {icon}
                     </span>
 
-                    <span>{label}</span>
+                    <span>{label === "Email" ? copy.common.email : label}</span>
                   </span>
 
                   <span
@@ -111,9 +127,9 @@ const Contact = () => {
             </nav>
 
             <div className="contact-direct">
-              <p>Direct email</p>
-              <a href="mailto:hello@madebyrizky.my.id">
-                hello@madebyrizky.my.id
+              <p>{copy.contact.directEmail}</p>
+              <a href="mailto:hello@madebyrizky.id">
+                hello@madebyrizky.id
               </a>
             </div>
           </aside>
@@ -133,8 +149,8 @@ const Contact = () => {
 
             <header className="contact-form-header">
               <div>
-                <h3>Send a message</h3>
-                <p>Tell me a little about what you&apos;re working on.</p>
+                <h3>{copy.contact.sendTitle}</h3>
+                <p>{copy.contact.sendIntro}</p>
               </div>
 
               <span className="material-symbols-rounded" aria-hidden="true">
@@ -144,7 +160,7 @@ const Contact = () => {
 
             <div className="contact-form-grid">
               <div className="contact-field">
-                <label htmlFor="name">Your name</label>
+                <label htmlFor="name">{copy.contact.name}</label>
                 <input
                   type="text"
                   name="name"
@@ -156,7 +172,7 @@ const Contact = () => {
               </div>
 
               <div className="contact-field">
-                <label htmlFor="email">Email address</label>
+                <label htmlFor="email">{copy.contact.email}</label>
                 <input
                   type="email"
                   name="email"
@@ -169,12 +185,12 @@ const Contact = () => {
             </div>
 
             <div className="contact-field contact-message-field">
-              <label htmlFor="message">Project details</label>
+              <label htmlFor="message">{copy.contact.projectDetails}</label>
               <textarea
                 name="message"
                 id="message"
                 required
-                placeholder="Tell me about your project..."
+                placeholder={copy.contact.messagePlaceholder}
               />
             </div>
 
@@ -193,11 +209,11 @@ const Contact = () => {
                 <span className="material-symbols-rounded" aria-hidden="true">
                   lock
                 </span>
-                Protected with Cloudflare Turnstile
+                {copy.contact.protected}
               </p>
 
               <button type="submit" disabled={!token}>
-                <span>Send message</span>
+                <span>{copy.contact.send}</span>
 
                 <span className="material-symbols-rounded" aria-hidden="true">
                   arrow_outward
