@@ -1,36 +1,9 @@
 import React from "react";
-
-const aboutItems = [
-  {
-    label: "Projects Completed",
-    number: "5+",
-    description:
-      "Digital products built across frontend and backend.",
-  },
-  {
-    label: "Years Experience",
-    number: "1+",
-    description:
-      "Hands-on experience in development and IT operations.",
-  },
-];
-
-const focusAreas = [
-  {
-    title: "Focus",
-    icon: "code_blocks",
-    description:
-      "Full stack web development, UI/UX, backend systems, and product-focused engineering.",
-  },
-  {
-    title: "Beyond code",
-    icon: "hub",
-    description:
-      "Networking, infrastructure, system maintenance, troubleshooting, and IT support.",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const About = () => {
+  const { copy } = useLanguage();
+
   return (
     <section
       id="about"
@@ -42,16 +15,15 @@ const About = () => {
             <div className="section-index">
               <span>02</span>
               <span aria-hidden="true" />
-              <span>About</span>
+              <span>{copy.about.section}</span>
             </div>
 
             <h2 className="headline-2">
-              Bridging software development and IT infrastructure.
+              {copy.about.title}
             </h2>
 
             <p className="about-heading-note">
-              I build digital experiences while understanding the
-              systems that keep them reliable behind the scenes.
+              {copy.about.note}
             </p>
 
             <div
@@ -72,37 +44,18 @@ const About = () => {
           <div className="about-content">
             <div className="about-story reveal-up">
               <p className="about-lead">
-                I&apos;m a Computer Science student and Full Stack
-                Developer with experience across web development and
-                IT infrastructure.
+                {copy.about.lead}
               </p>
 
               <div className="about-copy">
-                <p>
-                  My work focuses on building reliable digital
-                  products with thoughtful interfaces and scalable
-                  backend systems. I work primarily with Laravel, PHP,
-                  React, MySQL, and Tailwind CSS.
-                </p>
-
-                <p>
-                  Beyond development, I also have hands-on experience
-                  with networking, system maintenance,
-                  troubleshooting, and IT support. That combination
-                  gives me a broader perspective when building
-                  technology.
-                </p>
-
-                <p>
-                  I understand both the software users interact with
-                  and the infrastructure supporting it behind the
-                  scenes.
-                </p>
+                {copy.about.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
             </div>
 
             <div className="about-metrics reveal-up">
-              {aboutItems.map(
+              {copy.about.metrics.map(
                 ({ label, number, description }, index) => (
                   <article className="about-metric" key={label}>
                     <div className="about-metric-top">
@@ -121,7 +74,7 @@ const About = () => {
             </div>
 
             <div className="about-focus-grid reveal-up">
-              {focusAreas.map(
+              {copy.about.focusAreas.map(
                 ({ title, icon, description }) => (
                   <article className="about-focus" key={title}>
                     <div className="about-focus-heading">
