@@ -10,10 +10,17 @@ const smoothScrollOptions = {
     progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
-const LanguageSwitcher = () => {
-  const { language, languages, setLanguage, copy } = useLanguage();
+const LanguageSwitcher = ({ disabled }) => {
+  const {
+    language,
+    languages,
+    setLanguage,
+    copy,
+    isLanguageTransitioning,
+  } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const switcherRef = useRef(null);
+  const isDisabled = disabled || isLanguageTransitioning;
   const activeLanguage =
     languages.find(({ code }) => code === language) ?? languages[0];
 
@@ -42,8 +49,11 @@ const LanguageSwitcher = () => {
   }, [isOpen]);
 
   const handleLanguageChange = (code) => {
-    setLanguage(code);
     setIsOpen(false);
+
+    if (!isDisabled) {
+      setLanguage(code);
+    }
   };
 
   return (
@@ -57,6 +67,7 @@ const LanguageSwitcher = () => {
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={copy.language.label}
+        disabled={isDisabled}
         onClick={() => setIsOpen((currentValue) => !currentValue)}
       >
         <span>{activeLanguage.shortLabel}</span>
@@ -87,6 +98,7 @@ const LanguageSwitcher = () => {
               }`}
               role="option"
               aria-selected={isActive}
+              disabled={isDisabled}
               tabIndex={isOpen ? 0 : -1}
               onClick={() => handleLanguageChange(code)}
             >
@@ -107,8 +119,12 @@ const LanguageSwitcher = () => {
   );
 };
 
+LanguageSwitcher.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+};
+
 const Header = ({ theme, onToggleTheme }) => {
-  const { copy } = useLanguage();
+  const { copy, isLanguageTransitioning } = useLanguage();
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [themeChanging, setThemeChanging] = useState(false);
@@ -152,7 +168,7 @@ const Header = ({ theme, onToggleTheme }) => {
   };
 
   const handleThemeToggle = async (event) => {
-    if (themeChanging) return;
+    if (themeChanging || isLanguageTransitioning) return;
 
     const buttonBounds = event.currentTarget.getBoundingClientRect();
 
@@ -194,13 +210,13 @@ const Header = ({ theme, onToggleTheme }) => {
             </div>
 
             <div className="header-actions">
-              <LanguageSwitcher />
+              <LanguageSwitcher disabled={themeChanging} />
 
               <button
                 type="button"
                 className={`theme-toggle ${themeChanging ? "is-changing" : ""}`}
                 onClick={handleThemeToggle}
-                disabled={themeChanging}
+                disabled={themeChanging || isLanguageTransitioning}
                 aria-label={
                   theme === "dark"
                     ? copy.header.switchToLight
