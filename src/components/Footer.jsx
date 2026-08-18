@@ -1,25 +1,25 @@
 import React from "react";
-import { useLenis } from "lenis/react";
+import { useLanguage } from "../context/LanguageContext";
 
 const sitemap = [
   {
-    label: "Home",
+    labelKey: "home",
     href: "#home",
   },
   {
-    label: "About",
+    labelKey: "about",
     href: "#about",
   },
   {
-    label: "Skills",
+    labelKey: "skills",
     href: "#skills",
   },
   {
-    label: "Projects",
+    labelKey: "projects",
     href: "#work",
   },
   {
-    label: "Contact",
+    labelKey: "contact",
     href: "#contact",
   },
 ];
@@ -37,44 +37,24 @@ const socials = [
   },
   {
     label: "Email",
-    href: "mailto:hello@madebyrizky.id",
+    href: "mailto:hello@madebyrizky.my.id",
     external: false,
   },
 ];
 
-const smoothScrollOptions = {
-  duration: 1.2,
-  easing: (progress) =>
-    progress < 0.5
-      ? 4 * progress ** 3
-      : 1 - (-2 * progress + 2) ** 3 / 2,
-};
-
 const Footer = () => {
-  const lenis = useLenis();
+  const { copy } = useLanguage();
   const currentYear = new Date().getFullYear();
-
-  const scrollToSection = (target) => {
-    if (lenis) {
-      lenis.scrollTo(target, {
-        ...smoothScrollOptions,
-        offset: target === "#home" ? 0 : -96,
-      });
-
-      return;
-    }
-
-    document.querySelector(target)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
 
   const handleNavigation = (event, href) => {
     if (!href.startsWith("#")) return;
 
     event.preventDefault();
-    scrollToSection(href);
+
+    document.querySelector(href)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
@@ -83,24 +63,23 @@ const Footer = () => {
         <div className="footer-cta reveal-up">
           <div>
             <p className="footer-overline">
-              Have something in mind?
+              {copy.footer.overline}
             </p>
 
             <h2>
-              Let&apos;s make something people enjoy using.
+              {copy.footer.title}
             </h2>
 
             <p className="footer-description">
-              Open for thoughtful digital products, modern web
-              applications, and selected collaborations.
+              {copy.footer.description}
             </p>
           </div>
 
           <a
-            href="mailto:hello@madebyrizky.id"
+            href="mailto:hello@madebyrizky.my.id"
             className="footer-cta-link"
           >
-            <span>Start a project</span>
+            <span>{copy.footer.startProject}</span>
 
             <span
               className="material-symbols-rounded"
@@ -131,21 +110,19 @@ const Footer = () => {
 
               <span>
                 <strong>Rizky Maulana</strong>
-                <small>Full Stack Developer</small>
+                <small>{copy.common.fullStackDeveloper}</small>
               </span>
             </a>
 
             <p>
-              Building modern products across frontend,
-              backend, interface design, and IT
-              infrastructure.
+              {copy.footer.profile}
             </p>
 
             <a
-              href="mailto:hello@madebyrizky.id"
+              href="mailto:hello@madebyrizky.my.id"
               className="footer-email"
             >
-              hello@madebyrizky.id
+              hello@madebyrizky.my.id
 
               <span
                 className="material-symbols-rounded"
@@ -157,10 +134,10 @@ const Footer = () => {
           </div>
 
           <div className="footer-column reveal-up">
-            <p className="footer-label">Navigation</p>
+            <p className="footer-label">{copy.footer.navigation}</p>
 
-            <nav aria-label="Footer navigation">
-              {sitemap.map(({ label, href }) => (
+            <nav aria-label={copy.navigation.footerLabel}>
+              {sitemap.map(({ labelKey, href }) => (
                 <a
                   key={href}
                   href={href}
@@ -168,7 +145,7 @@ const Footer = () => {
                     handleNavigation(event, href)
                   }
                 >
-                  <span>{label}</span>
+                  <span>{copy.navigation[labelKey]}</span>
 
                   <span
                     className="material-symbols-rounded"
@@ -182,7 +159,7 @@ const Footer = () => {
           </div>
 
           <div className="footer-column reveal-up">
-            <p className="footer-label">Connect</p>
+            <p className="footer-label">{copy.footer.connect}</p>
 
             <div>
               {socials.map(
@@ -199,7 +176,7 @@ const Footer = () => {
                         : undefined
                     }
                   >
-                    <span>{label}</span>
+                    <span>{label === "Email" ? copy.common.email : label}</span>
 
                     <span
                       className="material-symbols-rounded"
@@ -216,15 +193,19 @@ const Footer = () => {
 
         <div className="footer-bottom reveal-up">
           <p>
-            © {currentYear} Rizky Maulana. All rights
-            reserved.
+            © {currentYear} Rizky Maulana. {copy.footer.rights}
           </p>
 
           <button
             type="button"
-            onClick={() => scrollToSection("#home")}
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              })
+            }
           >
-            Back to top
+            {copy.footer.backToTop}
 
             <span
               className="material-symbols-rounded"
