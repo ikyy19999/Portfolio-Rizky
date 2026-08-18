@@ -14,29 +14,28 @@ const LanguageSwitcher = () => {
   const { language, languages, setLanguage, copy } = useLanguage();
 
   return (
-    <div
-      className="language-switcher"
-      role="group"
-      aria-label={copy.language.label}
-    >
-      {languages.map(({ code, shortLabel, label }) => {
-        const isActive = language === code;
+    <label className="language-select">
+      <span className="language-select-label">{copy.language.label}</span>
 
-        return (
-          <button
-            key={code}
-            type="button"
-            className={isActive ? "is-active" : ""}
-            aria-pressed={isActive}
-            aria-label={label}
-            title={label}
-            onClick={() => setLanguage(code)}
-          >
+      <select
+        value={language}
+        aria-label={copy.language.label}
+        onChange={(event) => setLanguage(event.target.value)}
+      >
+        {languages.map(({ code, shortLabel, label }) => (
+          <option key={code} value={code} title={label}>
             {shortLabel}
-          </button>
-        );
-      })}
-    </div>
+          </option>
+        ))}
+      </select>
+
+      <span
+        className="material-symbols-rounded language-select-icon"
+        aria-hidden="true"
+      >
+        expand_more
+      </span>
+    </label>
   );
 };
 
