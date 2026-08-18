@@ -53,6 +53,20 @@ const About = () => {
               I build digital experiences while understanding the
               systems that keep them reliable behind the scenes.
             </p>
+
+            <div
+              className="section-illustration about-illustration reveal-up"
+              aria-hidden="true"
+            >
+              <span className="section-illustration-index">Visual 01</span>
+
+              <img
+                src="/assets/illustrations/about-illustration.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
 
           <div className="about-content">
