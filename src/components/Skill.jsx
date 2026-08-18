@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import SkillCard from "./SkillCard";
+import { useLanguage } from "../context/LanguageContext";
 
 const skillItems = [
   {
@@ -185,24 +186,10 @@ const skillItems = [
   },
 ];
 
-const categoryLabels = {
-  web: "Web Development",
-  database: "Database",
-  tools: "Tools & Deployment",
-  design: "Design",
-  network: "Networking",
-  system: "Systems",
-};
-
-const filters = [
-  { label: "All", value: "all" },
-  ...Object.entries(categoryLabels).map(([value, label]) => ({
-    label,
-    value,
-  })),
-];
+const categoryKeys = ["web", "database", "tools", "design", "network", "system"];
 
 const Skill = () => {
+  const { copy } = useLanguage();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const filterListRef = useRef(null);
@@ -211,6 +198,28 @@ const Skill = () => {
     canGoBack: false,
     canGoForward: false,
   });
+
+  const categoryLabels = copy.skills.filters;
+  const filters = useMemo(
+    () => [
+      { label: categoryLabels.all, value: "all" },
+      ...categoryKeys.map((value) => ({
+        label: categoryLabels[value],
+        value,
+      })),
+    ],
+    [categoryLabels],
+  );
+
+  const localizedSkills = useMemo(
+    () =>
+      skillItems.map((skill) => ({
+        ...skill,
+        desc: copy.skills.descriptions[skill.desc] ?? skill.desc,
+        localizedTag: copy.skills.tags[skill.tag] ?? skill.tag,
+      })),
+    [copy],
+  );
 
   const updateFilterScroll = useCallback(() => {
     const filterList = filterListRef.current;
@@ -301,12 +310,12 @@ const Skill = () => {
   const filteredSkills = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
-    return skillItems.filter((skill) => {
+    return localizedSkills.filter((skill) => {
       const matchesCategory = filter === "all" || skill.category === filter;
       const searchableText = [
         skill.label,
         skill.desc,
-        skill.tag,
+        skill.localizedTag,
         categoryLabels[skill.category],
       ]
         .join(" ")
@@ -317,7 +326,7 @@ const Skill = () => {
 
       return matchesCategory && matchesSearch;
     });
-  }, [filter, search]);
+  }, [categoryLabels, filter, localizedSkills, search]);
 
   const resetFilters = () => {
     setFilter("all");
@@ -334,28 +343,29 @@ const Skill = () => {
             <div className="section-index">
               <span>03</span>
               <span aria-hidden="true" />
-              <span>Skills</span>
+              <span>{copy.skills.section}</span>
             </div>
 
             <h2 className="headline-2">
-              Technologies for products and infrastructure.
+              {copy.skills.title}
             </h2>
 
             <p className="skills-intro">
-              My toolkit covers frontend, backend, databases, networking,
-              operating systems, and the technologies behind reliable web
-              products.
+              {copy.skills.intro}
             </p>
 
-            <div className="skills-summary" aria-label="Skill summary">
+            <div
+              className="skills-summary"
+              aria-label={copy.skills.summaryLabel}
+            >
               <div>
                 <strong>{skillItems.length}</strong>
-                <span>Technologies</span>
+                <span>{copy.skills.technologies}</span>
               </div>
 
               <div>
-                <strong>{Object.keys(categoryLabels).length}</strong>
-                <span>Core areas</span>
+                <strong>{categoryKeys.length}</strong>
+                <span>{copy.skills.coreAreas}</span>
               </div>
             </div>
 
@@ -377,7 +387,7 @@ const Skill = () => {
           <div className="skills-content">
             <div className="skills-controls reveal-up">
               <div className="skills-search-group">
-                <label htmlFor="skill-search">Search</label>
+                <label htmlFor="skill-search">{copy.skills.search}</label>
 
                 <div className="skills-search-field">
                   <span className="material-symbols-rounded" aria-hidden="true">
@@ -388,7 +398,7 @@ const Skill = () => {
                     id="skill-search"
                     type="search"
                     value={search}
-                    placeholder="Search technologies"
+                    placeholder={copy.skills.searchPlaceholder}
                     autoComplete="off"
                     onChange={(event) => setSearch(event.target.value)}
                   />
@@ -397,7 +407,7 @@ const Skill = () => {
                     <button
                       type="button"
                       onClick={() => setSearch("")}
-                      aria-label="Clear search"
+                      aria-label={copy.skills.clearSearch}
                     >
                       <span
                         className="material-symbols-rounded"
@@ -412,19 +422,19 @@ const Skill = () => {
 
               <div className="skills-filter-group">
                 <div className="skills-filter-heading">
-                  <p>Category</p>
+                  <p>{copy.skills.category}</p>
 
                   <div
                     className={`skills-filter-navigation ${
                       filterScroll.hasOverflow ? "is-visible" : ""
                     }`}
-                    aria-label="Scroll skill categories"
+                    aria-label={copy.skills.categoryScroll}
                   >
                     <button
                       type="button"
                       onClick={() => scrollFilters(-1)}
                       disabled={!filterScroll.canGoBack}
-                      aria-label="Previous categories"
+                      aria-label={copy.skills.previousCategories}
                     >
                       <span
                         className="material-symbols-rounded"
@@ -438,7 +448,7 @@ const Skill = () => {
                       type="button"
                       onClick={() => scrollFilters(1)}
                       disabled={!filterScroll.canGoForward}
-                      aria-label="Next categories"
+                      aria-label={copy.skills.nextCategories}
                     >
                       <span
                         className="material-symbols-rounded"
@@ -455,7 +465,7 @@ const Skill = () => {
                     ref={filterListRef}
                     className="skills-filter-list"
                     role="group"
-                    aria-label="Skill categories"
+                    aria-label={copy.skills.categoryGroup}
                     onWheel={handleFilterWheel}
                   >
                     {filters.map((item) => {
@@ -479,7 +489,7 @@ const Skill = () => {
             </div>
 
             <div className="skills-result-heading reveal-up">
-              <p>Technology index</p>
+              <p>{copy.skills.technologyIndex}</p>
 
               <span>
                 {String(filteredSkills.length).padStart(2, "0")} /{" "}
@@ -497,7 +507,7 @@ const Skill = () => {
                     label={skill.label}
                     desc={skill.desc}
                     category={categoryLabels[skill.category]}
-                    tag={skill.tag}
+                    tag={skill.localizedTag}
                   />
                 ))}
               </div>
@@ -507,12 +517,12 @@ const Skill = () => {
                   search_off
                 </span>
 
-                <h3>No technologies found</h3>
+                <h3>{copy.skills.emptyTitle}</h3>
 
-                <p>Try another keyword or switch to a different category.</p>
+                <p>{copy.skills.emptyText}</p>
 
                 <button type="button" onClick={resetFilters}>
-                  Reset filters
+                  {copy.skills.reset}
                 </button>
               </div>
             )}
