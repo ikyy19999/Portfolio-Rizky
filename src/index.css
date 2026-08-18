@@ -6177,7 +6177,7 @@ html.theme-fallback-in .site-shell {
 
 .language-transition-overlay.is-preparing
   .language-transition-progress > span {
-  animation: language-progress 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: language-progress 1500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes language-progress {
