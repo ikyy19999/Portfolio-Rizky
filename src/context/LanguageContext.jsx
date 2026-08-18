@@ -12,8 +12,8 @@ import translations from "../data/translations";
 
 const STORAGE_KEY = "portfolio-language";
 const DEFAULT_LANGUAGE = "en";
-const PREPARE_DURATION = 760;
-const FINISH_DURATION = 280;
+const PREPARE_DURATION = 1500;
+const FINISH_DURATION = 350;
 const IDLE_TRANSITION = {
   active: false,
   phase: "idle",
