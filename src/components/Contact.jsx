@@ -15,7 +15,7 @@ const socialLinks = [
     external: true,
   },
   {
-    href: "mailto:hello@madebyrizky.id",
+    href: "mailto:hello@madebyrizky.my.id",
     label: "Email",
     icon: "mail",
     external: false,
@@ -112,8 +112,8 @@ const Contact = () => {
 
             <div className="contact-direct">
               <p>Direct email</p>
-              <a href="mailto:hello@madebyrizky.id">
-                hello@madebyrizky.id
+              <a href="mailto:hello@madebyrizky.my.id">
+                hello@madebyrizky.my.id
               </a>
             </div>
           </aside>
