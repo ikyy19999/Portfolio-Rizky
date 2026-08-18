@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
+import { useLanguage } from "../context/LanguageContext";
 
 const navItems = [
   {
-    label: "Home",
+    labelKey: "home",
     link: "#home",
     icon: "home",
   },
   {
-    label: "About",
+    labelKey: "about",
     link: "#about",
     icon: "person",
   },
   {
-    label: "Skills",
+    labelKey: "skills",
     link: "#skills",
     icon: "code",
   },
   {
-    label: "Projects",
+    labelKey: "projects",
     link: "#work",
     icon: "grid_view",
   },
   {
-    label: "Contact",
+    labelKey: "contact",
     link: "#contact",
     icon: "mail",
   },
@@ -37,6 +38,7 @@ const smoothScrollOptions = {
 };
 
 const Navbar = ({ mobile = false }) => {
+  const { copy } = useLanguage();
   const lenis = useLenis();
   const [activeSection, setActiveSection] = useState("#home");
 
@@ -109,7 +111,10 @@ const Navbar = ({ mobile = false }) => {
 
   if (mobile) {
     return (
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+      <nav
+        className="mobile-bottom-nav"
+        aria-label={copy.navigation.mobileLabel}
+      >
         {navItems.map((item) => {
           const isActive = activeSection === item.link;
 
@@ -125,7 +130,7 @@ const Navbar = ({ mobile = false }) => {
                 {item.icon}
               </span>
 
-              <span>{item.label}</span>
+              <span>{copy.navigation[item.labelKey]}</span>
             </a>
           );
         })}
@@ -134,7 +139,7 @@ const Navbar = ({ mobile = false }) => {
   }
 
   return (
-    <nav className="navbar" aria-label="Primary navigation">
+    <nav className="navbar" aria-label={copy.navigation.label}>
       {navItems.map((item) => {
         const isActive = activeSection === item.link;
 
@@ -146,7 +151,7 @@ const Navbar = ({ mobile = false }) => {
             className={`nav-link ${isActive ? "active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
-            {item.label}
+            {copy.navigation[item.labelKey]}
           </a>
         );
       })}
