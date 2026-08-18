@@ -59,7 +59,7 @@ const LanguageSwitcher = () => {
         aria-label={copy.language.label}
         onClick={() => setIsOpen((currentValue) => !currentValue)}
       >
-        <span>{activeLanguage.shortLabel}</span>
+        <span>{activeLanguage.code.toUpperCase()}</span>
 
         <span
           className="material-symbols-rounded language-dropdown-chevron"
