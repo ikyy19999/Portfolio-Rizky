@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
 import Navbar from "./Navbar";
+import { useLanguage } from "../context/LanguageContext";
 
 const smoothScrollOptions = {
   duration: 1.2,
@@ -9,7 +10,38 @@ const smoothScrollOptions = {
     progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
+const LanguageSwitcher = () => {
+  const { language, languages, setLanguage, copy } = useLanguage();
+
+  return (
+    <div
+      className="language-switcher"
+      role="group"
+      aria-label={copy.language.label}
+    >
+      {languages.map(({ code, shortLabel, label }) => {
+        const isActive = language === code;
+
+        return (
+          <button
+            key={code}
+            type="button"
+            className={isActive ? "is-active" : ""}
+            aria-pressed={isActive}
+            aria-label={label}
+            title={label}
+            onClick={() => setLanguage(code)}
+          >
+            {shortLabel}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 const Header = ({ theme, onToggleTheme }) => {
+  const { copy } = useLanguage();
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [themeChanging, setThemeChanging] = useState(false);
@@ -78,7 +110,7 @@ const Header = ({ theme, onToggleTheme }) => {
               href="#home"
               onClick={(event) => handleNavigation(event, "#home")}
               className="brand"
-              aria-label="Go to home"
+              aria-label={copy.header.goHome}
             >
               <span className="brand-mark">
                 <img src="/assets/favicon.ico" alt="" width={30} height={30} />
@@ -86,7 +118,7 @@ const Header = ({ theme, onToggleTheme }) => {
 
               <span className="brand-copy">
                 <strong>Rizky Maulana</strong>
-                <small>Full Stack Developer</small>
+                <small>{copy.common.fullStackDeveloper}</small>
               </span>
             </a>
 
@@ -95,15 +127,23 @@ const Header = ({ theme, onToggleTheme }) => {
             </div>
 
             <div className="header-actions">
+              <LanguageSwitcher />
+
               <button
                 type="button"
                 className={`theme-toggle ${themeChanging ? "is-changing" : ""}`}
                 onClick={handleThemeToggle}
                 disabled={themeChanging}
-                aria-label={`Switch to ${
-                  theme === "dark" ? "light" : "dark"
-                } mode`}
-                title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                aria-label={
+                  theme === "dark"
+                    ? copy.header.switchToLight
+                    : copy.header.switchToDark
+                }
+                title={
+                  theme === "dark"
+                    ? copy.header.switchToLight
+                    : copy.header.switchToDark
+                }
               >
                 <span className="theme-toggle-icons" aria-hidden="true">
                   <span className="material-symbols-rounded theme-toggle-sun">
@@ -121,7 +161,7 @@ const Header = ({ theme, onToggleTheme }) => {
                 onClick={(event) => handleNavigation(event, "#contact")}
                 className="header-contact"
               >
-                Let&apos;s Talk
+                {copy.header.letsTalk}
                 <span className="material-symbols-rounded" aria-hidden="true">
                   arrow_outward
                 </span>
