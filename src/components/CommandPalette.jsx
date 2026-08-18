@@ -339,6 +339,7 @@ const CommandPalette = ({
     <div
       className={`command-palette-overlay ${open ? "is-open" : ""}`}
       aria-hidden={!open}
+      data-lenis-prevent
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -388,6 +389,7 @@ const CommandPalette = ({
           id="command-palette-results"
           className="command-palette-results"
           role="listbox"
+          data-lenis-prevent
         >
           {filteredCommands.length ? (
             filteredCommands.map((command, index) => {
