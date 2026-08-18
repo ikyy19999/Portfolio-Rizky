@@ -1,0 +1,436 @@
+/*
+  Command palette styles.
+  Scoped to .command-palette-* classes and imported by CommandPalette.jsx,
+  so index.css stays exactly as it is.
+*/
+
+body.command-palette-open {
+  overscroll-behavior: none;
+}
+
+.command-palette-root {
+  position: fixed;
+  inset: 0;
+  z-index: 99500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(56px, 11vh, 132px) 20px 28px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    visibility 0s linear 180ms;
+}
+
+.command-palette-root.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    opacity 200ms ease,
+    visibility 0s linear 0s;
+}
+
+.command-palette-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 22, 23, 0.32);
+}
+
+:root[data-theme="dark"] .command-palette-scrim {
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.command-palette-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 620px);
+  max-height: min(560px, calc(100vh - 140px));
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transform: translateY(12px) scale(0.985);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.command-palette-root.is-open .command-palette-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* Search row */
+
+.command-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 15px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.command-palette-search-icon {
+  flex-shrink: 0;
+  font-size: 21px;
+  color: var(--muted);
+}
+
+.command-palette-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 450;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  outline: none;
+  appearance: none;
+}
+
+.command-palette-input::placeholder {
+  color: var(--faint);
+}
+
+/*
+  The panel itself signals focus, so the global 3px focus ring from index.css
+  is muted here for the search field only.
+*/
+.command-palette-input:focus,
+.command-palette-input:focus-visible {
+  outline: none;
+}
+
+.command-palette-panel:focus-within {
+  border-color: var(--line-strong);
+}
+
+.command-palette-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.command-palette-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.command-palette-clear:hover {
+  color: var(--text);
+}
+
+.command-palette-clear .material-symbols-rounded {
+  font-size: 16px;
+}
+
+.command-palette-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 24px;
+  height: 22px;
+  padding-inline: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+/* Results */
+
+.command-palette-results {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 8px 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.command-palette-group + .command-palette-group {
+  margin-top: 4px;
+}
+
+.command-palette-group-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.command-palette-group-count {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.command-palette-option {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 9px 12px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.command-palette-option:focus-visible {
+  outline: none;
+}
+
+.command-palette-option.is-active {
+  background: var(--surface-muted);
+}
+
+.command-palette-option-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  color: var(--text-soft, var(--muted));
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.command-palette-option.is-active .command-palette-option-icon {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+
+.command-palette-option-icon .material-symbols-rounded {
+  font-size: 19px;
+}
+
+.command-palette-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.command-palette-option-label {
+  overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-palette-option-hint {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-palette-option-trailing {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding-left: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.command-palette-option-enter {
+  display: none;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+.command-palette-option.is-active .command-palette-option-enter {
+  display: inline-flex;
+}
+
+.command-palette-option-check {
+  font-size: 17px;
+  color: var(--accent);
+}
+
+/* Empty state */
+
+.command-palette-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 44px 28px 46px;
+  text-align: center;
+}
+
+.command-palette-empty .material-symbols-rounded {
+  margin-bottom: 4px;
+  font-size: 28px;
+  color: var(--faint);
+}
+
+.command-palette-empty h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+.command-palette-empty p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* Footer */
+
+.command-palette-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--page-soft, var(--surface-solid));
+}
+
+.command-palette-hints {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.command-palette-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.command-palette-hint-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.command-palette-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.command-palette-status .material-symbols-rounded {
+  font-size: 15px;
+}
+
+.command-palette-brand {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .command-palette-root {
+    padding: 20px 14px 20px;
+    align-items: flex-end;
+  }
+
+  .command-palette-panel {
+    max-height: calc(100vh - 128px);
+    border-radius: 16px;
+  }
+
+  .command-palette-search {
+    padding: 14px 13px 13px 15px;
+  }
+
+  .command-palette-input {
+    font-size: 16px;
+  }
+
+  .command-palette-hint:nth-child(n + 3) {
+    display: none;
+  }
+
+  .command-palette-brand {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .command-palette-option-trailing {
+    display: none;
+  }
+}
+
+/* Motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .command-palette-root,
+  .command-palette-root.is-open {
+    transition: none;
+  }
+
+  .command-palette-panel,
+  .command-palette-root.is-open .command-palette-panel {
+    transform: none;
+    transition: none;
+  }
+}
