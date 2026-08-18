@@ -5866,7 +5866,7 @@ html.theme-fallback-in .site-shell {
 .language-dropdown {
   position: relative;
   z-index: 30;
-  width: 74px;
+  width: 86px;
   flex: 0 0 auto;
 }
 
@@ -6043,7 +6043,7 @@ html.language-changing .site-footer {
 
 @media (max-width: 767px) {
   .language-dropdown {
-    width: 66px;
+    width: 80px;
   }
 
   .language-dropdown-trigger {
