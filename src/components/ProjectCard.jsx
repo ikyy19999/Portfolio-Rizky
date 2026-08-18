@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useLanguage } from "../context/LanguageContext";
 
 const ProjectCard = ({
   imgSrc,
@@ -12,6 +13,7 @@ const ProjectCard = ({
   featured = false,
   classes = "",
 }) => {
+  const { copy } = useLanguage();
   const projectNumber = String(index).padStart(2, "0");
   const CardElement = projectLink ? "a" : "div";
   const linkProps = projectLink
@@ -19,7 +21,7 @@ const ProjectCard = ({
         href: projectLink,
         target: "_blank",
         rel: "noopener noreferrer",
-        "aria-label": `View ${title} project`,
+        "aria-label": copy.work.viewProjectAria.replace("{title}", title),
       }
     : {};
 
@@ -41,7 +43,7 @@ const ProjectCard = ({
         <figure className="project-card-media">
           <img
             src={imgSrc}
-            alt={`${title} preview`}
+            alt={copy.work.previewAlt.replace("{title}", title)}
             loading="lazy"
             decoding="async"
           />
@@ -61,7 +63,10 @@ const ProjectCard = ({
         </div>
 
         <footer className="project-card-footer">
-          <div className="project-card-tags" aria-label="Technologies used">
+          <div
+            className="project-card-tags"
+            aria-label={copy.work.technologiesUsed}
+          >
             {tags.map((tag, tagIndex) => (
               <React.Fragment key={tag}>
                 <span>{tag}</span>
@@ -75,7 +80,7 @@ const ProjectCard = ({
 
           {projectLink && (
             <span className="project-card-action">
-              <span>View project</span>
+              <span>{copy.work.viewProject}</span>
               <span className="material-symbols-rounded" aria-hidden="true">
                 arrow_outward
               </span>
