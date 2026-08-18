@@ -457,7 +457,7 @@ textarea:focus-visible {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   min-height: 62px;
-  overflow: hidden;
+  overflow: visible;
   padding: 0 10px 0 14px;
   background:
     linear-gradient(135deg, var(--glass-highlight), transparent 38%),
@@ -496,6 +496,7 @@ textarea:focus-visible {
       transparent 68%
     );
   opacity: 0.56;
+  border-radius: inherit;
   pointer-events: none;
 }
 
