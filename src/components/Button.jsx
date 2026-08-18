@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
+import { useLanguage } from "../context/LanguageContext";
 
 const ButtonContent = ({
   label,
@@ -47,12 +48,14 @@ const ButtonPrimary = ({
   classes = "",
   type = "button",
 }) => {
+  const { copy } = useLanguage();
+
   const handleAction = () => {
     Swal.fire({
-      title: "CV maintenance",
-      text: "I am currently updating my CV. Please come back later.",
+      title: copy.modal.title,
+      text: copy.modal.text,
       icon: "info",
-      confirmButtonText: "Got it",
+      confirmButtonText: copy.modal.confirm,
       buttonsStyling: false,
       heightAuto: false,
       customClass: {
