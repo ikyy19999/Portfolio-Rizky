@@ -123,7 +123,7 @@ const WhatsNew = ({ open, onClose }) => {
 
         <div className="whats-new-list" data-lenis-prevent>
           {updates.map((update, index) => (
-            <article className="whats-new-entry" key={update.version}>
+            <article className="whats-new-entry" key={update.id ?? update.version}>
               <div className="whats-new-entry-meta">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <time dateTime={update.version.replaceAll(".", "-")}>
