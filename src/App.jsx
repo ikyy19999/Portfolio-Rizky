@@ -25,6 +25,7 @@ import ImmersiveScene from "./components/ImmersiveScene";
 import CommandPalette from "./components/CommandPalette";
 import GotoShortcuts from "./components/GotoShortcuts";
 import WhatsNew from "./components/WhatsNew";
+import ProjectCaseStudy from "./components/ProjectCaseStudy";
 import { useLanguage } from "./context/LanguageContext";
 import {
   CURRENT_UPDATE_VERSION,
@@ -213,6 +214,7 @@ const App = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const [caseStudySlug, setCaseStudySlug] = useState(null);
   const [hasUnreadUpdates, setHasUnreadUpdates] = useState(() => {
     if (typeof window === "undefined") {
       return false;
@@ -249,6 +251,16 @@ const App = () => {
 
   const closeWhatsNew = useCallback(() => {
     setWhatsNewOpen(false);
+  }, []);
+
+  const openCaseStudy = useCallback((slug) => {
+    setCommandPaletteOpen(false);
+    setWhatsNewOpen(false);
+    setCaseStudySlug(slug);
+  }, []);
+
+  const closeCaseStudy = useCallback(() => {
+    setCaseStudySlug(null);
   }, []);
 
   useLayoutEffect(() => {
@@ -427,7 +439,7 @@ const App = () => {
           <Hero />
           <About />
           <Skill />
-          <Work />
+          <Work onOpenCaseStudy={openCaseStudy} />
           <Reviews />
           <Contact />
         </main>
@@ -444,17 +456,21 @@ const App = () => {
         hasUnreadUpdates={hasUnreadUpdates}
         onClose={closeCommandPalette}
         onOpenWhatsNew={openWhatsNew}
+        onOpenCaseStudy={openCaseStudy}
         onToggleTheme={toggleTheme}
       />
 
       <WhatsNew open={whatsNewOpen} onClose={closeWhatsNew} />
+
+      <ProjectCaseStudy slug={caseStudySlug} onClose={closeCaseStudy} />
 
       <GotoShortcuts
         disabled={
           showIntro ||
           isLanguageTransitioning ||
           commandPaletteOpen ||
-          whatsNewOpen
+          whatsNewOpen ||
+          Boolean(caseStudySlug)
         }
       />
     </ReactLenis>
