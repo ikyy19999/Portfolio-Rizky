@@ -23,6 +23,7 @@ import Footer from "./components/Footer";
 import CursorFollower from "./components/CursorFollower";
 import ImmersiveScene from "./components/ImmersiveScene";
 import CommandPalette from "./components/CommandPalette";
+import GotoShortcuts from "./components/GotoShortcuts";
 import WhatsNew from "./components/WhatsNew";
 import { useLanguage } from "./context/LanguageContext";
 import {
@@ -447,6 +448,15 @@ const App = () => {
       />
 
       <WhatsNew open={whatsNewOpen} onClose={closeWhatsNew} />
+
+      <GotoShortcuts
+        disabled={
+          showIntro ||
+          isLanguageTransitioning ||
+          commandPaletteOpen ||
+          whatsNewOpen
+        }
+      />
     </ReactLenis>
   );
 };
