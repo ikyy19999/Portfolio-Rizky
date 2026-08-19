@@ -1,0 +1,80 @@
+/*
+ * Additive styles for the upgraded command palette.
+ * Nothing here overrides existing rules in index.css — every selector below
+ * is new, so both files can live side by side safely.
+ */
+
+.command-palette-highlight {
+  color: var(--accent);
+  background: transparent;
+  font-weight: 760;
+}
+
+.command-palette-shortcuts {
+  display: grid;
+  gap: 2px;
+}
+
+.command-palette-shortcut {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 8px 11px;
+  color: var(--muted);
+  border-radius: 12px;
+}
+
+.command-palette-shortcut:hover {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.command-palette-shortcut p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.command-palette-shortcut-keys {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+}
+
+.command-palette-shortcut-keys kbd {
+  display: grid;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  place-items: center;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 0 var(--line-strong);
+}
+
+.command-palette-shortcuts-hint {
+  margin: 6px 0 2px;
+  padding: 0 11px;
+  color: var(--faint);
+  font-size: 0.7rem;
+}
+
+@media (max-width: 560px) {
+  .command-palette-footer-shortcuts {
+    display: none;
+  }
+
+  .command-palette-shortcut {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
