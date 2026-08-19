@@ -8,8 +8,12 @@ import React, {
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
 import { useLanguage } from "../context/LanguageContext";
+import "../styles/command-palette-extras.css";
 
 const EMAIL_ADDRESS = "hello@madebyrizky.my.id";
+const RECENT_STORAGE_KEY = "portfolio-command-recent";
+const MAX_RECENT_COMMANDS = 3;
+const SHORTCUTS_QUERY = "?";
 
 const paletteCopy = {
   en: {
@@ -18,6 +22,8 @@ const paletteCopy = {
     navigation: "navigation",
     actions: "quick actions",
     language: "language",
+    recent: "recently used",
+    results: "results",
     noResults: "no matching command found.",
     close: "close command palette",
     move: "move",
@@ -32,6 +38,17 @@ const paletteCopy = {
     switchLanguage: "switch to {language}",
     light: "light",
     dark: "dark",
+    shortcuts: "keyboard shortcuts",
+    shortcutsDescription: "see every shortcut on this site",
+    shortcutsTitle: "keyboard shortcuts",
+    shortcutsHint: "type anything to filter, press ↵ to run.",
+    shortcutOpen: "open or close this palette",
+    shortcutMove: "move between results",
+    shortcutEdges: "jump to first or last result",
+    shortcutSelect: "run the selected command",
+    shortcutShortcuts: "show this list",
+    shortcutClose: "close the palette",
+    shortcutGoto: "go to home, about, skills, work, or contact",
   },
   id: {
     label: "command palette",
@@ -39,6 +56,8 @@ const paletteCopy = {
     navigation: "navigation",
     actions: "quick action",
     language: "bahasa",
+    recent: "terakhir dipakai",
+    results: "hasil",
     noResults: "command yang dicari ga ditemukan.",
     close: "tutup command palette",
     move: "geser",
@@ -53,6 +72,17 @@ const paletteCopy = {
     switchLanguage: "ubah ke {language}",
     light: "light",
     dark: "dark",
+    shortcuts: "keyboard shortcut",
+    shortcutsDescription: "lihat semua shortcut di website ini",
+    shortcutsTitle: "keyboard shortcut",
+    shortcutsHint: "ketik apa aja buat nyaring, tekan ↵ buat jalanin.",
+    shortcutOpen: "buka atau tutup palette ini",
+    shortcutMove: "pindah antar hasil",
+    shortcutEdges: "loncat ke hasil pertama atau terakhir",
+    shortcutSelect: "jalankan command yang dipilih",
+    shortcutShortcuts: "tampilkan daftar ini",
+    shortcutClose: "tutup palette",
+    shortcutGoto: "buka home, about, skills, work, atau contact",
   },
   jv: {
     label: "command palette",
@@ -60,6 +90,8 @@ const paletteCopy = {
     navigation: "navigation",
     actions: "quick action",
     language: "basa",
+    recent: "pungkasan dipunagem",
+    results: "asil",
     noResults: "printah ingkang dipunpadosi mboten wonten.",
     close: "tutup command palette",
     move: "pindhah",
@@ -74,6 +106,18 @@ const paletteCopy = {
     switchLanguage: "nggantos dados {language}",
     light: "light",
     dark: "dark",
+    shortcuts: "keyboard shortcut",
+    shortcutsDescription: "priksani sedaya shortcut wonten situs punika",
+    shortcutsTitle: "keyboard shortcut",
+    shortcutsHint:
+      "ketik menapa kemawon kangge nyaring, penet ↵ kangge nglampahaken.",
+    shortcutOpen: "bikak utawi nutup palette punika",
+    shortcutMove: "pindhah antawis asil",
+    shortcutEdges: "tumuju asil kapisan utawi pungkasan",
+    shortcutSelect: "nglampahaken printah ingkang dipunpilih",
+    shortcutShortcuts: "nedahaken daftar punika",
+    shortcutClose: "nutup palette",
+    shortcutGoto: "bikak home, about, skills, work, utawi contact",
   },
 };
 
@@ -85,7 +129,102 @@ const sectionCommands = [
   { key: "contact", target: "#contact", icon: "mail" },
 ];
 
+const shortcutRows = [
+  { id: "open", keys: ["⌘", "ctrl", "K"], labelKey: "shortcutOpen" },
+  { id: "move", keys: ["↑", "↓"], labelKey: "shortcutMove" },
+  { id: "edges", keys: ["home", "end"], labelKey: "shortcutEdges" },
+  { id: "select", keys: ["↵"], labelKey: "shortcutSelect" },
+  { id: "shortcuts", keys: ["?"], labelKey: "shortcutShortcuts" },
+  { id: "close", keys: ["esc"], labelKey: "shortcutClose" },
+  { id: "goto", keys: ["g", "h a s w c"], labelKey: "shortcutGoto" },
+];
+
 const normalizeText = (value) => value.toLocaleLowerCase().trim();
+
+const readRecentCommands = () => {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = window.localStorage.getItem(RECENT_STORAGE_KEY);
+    const parsed = stored ? JSON.parse(stored) : [];
+
+    return Array.isArray(parsed)
+      ? parsed.filter((id) => typeof id === "string")
+      : [];
+  } catch {
+    return [];
+  }
+};
+
+const isWordBoundary = (character) => /[\s\-_/.,:’'()]/.test(character);
+
+/**
+ * Subsequence matcher: every character of the query has to appear in order,
+ * but gaps are allowed. Returns a score plus the matched character positions
+ * so the label can highlight them.
+ */
+const fuzzyMatch = (text, query) => {
+  if (!text) return null;
+
+  const source = text.toLocaleLowerCase();
+  const indices = [];
+  let score = 0;
+  let cursor = 0;
+  let previousIndex = -1;
+
+  for (const character of query) {
+    const foundIndex = source.indexOf(character, cursor);
+
+    if (foundIndex === -1) return null;
+
+    if (foundIndex === previousIndex + 1) score += 9;
+
+    if (foundIndex === 0) score += 14;
+    else if (isWordBoundary(source[foundIndex - 1])) score += 10;
+
+    score += Math.max(0, 6 - foundIndex * 0.15);
+
+    indices.push(foundIndex);
+    previousIndex = foundIndex;
+    cursor = foundIndex + 1;
+  }
+
+  score += Math.max(0, 18 - (previousIndex - indices[0]));
+
+  return { score, indices };
+};
+
+const scoreCommand = (command, query) => {
+  const labelMatch = fuzzyMatch(command.label, query);
+  const descriptionMatch = fuzzyMatch(command.description, query);
+  const keywordMatch = fuzzyMatch(command.keywords, query);
+
+  if (!labelMatch && !descriptionMatch && !keywordMatch) return null;
+
+  const score = Math.max(
+    labelMatch ? labelMatch.score : 0,
+    descriptionMatch ? descriptionMatch.score * 0.55 : 0,
+    keywordMatch ? keywordMatch.score * 0.4 : 0,
+  );
+
+  return { score, matches: labelMatch ? labelMatch.indices : [] };
+};
+
+const renderLabel = (label, matches) => {
+  if (!matches?.length) return label;
+
+  const matchedPositions = new Set(matches);
+
+  return label.split("").map((character, index) =>
+    matchedPositions.has(index) ? (
+      <mark className="command-palette-highlight" key={`${index}-${character}`}>
+        {character}
+      </mark>
+    ) : (
+      <React.Fragment key={`${index}-${character}`}>{character}</React.Fragment>
+    ),
+  );
+};
 
 const CommandPalette = ({
   open,
@@ -99,11 +238,14 @@ const CommandPalette = ({
   const lenis = useLenis();
   const inputRef = useRef(null);
   const panelRef = useRef(null);
+  const resultsRef = useRef(null);
   const previousFocusRef = useRef(null);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [recentIds, setRecentIds] = useState(readRecentCommands);
   const text = paletteCopy[language] ?? paletteCopy.en;
+  const showShortcuts = normalizeText(query) === SHORTCUTS_QUERY;
 
   const navigateToSection = useCallback(
     (target) => {
@@ -192,6 +334,19 @@ const CommandPalette = ({
         action: copyEmail,
       },
       {
+        id: "keyboard-shortcuts",
+        group: text.actions,
+        icon: "keyboard",
+        label: text.shortcuts,
+        description: text.shortcutsDescription,
+        keywords: "keyboard shortcut keys help cheatsheet ?",
+        closeOnRun: false,
+        action: () => {
+          setQuery(SHORTCUTS_QUERY);
+          inputRef.current?.focus();
+        },
+      },
+      {
         id: "system-status",
         group: text.actions,
         icon: "monitor_heart",
@@ -238,20 +393,84 @@ const CommandPalette = ({
   ]);
 
   const filteredCommands = useMemo(() => {
-    const normalizedQuery = normalizeText(query);
+    if (showShortcuts) return [];
 
-    if (!normalizedQuery) return commands;
+    const normalizedQuery = normalizeText(query).replace(/\s+/g, "");
 
-    return commands.filter(({ label, description, keywords }) =>
-      normalizeText(`${label} ${description} ${keywords}`).includes(
-        normalizedQuery,
-      ),
-    );
-  }, [commands, query]);
+    if (!normalizedQuery) {
+      const recentCommands = recentIds
+        .map((id) => commands.find((command) => command.id === id))
+        .filter(Boolean)
+        .slice(0, MAX_RECENT_COMMANDS)
+        .map((command) => ({ ...command, group: text.recent }));
+
+      if (!recentCommands.length) return commands;
+
+      const recentSet = new Set(recentCommands.map(({ id }) => id));
+
+      return [
+        ...recentCommands,
+        ...commands.filter(({ id }) => !recentSet.has(id)),
+      ];
+    }
+
+    return commands
+      .map((command) => {
+        const match = scoreCommand(command, normalizedQuery);
+
+        return match
+          ? {
+              ...command,
+              group: text.results,
+              score: match.score,
+              matches: match.matches,
+            }
+          : null;
+      })
+      .filter(Boolean)
+      .sort((first, second) => second.score - first.score);
+  }, [commands, query, recentIds, showShortcuts, text.recent, text.results]);
+
+  const rememberCommand = useCallback((id) => {
+    setRecentIds((currentIds) => {
+      const nextIds = [
+        id,
+        ...currentIds.filter((currentId) => currentId !== id),
+      ].slice(0, MAX_RECENT_COMMANDS);
+
+      try {
+        window.localStorage.setItem(
+          RECENT_STORAGE_KEY,
+          JSON.stringify(nextIds),
+        );
+      } catch {
+        /* storage is optional: ignore quota or private mode errors */
+      }
+
+      return nextIds;
+    });
+  }, []);
 
   useEffect(() => {
     setActiveIndex(0);
   }, [query]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const activeCommand = filteredCommands[activeIndex];
+
+    if (!activeCommand) return;
+
+    if (activeIndex === 0) {
+      resultsRef.current?.scrollTo({ top: 0 });
+      return;
+    }
+
+    document
+      .getElementById(`command-${activeCommand.id}`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex, filteredCommands, open]);
 
   useEffect(() => {
     if (!open) {
@@ -307,6 +526,8 @@ const CommandPalette = ({
   const runCommand = (command) => {
     if (!command) return;
 
+    rememberCommand(command.id);
+
     if (command.closeOnRun !== false) {
       onClose();
     }
@@ -317,16 +538,30 @@ const CommandPalette = ({
   const handleInputKeyDown = (event) => {
     if (!filteredCommands.length) return;
 
+    const lastIndex = filteredCommands.length - 1;
+
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setActiveIndex((currentIndex) =>
-        Math.min(currentIndex + 1, filteredCommands.length - 1),
+        currentIndex >= lastIndex ? 0 : currentIndex + 1,
       );
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      setActiveIndex((currentIndex) => Math.max(currentIndex - 1, 0));
+      setActiveIndex((currentIndex) =>
+        currentIndex <= 0 ? lastIndex : currentIndex - 1,
+      );
+    }
+
+    if (event.key === "Home") {
+      event.preventDefault();
+      setActiveIndex(0);
+    }
+
+    if (event.key === "End") {
+      event.preventDefault();
+      setActiveIndex(lastIndex);
     }
 
     if (event.key === "Enter") {
@@ -386,75 +621,104 @@ const CommandPalette = ({
         </div>
 
         <div
+          ref={resultsRef}
           id="command-palette-results"
           className="command-palette-results"
-          role="listbox"
+          role={showShortcuts ? "presentation" : "listbox"}
           data-lenis-prevent
         >
-          {filteredCommands.length ? (
-            filteredCommands.map((command, index) => {
-              const showGroup =
-                index === 0 ||
-                filteredCommands[index - 1].group !== command.group;
+          {showShortcuts ? (
+            <div className="command-palette-shortcuts">
+              <p className="command-palette-group" role="presentation">
+                {text.shortcutsTitle}
+              </p>
 
-              return (
-                <React.Fragment key={command.id}>
-                  {showGroup ? (
-                    <p className="command-palette-group" role="presentation">
-                      {command.group}
-                    </p>
-                  ) : null}
+              {shortcutRows.map(({ id, keys, labelKey }) => (
+                <div className="command-palette-shortcut" key={id}>
+                  <p>{text[labelKey]}</p>
 
-                  <button
-                    id={`command-${command.id}`}
-                    type="button"
-                    className={`command-palette-item ${
-                      activeIndex === index ? "is-active" : ""
-                    }`}
-                    role="option"
-                    aria-selected={activeIndex === index}
-                    onMouseEnter={() => setActiveIndex(index)}
-                    onClick={() => runCommand(command)}
-                  >
-                    <span className="command-palette-item-icon">
-                      <span
-                        className="material-symbols-rounded"
-                        aria-hidden="true"
-                      >
-                        {command.icon}
+                  <span className="command-palette-shortcut-keys">
+                    {keys.map((key) => (
+                      <kbd key={key}>{key}</kbd>
+                    ))}
+                  </span>
+                </div>
+              ))}
+
+              <p className="command-palette-shortcuts-hint">
+                {text.shortcutsHint}
+              </p>
+            </div>
+          ) : null}
+
+          {!showShortcuts && filteredCommands.length
+            ? filteredCommands.map((command, index) => {
+                const showGroup =
+                  index === 0 ||
+                  filteredCommands[index - 1].group !== command.group;
+
+                return (
+                  <React.Fragment key={command.id}>
+                    {showGroup ? (
+                      <p className="command-palette-group" role="presentation">
+                        {command.group}
+                      </p>
+                    ) : null}
+
+                    <button
+                      id={`command-${command.id}`}
+                      type="button"
+                      className={`command-palette-item ${
+                        activeIndex === index ? "is-active" : ""
+                      }`}
+                      role="option"
+                      aria-selected={activeIndex === index}
+                      onMouseEnter={() => setActiveIndex(index)}
+                      onClick={() => runCommand(command)}
+                    >
+                      <span className="command-palette-item-icon">
+                        <span
+                          className="material-symbols-rounded"
+                          aria-hidden="true"
+                        >
+                          {command.icon}
+                        </span>
+
+                        {command.unread ? (
+                          <span
+                            className="command-palette-unread"
+                            aria-hidden="true"
+                          />
+                        ) : null}
                       </span>
 
-                      {command.unread ? (
-                        <span
-                          className="command-palette-unread"
-                          aria-hidden="true"
-                        />
-                      ) : null}
-                    </span>
+                      <span className="command-palette-item-copy">
+                        <strong>
+                          {renderLabel(command.label, command.matches)}
+                        </strong>
+                        <small>{command.description}</small>
+                      </span>
 
-                    <span className="command-palette-item-copy">
-                      <strong>{command.label}</strong>
-                      <small>{command.description}</small>
-                    </span>
+                      <span
+                        className="material-symbols-rounded command-palette-enter"
+                        aria-hidden="true"
+                      >
+                        keyboard_return
+                      </span>
+                    </button>
+                  </React.Fragment>
+                );
+              })
+            : null}
 
-                    <span
-                      className="material-symbols-rounded command-palette-enter"
-                      aria-hidden="true"
-                    >
-                      keyboard_return
-                    </span>
-                  </button>
-                </React.Fragment>
-              );
-            })
-          ) : (
+          {!showShortcuts && !filteredCommands.length ? (
             <div className="command-palette-empty">
               <span className="material-symbols-rounded" aria-hidden="true">
                 search_off
               </span>
               <p>{text.noResults}</p>
             </div>
-          )}
+          ) : null}
         </div>
 
         <div className="command-palette-footer">
@@ -466,6 +730,10 @@ const CommandPalette = ({
           <span>
             <kbd>↵</kbd>
             {text.select}
+          </span>
+          <span className="command-palette-footer-shortcuts">
+            <kbd>?</kbd>
+            {text.shortcuts}
           </span>
           <span className="command-palette-feedback" aria-live="polite">
             {feedback}
