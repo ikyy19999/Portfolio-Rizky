@@ -8,6 +8,8 @@ import React, {
 import PropTypes from "prop-types";
 import { useLenis } from "lenis/react";
 import { useLanguage } from "../context/LanguageContext";
+import { projects } from "../data/projects";
+import { hasCaseStudy } from "../data/caseStudies";
 import "../styles/command-palette-extras.css";
 
 const EMAIL_ADDRESS = "hello@madebyrizky.my.id";
@@ -24,6 +26,9 @@ const paletteCopy = {
     language: "language",
     recent: "recently used",
     results: "results",
+    projects: "projects",
+    openCaseStudy: "read the case study",
+    openDemo: "open the live project",
     noResults: "no matching command found.",
     close: "close command palette",
     move: "move",
@@ -58,6 +63,9 @@ const paletteCopy = {
     language: "bahasa",
     recent: "terakhir dipakai",
     results: "hasil",
+    projects: "proyek",
+    openCaseStudy: "baca case study-nya",
+    openDemo: "buka proyeknya langsung",
     noResults: "command yang dicari ga ditemukan.",
     close: "tutup command palette",
     move: "geser",
@@ -92,6 +100,9 @@ const paletteCopy = {
     language: "basa",
     recent: "pungkasan dipunagem",
     results: "asil",
+    projects: "karya",
+    openCaseStudy: "maos case study-nipun",
+    openDemo: "bikak karyanipun langsung",
     noResults: "printah ingkang dipunpadosi mboten wonten.",
     close: "tutup command palette",
     move: "pindhah",
@@ -232,6 +243,7 @@ const CommandPalette = ({
   hasUnreadUpdates,
   onClose,
   onOpenWhatsNew,
+  onOpenCaseStudy = null,
   onToggleTheme,
 }) => {
   const { language, languages, setLanguage, copy } = useLanguage();
@@ -377,10 +389,49 @@ const CommandPalette = ({
         },
       }));
 
-    return [...navigationCommands, ...quickActions, ...languageCommands];
+    const projectCommands = projects.map((project, index) => {
+      const localized = copy.work.projects[index] ?? {};
+      const label = localized.title ?? project.title;
+      const canOpenCaseStudy =
+        typeof onOpenCaseStudy === "function" && hasCaseStudy(project.slug);
+
+      return {
+        id: `project-${project.slug}`,
+        group: text.projects,
+        icon: canOpenCaseStudy ? "article" : "open_in_new",
+        label,
+        description: canOpenCaseStudy ? text.openCaseStudy : text.openDemo,
+        keywords: [
+          project.slug,
+          project.title,
+          label,
+          project.category,
+          copy.work.categories[project.category],
+          ...project.tech,
+          "project work portfolio case study",
+        ].join(" "),
+        action: () => {
+          if (canOpenCaseStudy) {
+            onOpenCaseStudy(project.slug);
+            return;
+          }
+
+          window.open(project.demo, "_blank", "noopener,noreferrer");
+        },
+      };
+    });
+
+    return [
+      ...navigationCommands,
+      ...projectCommands,
+      ...quickActions,
+      ...languageCommands,
+    ];
   }, [
     copy.navigation,
+    copy.work,
     hasUnreadUpdates,
+    onOpenCaseStudy,
     language,
     languages,
     navigateToSection,
@@ -750,6 +801,7 @@ CommandPalette.propTypes = {
   hasUnreadUpdates: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpenWhatsNew: PropTypes.func.isRequired,
+  onOpenCaseStudy: PropTypes.func,
   onToggleTheme: PropTypes.func.isRequired,
 };
 

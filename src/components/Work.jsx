@@ -1,67 +1,11 @@
 import React, { useMemo, useState } from "react";
+import PropTypes from "prop-types";
 import ProjectCard from "./ProjectCard";
 import { useLanguage } from "../context/LanguageContext";
+import { projects as works } from "../data/projects";
+import { hasCaseStudy } from "../data/caseStudies";
 
-const works = [
-  {
-    imgSrc: "/assets/Galaxy-S22+-sportix.madebyrizky.my.id.png",
-    title: "Sports Booking Platform",
-    desc: "Online sports court reservation system with a responsive booking experience.",
-    category: "web",
-    tech: ["Laravel", "Filament", "Livewire"],
-    demo: "https://sportix.madebyrizky.my.id",
-  },
-  {
-    imgSrc: "/assets/Web Music.png",
-    title: "Music Streaming Website",
-    desc: "Interactive music platform integrated with public APIs.",
-    category: "web",
-    tech: ["HTML", "CSS", "JavaScript"],
-    demo: "/assets/Web Music/music.html",
-  },
-  {
-    imgSrc: "/assets/Book.png",
-    title: "Bookshelf App",
-    desc: "Minimal reading management application with local storage.",
-    category: "tool",
-    tech: ["JavaScript", "LocalStorage"],
-    demo: "/assets/Bookshelf App/book.html",
-  },
-  {
-    imgSrc: "/assets/QR.png",
-    title: "QR Generator",
-    desc: "Instant QR code generator with a simple and focused interface.",
-    category: "tool",
-    tech: ["JavaScript", "API"],
-    demo: "/assets/QR/index.html",
-  },
-  {
-    imgSrc: "/assets/Calculator.png",
-    title: "Calculator Tool",
-    desc: "Simple utility calculator focused on usability and accessibility.",
-    category: "tool",
-    tech: ["HTML", "JavaScript"],
-    demo: "/assets/Calculator/index.html",
-  },
-  {
-    imgSrc: "/assets/Calender.png",
-    title: "Calendar App",
-    desc: "Interactive calendar application with event management.",
-    category: "tool",
-    tech: ["HTML", "JavaScript"],
-    demo: "/assets/Calender/index.html",
-  },
-  {
-    imgSrc: "/assets/Finance.png",
-    title: "Finance Tracker",
-    desc: "Personal finance tracking application with budgeting features.",
-    category: "tool",
-    tech: ["HTML", "JavaScript"],
-    demo: "/assets/Personal Finance Tracker/index.html",
-  },
-];
-
-const Work = () => {
+const Work = ({ onOpenCaseStudy = null }) => {
   const { copy } = useLanguage();
   const [filter, setFilter] = useState("all");
 
@@ -178,19 +122,30 @@ const Work = () => {
 
         {filteredProjects.length > 0 ? (
           <div className="project-grid reveal-up">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.demo}
-                imgSrc={project.imgSrc}
-                title={project.title}
-                desc={project.desc}
-                tags={project.tech}
-                category={copy.work.categories[project.category]}
-                projectLink={project.demo}
-                index={index + 1}
-                featured={index === 0}
-              />
-            ))}
+            {filteredProjects.map((project, index) => {
+              const canOpenCaseStudy =
+                typeof onOpenCaseStudy === "function" &&
+                hasCaseStudy(project.slug);
+
+              return (
+                <ProjectCard
+                  key={project.slug ?? project.demo}
+                  imgSrc={project.imgSrc}
+                  title={project.title}
+                  desc={project.desc}
+                  tags={project.tech}
+                  category={copy.work.categories[project.category]}
+                  projectLink={project.demo}
+                  index={index + 1}
+                  featured={index === 0}
+                  onOpenCaseStudy={
+                    canOpenCaseStudy
+                      ? () => onOpenCaseStudy(project.slug)
+                      : undefined
+                  }
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="work-empty" aria-live="polite">
@@ -205,6 +160,10 @@ const Work = () => {
       </div>
     </section>
   );
+};
+
+Work.propTypes = {
+  onOpenCaseStudy: PropTypes.func,
 };
 
 export default Work;

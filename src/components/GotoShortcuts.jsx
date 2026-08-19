@@ -47,6 +47,7 @@ const GotoShortcuts = ({ disabled }) => {
       if (
         document.body.classList.contains("command-palette-active") ||
         document.body.classList.contains("whats-new-active") ||
+        document.body.classList.contains("case-study-active") ||
         document.body.classList.contains("intro-active")
       )
         return;

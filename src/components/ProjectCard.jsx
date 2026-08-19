@@ -1,6 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useLanguage } from "../context/LanguageContext";
+import "../styles/project-card-extras.css";
+
+const cardCopy = {
+  en: { caseStudy: "read case study" },
+  id: { caseStudy: "baca case study" },
+  jv: { caseStudy: "maos case study" },
+};
 
 const ProjectCard = ({
   imgSrc,
@@ -12,18 +19,33 @@ const ProjectCard = ({
   index = 1,
   featured = false,
   classes = "",
+  onOpenCaseStudy = null,
 }) => {
-  const { copy } = useLanguage();
+  const { copy, language } = useLanguage();
+  const text = cardCopy[language] ?? cardCopy.en;
   const projectNumber = String(index).padStart(2, "0");
-  const CardElement = projectLink ? "a" : "div";
-  const linkProps = projectLink
+
+  // A project only becomes a case study card when a case study actually
+  // exists for it. Otherwise this component behaves exactly as before.
+  const hasCaseStudy = typeof onOpenCaseStudy === "function";
+  const CardElement = hasCaseStudy ? "button" : projectLink ? "a" : "div";
+
+  const elementProps = hasCaseStudy
     ? {
-        href: projectLink,
-        target: "_blank",
-        rel: "noopener noreferrer",
+        type: "button",
+        onClick: onOpenCaseStudy,
         "aria-label": copy.work.viewProjectAria.replace("{title}", title),
       }
-    : {};
+    : projectLink
+      ? {
+          href: projectLink,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          "aria-label": copy.work.viewProjectAria.replace("{title}", title),
+        }
+      : {};
+
+  const showAction = hasCaseStudy || Boolean(projectLink);
 
   return (
     <article
@@ -31,9 +53,9 @@ const ProjectCard = ({
       style={{ "--project-order": index - 1 }}
     >
       <CardElement
-        {...linkProps}
+        {...elementProps}
         className="project-card-link"
-        data-cursor={projectLink ? "view" : undefined}
+        data-cursor={showAction ? "view" : undefined}
       >
         <header className="project-card-top">
           <span className="project-card-number">{projectNumber}</span>
@@ -50,9 +72,11 @@ const ProjectCard = ({
 
           <span className="project-card-sheen" aria-hidden="true" />
 
-          {projectLink && (
+          {showAction && (
             <span className="project-card-media-action" aria-hidden="true">
-              <span className="material-symbols-rounded">north_east</span>
+              <span className="material-symbols-rounded">
+                {hasCaseStudy ? "article" : "north_east"}
+              </span>
             </span>
           )}
         </figure>
@@ -78,11 +102,13 @@ const ProjectCard = ({
             ))}
           </div>
 
-          {projectLink && (
+          {showAction && (
             <span className="project-card-action">
-              <span>{copy.work.viewProject}</span>
+              <span>
+                {hasCaseStudy ? text.caseStudy : copy.work.viewProject}
+              </span>
               <span className="material-symbols-rounded" aria-hidden="true">
-                arrow_outward
+                {hasCaseStudy ? "east" : "arrow_outward"}
               </span>
             </span>
           )}
@@ -102,6 +128,7 @@ ProjectCard.propTypes = {
   index: PropTypes.number,
   featured: PropTypes.bool,
   classes: PropTypes.string,
+  onOpenCaseStudy: PropTypes.func,
 };
 
 export default ProjectCard;
