@@ -1,0 +1,376 @@
+/*
+ * Case study drawer. Every selector below is new — nothing here overrides a
+ * rule in index.css, so both files coexist safely. The look follows the
+ * existing what's-new panel on purpose: same drawer geometry, same tokens.
+ */
+
+body.case-study-active {
+  overflow: hidden;
+}
+
+.case-study-overlay {
+  position: fixed;
+  z-index: 99981;
+  display: flex;
+  inset: 0;
+  justify-content: flex-end;
+  visibility: hidden;
+  background: color-mix(in srgb, var(--page) 54%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(14px) saturate(84%);
+  -webkit-backdrop-filter: blur(14px) saturate(84%);
+  transition:
+    opacity 240ms ease,
+    visibility 240ms ease;
+}
+
+.case-study-overlay.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.case-study-panel {
+  display: flex;
+  width: min(100%, 720px);
+  height: 100%;
+  flex-direction: column;
+  color: var(--text);
+  background:
+    linear-gradient(145deg, var(--glass-highlight), transparent 42%),
+    color-mix(in srgb, var(--surface-solid) 92%, transparent);
+  border-left: 1px solid var(--glass-border);
+  box-shadow:
+    inset 1px 0 0 var(--glass-highlight),
+    -24px 0 80px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(32px) saturate(170%);
+  -webkit-backdrop-filter: blur(32px) saturate(170%);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  transform: translateX(28px);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-overlay.is-open .case-study-panel {
+  transform: translateX(0);
+}
+
+.case-study-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 34px 40px 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.case-study-eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.case-study-eyebrow span {
+  color: var(--faint);
+}
+
+.case-study-header h2 {
+  margin: 10px 0 0;
+  color: var(--text);
+  font-size: clamp(1.6rem, 3.4vw, 2.35rem);
+  font-weight: 680;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+}
+
+.case-study-summary {
+  max-width: 52ch;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.case-study-close {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  padding: 0;
+  place-items: center;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.case-study-close:hover {
+  color: var(--text);
+  background: var(--surface-muted);
+  border-color: var(--line-strong);
+}
+
+.case-study-close:active {
+  transform: scale(0.94);
+}
+
+.case-study-close .material-symbols-rounded {
+  font-size: 19px;
+}
+
+.case-study-body {
+  flex: 1;
+  padding: 30px 40px 36px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.case-study-media {
+  margin: 0 0 30px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.case-study-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-study-meta {
+  display: grid;
+  margin: 0 0 34px;
+  gap: 18px 26px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.case-study-meta-stack {
+  grid-column: 1 / -1;
+}
+
+.case-study-meta dt {
+  color: var(--faint);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.case-study-meta dd {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+}
+
+.case-study-meta-stack dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.case-study-meta-stack dd span {
+  padding: 5px 10px;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.66rem;
+  font-weight: 640;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.case-study-section {
+  margin-bottom: 34px;
+}
+
+.case-study-section:last-child {
+  margin-bottom: 0;
+}
+
+.case-study-section h3 {
+  margin: 0 0 12px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 660;
+  letter-spacing: -0.02em;
+}
+
+.case-study-section > p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.case-study-steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 18px;
+  list-style: none;
+}
+
+.case-study-steps li {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+}
+
+.case-study-steps li > span {
+  color: var(--faint);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.case-study-steps strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+}
+
+.case-study-steps p {
+  max-width: 58ch;
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.case-study-results {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+  list-style: none;
+}
+
+.case-study-results li {
+  display: flex;
+  max-width: 62ch;
+  align-items: baseline;
+  gap: 11px;
+  color: var(--muted);
+}
+
+.case-study-results li > span {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+.case-study-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 40px;
+  border-top: 1px solid var(--line);
+}
+
+.case-study-footer p {
+  margin: 0;
+  color: var(--faint);
+  font-size: 0.72rem;
+}
+
+.case-study-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.case-study-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: var(--color-on-primary);
+  background: var(--accent);
+  border-radius: 11px;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+}
+
+.case-study-action:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.case-study-action .material-symbols-rounded {
+  font-size: 17px;
+}
+
+.case-study-action.is-ghost {
+  color: var(--text-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.case-study-action.is-ghost:hover {
+  background: var(--surface-muted);
+}
+
+@media (max-width: 720px) {
+  .case-study-header {
+    padding: 26px 22px 20px;
+  }
+
+  .case-study-body {
+    padding: 24px 22px 28px;
+  }
+
+  .case-study-footer {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 18px 22px 22px;
+  }
+
+  .case-study-actions {
+    justify-content: stretch;
+  }
+
+  .case-study-action {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-study-overlay,
+  .case-study-panel,
+  .case-study-action {
+    transition-duration: 1ms;
+  }
+
+  .case-study-panel {
+    transform: none;
+  }
+}

@@ -1,0 +1,21 @@
+/*
+ * When a project has a case study, the card element switches from <a> to
+ * <button>. These rules strip the browser's default button styling so it
+ * renders identically to the link version. Nothing in index.css is overridden
+ * — the selector is `button.project-card-link`, which only matches the new
+ * button variant.
+ */
+
+button.project-card-link {
+  width: 100%;
+  border: 0;
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.project-card-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
