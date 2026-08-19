@@ -1,8 +1,54 @@
-const CURRENT_UPDATE_VERSION = "2026.08.19";
+const CURRENT_UPDATE_VERSION = "2026.08.19-case-study";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
+/**
+ * `id` is the React key and the value compared against CURRENT_UPDATE_VERSION,
+ * so it has to be unique. `version` stays a plain date string because it feeds
+ * the <time dateTime> attribute — that lets two entries shipped on the same day
+ * share the same date without clashing.
+ */
 const updates = [
   {
+    id: "2026.08.19-case-study",
+    version: "2026.08.19",
+    date: {
+      en: "august 19, 2026",
+      id: "19 agustus 2026",
+      jv: "19 agustus 2026",
+    },
+    title: {
+      en: "the story behind the work",
+      id: "cerita di balik setiap project",
+      jv: "cariyos wonten wingking karya",
+    },
+    description: {
+      en: "projects can now be opened as a case study, and the palette got a lot better at finding things.",
+      id: "project sekarang bisa dibuka sebagai case study, dan palette jadi jauh lebih pintar mencari.",
+      jv: "karya samenika saged dipunbikak minangka case study, lan palette langkung pinter madosi.",
+    },
+    items: {
+      en: [
+        "added case study panels with the problem, the decisions, and the results",
+        "projects are now searchable straight from the command palette",
+        "the palette now matches abbreviations and remembers recent commands",
+        "added a keyboard shortcut sheet and g + key section navigation",
+      ],
+      id: [
+        "panel case study berisi masalah, keputusan teknis, dan hasilnya",
+        "project sekarang bisa dicari langsung dari command palette",
+        "palette sekarang mengerti singkatan dan mengingat command terakhir",
+        "menambahkan daftar keyboard shortcut dan navigasi g + huruf",
+      ],
+      jv: [
+        "panel case study isinipun prekawis, keputusan teknis, lan asilipun",
+        "karya samenika saged dipunpadosi langsung saking command palette",
+        "palette samenika mangertos cekakan lan kemutan printah pungkasan",
+        "nambahaken daftar keyboard shortcut lan navigasi g + aksara",
+      ],
+    },
+  },
+  {
+    id: "2026.08.19-command-palette",
     version: "2026.08.19",
     date: {
       en: "august 19, 2026",
@@ -38,6 +84,7 @@ const updates = [
     },
   },
   {
+    id: "2026.08.18-languages",
     version: "2026.08.18",
     date: {
       en: "august 18, 2026",
@@ -73,6 +120,7 @@ const updates = [
     },
   },
   {
+    id: "2026.08.17-immersive",
     version: "2026.08.17",
     date: {
       en: "august 17, 2026",
