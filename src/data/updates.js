@@ -1,4 +1,4 @@
-const CURRENT_UPDATE_VERSION = "2026.08.19-case-study";
+const CURRENT_UPDATE_VERSION = "2026.08.20-motion";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 /**
@@ -8,6 +8,45 @@ const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
  * share the same date without clashing.
  */
 const updates = [
+  {
+    id: "2026.08.20-motion",
+    version: "2026.08.20",
+    date: {
+      en: "august 20, 2026",
+      id: "20 agustus 2026",
+      jv: "20 agustus 2026",
+    },
+    title: {
+      en: "motion, on your terms",
+      id: "animasi, sesuai maunya kamu",
+      jv: "animasi, manut kersa panjenengan",
+    },
+    description: {
+      en: "the site follows your device by default, but you can override it here — and it steps back on its own when things get slow.",
+      id: "situs ini mengikuti setting device kamu, tapi bisa kamu atur sendiri di sini — dan otomatis mengalah kalau terasa berat.",
+      jv: "situs punika ndherek setting piranti panjenengan, nanging saged dipunatur piyambak wonten mriki — lan piyambakipun ngalah menawi kraos awrat.",
+    },
+    items: {
+      en: [
+        "added a motion toggle in the footer and the command palette",
+        "reduced motion is respected by default, and can be overridden per site",
+        "animations turn themselves off when the page can't keep up",
+        "fixed sideways scrolling on the skills category row",
+      ],
+      id: [
+        "toggle animasi tersedia di footer dan command palette",
+        "setting reduced motion device dihormati, tapi bisa ditimpa khusus di situs ini",
+        "animasi mati sendiri kalau halaman terasa berat",
+        "memperbaiki scroll menyamping pada baris kategori skills",
+      ],
+      jv: [
+        "toggle animasi cumawis wonten footer lan command palette",
+        "setting reduced motion piranti dipunajeni, nanging saged dipunewahi wonten situs punika",
+        "animasi pejah piyambak menawi kaca kraos awrat",
+        "ndandosi scroll ngiwa-nengen wonten larik kategori skills",
+      ],
+    },
+  },
   {
     id: "2026.08.19-case-study",
     version: "2026.08.19",
