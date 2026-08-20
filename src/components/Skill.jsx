@@ -281,7 +281,7 @@ const Skill = () => {
     });
   };
 
-  const handleFilterWheel = (event) => {
+  const handleFilterWheel = useCallback((event) => {
     const filterList = filterListRef.current;
 
     if (
@@ -298,14 +298,39 @@ const Skill = () => {
       ? filterList.scrollLeft <= 0
       : filterList.scrollLeft >= maxScroll - 1;
 
+    // At either edge, let the event through so the page keeps scrolling
+    // vertically through Lenis as usual.
     if (reachedEdge) return;
 
     event.preventDefault();
+
+    // Lenis listens for wheel on window, and preventDefault does not stop
+    // other listeners — without this the page would scroll vertically at the
+    // same time as the filter row scrolls sideways.
+    event.stopPropagation();
+
     filterList.scrollBy({
       left: event.deltaY,
       behavior: "auto",
     });
-  };
+  }, []);
+
+  // React 17+ registers wheel/touchstart/touchmove as PASSIVE listeners on the
+  // root container, so preventDefault() inside an onWheel prop is ignored.
+  // The listener has to be attached natively with { passive: false }.
+  useEffect(() => {
+    const filterList = filterListRef.current;
+
+    if (!filterList) return undefined;
+
+    filterList.addEventListener("wheel", handleFilterWheel, {
+      passive: false,
+    });
+
+    return () => {
+      filterList.removeEventListener("wheel", handleFilterWheel);
+    };
+  }, [handleFilterWheel]);
 
   const filteredSkills = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -466,7 +491,6 @@ const Skill = () => {
                     className="skills-filter-list"
                     role="group"
                     aria-label={copy.skills.categoryGroup}
-                    onWheel={handleFilterWheel}
                   >
                     {filters.map((item) => {
                       const isActive = filter === item.value;
