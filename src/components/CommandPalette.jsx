@@ -10,6 +10,12 @@ import { useLenis } from "lenis/react";
 import { useLanguage } from "../context/LanguageContext";
 import { projects } from "../data/projects";
 import { hasCaseStudy } from "../data/caseStudies";
+import {
+  getMotionMode,
+  isReducedMotion,
+  setMotionMode,
+  subscribeToMotion,
+} from "../lib/motionPreference";
 import "../styles/command-palette-extras.css";
 
 const EMAIL_ADDRESS = "hello@madebyrizky.my.id";
@@ -29,6 +35,12 @@ const paletteCopy = {
     projects: "projects",
     openCaseStudy: "read the case study",
     openDemo: "open the live project",
+    enableMotion: "turn animations on",
+    enableMotionDescription: "override the reduced motion setting for this site",
+    disableMotion: "turn animations off",
+    disableMotionDescription: "keep the site still, nothing moves",
+    followSystemMotion: "follow system motion setting",
+    followSystemMotionDescription: "go back to whatever your device prefers",
     noResults: "no matching command found.",
     close: "close command palette",
     move: "move",
@@ -66,6 +78,12 @@ const paletteCopy = {
     projects: "proyek",
     openCaseStudy: "baca case study-nya",
     openDemo: "buka proyeknya langsung",
+    enableMotion: "nyalakan animasi",
+    enableMotionDescription: "abaikan setting reduced motion khusus di situs ini",
+    disableMotion: "matikan animasi",
+    disableMotionDescription: "tampilan tetap diam, tidak ada yang bergerak",
+    followSystemMotion: "ikuti setting perangkat",
+    followSystemMotionDescription: "kembalikan ke preferensi device kamu",
     noResults: "command yang dicari ga ditemukan.",
     close: "tutup command palette",
     move: "geser",
@@ -103,6 +121,12 @@ const paletteCopy = {
     projects: "karya",
     openCaseStudy: "maos case study-nipun",
     openDemo: "bikak karyanipun langsung",
+    enableMotion: "nyalakaken animasi",
+    enableMotionDescription: "mboten ngginakaken setting reduced motion wonten situs punika",
+    disableMotion: "mejahi animasi",
+    disableMotionDescription: "tampilan tetep anteng, mboten wonten ingkang obah",
+    followSystemMotion: "ndherek setting piranti",
+    followSystemMotionDescription: "wangsul dhateng preferensi piranti panjenengan",
     noResults: "printah ingkang dipunpadosi mboten wonten.",
     close: "tutup command palette",
     move: "pindhah",
@@ -256,6 +280,7 @@ const CommandPalette = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [recentIds, setRecentIds] = useState(readRecentCommands);
+  const [motionMode, setMotionModeState] = useState(getMotionMode);
   const text = paletteCopy[language] ?? paletteCopy.en;
   const showShortcuts = normalizeText(query) === SHORTCUTS_QUERY;
 
@@ -291,6 +316,8 @@ const CommandPalette = ({
   }, [text.emailCopied]);
 
   const commands = useMemo(() => {
+    const motionReduced = isReducedMotion();
+
     const navigationCommands = sectionCommands.map(({ key, target, icon }) => {
       const sectionLabel = copy.navigation[key];
 
@@ -345,6 +372,25 @@ const CommandPalette = ({
         closeOnRun: false,
         action: copyEmail,
       },
+      motionReduced
+        ? {
+            id: "motion-enable",
+            group: text.actions,
+            icon: "animation",
+            label: text.enableMotion,
+            description: text.enableMotionDescription,
+            keywords: "motion animation enable on reduced accessibility",
+            action: () => setMotionMode("full"),
+          }
+        : {
+            id: "motion-disable",
+            group: text.actions,
+            icon: "motion_photos_off",
+            label: text.disableMotion,
+            description: text.disableMotionDescription,
+            keywords: "motion animation disable off reduced accessibility",
+            action: () => setMotionMode("reduced"),
+          },
       {
         id: "keyboard-shortcuts",
         group: text.actions,
@@ -421,6 +467,18 @@ const CommandPalette = ({
       };
     });
 
+    if (motionMode !== "system") {
+      quickActions.push({
+        id: "motion-system",
+        group: text.actions,
+        icon: "settings_suggest",
+        label: text.followSystemMotion,
+        description: text.followSystemMotionDescription,
+        keywords: "motion animation system default reset device preference",
+        action: () => setMotionMode("system"),
+      });
+    }
+
     return [
       ...navigationCommands,
       ...projectCommands,
@@ -431,6 +489,7 @@ const CommandPalette = ({
     copy.navigation,
     copy.work,
     hasUnreadUpdates,
+    motionMode,
     onOpenCaseStudy,
     language,
     languages,
@@ -501,6 +560,8 @@ const CommandPalette = ({
       return nextIds;
     });
   }, []);
+
+  useEffect(() => subscribeToMotion(setMotionModeState), []);
 
   useEffect(() => {
     setActiveIndex(0);

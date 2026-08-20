@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import translations from "../data/translations";
+import { isReducedMotion } from "../lib/motionPreference";
 
 const STORAGE_KEY = "portfolio-language";
 const DEFAULT_LANGUAGE = "en";
@@ -93,9 +94,7 @@ const LanguageProvider = ({ children }) => {
       return false;
     }
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = isReducedMotion();
 
     languageRef.current = nextLanguage;
 

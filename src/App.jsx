@@ -24,9 +24,11 @@ import CursorFollower from "./components/CursorFollower";
 import ImmersiveScene from "./components/ImmersiveScene";
 import CommandPalette from "./components/CommandPalette";
 import GotoShortcuts from "./components/GotoShortcuts";
+import MotionWatchdog from "./components/MotionWatchdog";
 import WhatsNew from "./components/WhatsNew";
 import ProjectCaseStudy from "./components/ProjectCaseStudy";
 import { useLanguage } from "./context/LanguageContext";
+import { isReducedMotion } from "./lib/motionPreference";
 import {
   CURRENT_UPDATE_VERSION,
   WHATS_NEW_STORAGE_KEY,
@@ -340,9 +342,7 @@ const App = () => {
       }
 
       const nextTheme = theme === "dark" ? "light" : "dark";
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      const reduceMotion = isReducedMotion();
       const canUseViewTransition =
         typeof document.startViewTransition === "function";
 
@@ -463,6 +463,8 @@ const App = () => {
       <WhatsNew open={whatsNewOpen} onClose={closeWhatsNew} />
 
       <ProjectCaseStudy slug={caseStudySlug} onClose={closeCaseStudy} />
+
+      <MotionWatchdog enabled={!showIntro} />
 
       <GotoShortcuts
         disabled={

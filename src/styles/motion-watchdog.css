@@ -1,0 +1,108 @@
+/*
+ * Toast shown when the frame rate watchdog turns motion off.
+ * New selectors only — index.css is untouched.
+ */
+
+.motion-watchdog {
+  position: fixed;
+  z-index: 99970;
+  bottom: 22px;
+  left: 22px;
+  display: flex;
+  max-width: min(420px, calc(100vw - 44px));
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px 13px 16px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface-solid) 94%, transparent);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  animation: motion-watchdog-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.motion-watchdog > .material-symbols-rounded {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 20px;
+}
+
+.motion-watchdog p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.motion-watchdog-undo {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  color: var(--text);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.motion-watchdog-undo:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.motion-watchdog-close {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  padding: 0;
+  place-items: center;
+  color: var(--faint);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.motion-watchdog-close:hover {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.motion-watchdog-close .material-symbols-rounded {
+  font-size: 16px;
+}
+
+@keyframes motion-watchdog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 560px) {
+  .motion-watchdog {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    max-width: none;
+    flex-wrap: wrap;
+  }
+
+  .motion-watchdog p {
+    flex: 1 1 100%;
+    order: 2;
+  }
+}
