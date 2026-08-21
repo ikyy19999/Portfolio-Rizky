@@ -5469,6 +5469,36 @@ html.theme-fallback-in .site-shell {
   }
 }
 
+/* Section heading scramble reveal */
+
+.scramble-reveal-text {
+  display: grid;
+}
+
+.scramble-reveal-sizer,
+.scramble-reveal-value {
+  grid-area: 1 / 1;
+  min-width: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  overflow-wrap: inherit;
+}
+
+.scramble-reveal-sizer {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scramble-reveal-value {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
 /* Hero vertical text rotator */
 
 .ax-hero-title .ax-hero-title-static {
