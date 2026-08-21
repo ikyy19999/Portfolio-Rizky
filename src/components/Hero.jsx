@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import gsap from "gsap";
+import ScrambleTextPlugin from "gsap/ScrambleTextPlugin";
+import { useGSAP } from "@gsap/react";
 import { useLenis } from "lenis/react";
 import { ButtonPrimary } from "./Button";
 import { useLanguage } from "../context/LanguageContext";
+import { isReducedMotion, subscribeToMotion } from "../lib/motionPreference";
+
+gsap.registerPlugin(ScrambleTextPlugin);
+
+const SCRAMBLE_DURATION = 0.9;
+const SCRAMBLE_HOLD_DURATION = 4.2;
+const SCRAMBLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
 
 const techStack = [
   "Laravel",
@@ -30,9 +41,129 @@ const scrollOptions = {
     progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
 };
 
-const Hero = () => {
-  const { copy } = useLanguage();
+const Hero = ({ animationActive }) => {
+  const { copy, language } = useLanguage();
   const lenis = useLenis();
+  const scrambleTextRef = useRef(null);
+  const [reducedMotion, setReducedMotion] = useState(isReducedMotion);
+  const longestStatement = copy.hero.statements.reduce(
+    (longest, statement) =>
+      statement.length > longest.length ? statement : longest,
+    copy.hero.statements[0] ?? "",
+  );
+
+  useEffect(
+    () =>
+      subscribeToMotion(() => {
+        setReducedMotion(isReducedMotion());
+      }),
+    [],
+  );
+
+  useGSAP(
+    () => {
+      const element = scrambleTextRef.current;
+      const statements = copy.hero.statements;
+
+      if (!element || !statements.length) return undefined;
+
+      let currentIndex = 0;
+      let activeTween = null;
+      let delayedCall = null;
+
+      const showStaticStatement = () => {
+        element.textContent = statements[0];
+        gsap.set(element, { autoAlpha: 1 });
+      };
+
+      const pauseAnimation = () => {
+        activeTween?.pause();
+        delayedCall?.pause();
+      };
+
+      const resumeAnimation = () => {
+        activeTween?.resume();
+        delayedCall?.resume();
+      };
+
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          pauseAnimation();
+          return;
+        }
+
+        resumeAnimation();
+      };
+
+      if (!animationActive || reducedMotion || statements.length === 1) {
+        showStaticStatement();
+
+        return () => {
+          gsap.killTweensOf(element);
+        };
+      }
+
+      const scheduleNextStatement = () => {
+        delayedCall = gsap.delayedCall(
+          SCRAMBLE_HOLD_DURATION,
+          animateNextStatement,
+        );
+      };
+
+      function animateNextStatement() {
+        currentIndex = (currentIndex + 1) % statements.length;
+
+        activeTween = gsap.to(element, {
+          duration: SCRAMBLE_DURATION,
+          scrambleText: {
+            text: statements[currentIndex],
+            chars: SCRAMBLE_CHARACTERS,
+            revealDelay: 0.12,
+            speed: 0.55,
+            tweenLength: true,
+          },
+          ease: "none",
+          onComplete: scheduleNextStatement,
+        });
+      }
+
+      element.textContent = "";
+      gsap.set(element, { autoAlpha: 1 });
+
+      activeTween = gsap.to(element, {
+        duration: 0.82,
+        scrambleText: {
+          text: statements[0],
+          chars: SCRAMBLE_CHARACTERS,
+          revealDelay: 0.08,
+          speed: 0.5,
+          tweenLength: true,
+        },
+        ease: "none",
+        onComplete: scheduleNextStatement,
+      });
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+
+      if (document.hidden) {
+        pauseAnimation();
+      }
+
+      return () => {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange,
+        );
+        delayedCall?.kill();
+        activeTween?.kill();
+        gsap.killTweensOf(element);
+      };
+    },
+    {
+      dependencies: [animationActive, language, reducedMotion],
+      revertOnUpdate: true,
+    },
+  );
 
   const scrollToSection = (event, target) => {
     event.preventDefault();
@@ -81,26 +212,28 @@ const Hero = () => {
               </span>
 
               <span
-                className="ax-hero-title-rotator"
-                aria-label={copy.hero.statements.join(" ")}
+                className="ax-hero-title-scramble"
+                aria-label={copy.hero.statements.join(". ")}
               >
-                {copy.hero.statements.map((statement, index) => (
-                  <span
-                    key={statement}
-                    className="ax-hero-title-rotator-item"
-                    style={{ "--rotator-index": index }}
-                    aria-hidden="true"
-                  >
-                    {statement}
-                  </span>
-                ))}
+                <span
+                  className="ax-hero-title-scramble-sizer"
+                  aria-hidden="true"
+                >
+                  {longestStatement}
+                </span>
+
+                <span
+                  ref={scrambleTextRef}
+                  className="ax-hero-title-scramble-text"
+                  aria-hidden="true"
+                >
+                  {copy.hero.statements[0]}
+                </span>
               </span>
             </h1>
 
             <div className="ax-hero-description reveal-up">
-              <p>
-                {copy.hero.description}
-              </p>
+              <p>{copy.hero.description}</p>
 
               <div className="ax-hero-actions">
                 <ButtonPrimary
@@ -187,6 +320,10 @@ const Hero = () => {
       </div>
     </section>
   );
+};
+
+Hero.propTypes = {
+  animationActive: PropTypes.bool.isRequired,
 };
 
 export default Hero;
