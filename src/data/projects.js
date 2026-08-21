@@ -10,6 +10,16 @@
  */
 const projects = [
   {
+    slug: "koskosan-platform",
+    imgSrc: "",
+    visual: "property",
+    title: "Koskosan Platform",
+    desc: "Responsive web platform for exploring boarding houses and managing reservations.",
+    category: "web",
+    tech: ["Laravel", "Blade", "MySQL"],
+    demo: "https://koskosan.madebyrizky.my.id/",
+  },
+  {
     slug: "sports-booking-platform",
     imgSrc: "/assets/Galaxy-S22+-sportix.madebyrizky.my.id.png",
     title: "Sports Booking Platform",

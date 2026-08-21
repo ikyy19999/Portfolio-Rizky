@@ -19,6 +19,93 @@
  */
 
 const caseStudies = {
+  "koskosan-platform": {
+    meta: {
+      role: {
+        en: "Full-stack development",
+        id: "Full-stack development",
+        jv: "Full-stack development",
+      },
+      timeline: {
+        en: "2026",
+        id: "2026",
+        jv: "2026",
+      },
+      status: {
+        en: "Live",
+        id: "Live",
+        jv: "Live",
+      },
+    },
+
+    stack: ["Laravel", "Blade", "MySQL"],
+
+    links: {
+      demo: "https://koskosan.madebyrizky.my.id/",
+      repo: "",
+    },
+
+    summary: {
+      en: "A responsive web platform that brings boarding-house discovery and reservations into one focused experience.",
+      id: "Platform web responsif yang menyatukan pencarian tempat kos dan reservasi dalam satu pengalaman yang fokus.",
+      jv: "Platform web responsif ingkang nyawijikaken panelusuran papan kos lan reservasi wonten setunggal pengalaman ingkang fokus.",
+    },
+
+    problem: {
+      en: "Room information and reservation steps can easily become scattered, making it harder for users to compare options and continue with confidence.",
+      id: "Informasi kamar dan proses reservasi mudah terpencar, sehingga pengguna lebih sulit membandingkan pilihan dan melanjutkan dengan yakin.",
+      jv: "Informasi kamar lan proses reservasi saged kasebar, satemah pangguna langkung awrat mbandhingaken pilihan lan nerusaken kanthi mantep.",
+    },
+
+    approach: {
+      en: [
+        {
+          title: "Mobile-first browsing",
+          body: "The core flow is structured for smaller screens first, keeping room information readable and the next action easy to reach.",
+        },
+        {
+          title: "One consistent reservation flow",
+          body: "Discovery and reservation are kept inside one visual system so users do not lose context while moving through the product.",
+        },
+      ],
+      id: [
+        {
+          title: "Pencarian mobile-first",
+          body: "Alur utama disusun dari layar kecil terlebih dahulu supaya informasi kamar tetap mudah dibaca dan action berikutnya mudah dijangkau.",
+        },
+        {
+          title: "Satu alur reservasi yang konsisten",
+          body: "Pencarian dan reservasi berada dalam satu sistem visual supaya pengguna tidak kehilangan konteks saat menjelajahi produk.",
+        },
+      ],
+      jv: [
+        {
+          title: "Panelusuran mobile-first",
+          body: "Alur utami dipunsusun saking layar alit supados informasi kamar tetep gampil dipunwaos lan tumindak salajengipun gampil dipungayuh.",
+        },
+        {
+          title: "Setunggal alur reservasi ingkang konsisten",
+          body: "Panelusuran lan reservasi wonten setunggal sistem visual supados pangguna boten kelangan konteks nalika migunakaken produk.",
+        },
+      ],
+    },
+
+    results: {
+      en: [
+        "The live product provides a single place to explore boarding-house options and continue to reservation.",
+        "The interface remains usable across desktop and mobile layouts.",
+      ],
+      id: [
+        "Produk live menyediakan satu tempat untuk mencari pilihan kos dan melanjutkan ke reservasi.",
+        "Interface tetap nyaman digunakan pada layout desktop dan mobile.",
+      ],
+      jv: [
+        "Produk live nyawisaken setunggal papan kangge madosi pilihan kos lan nerusaken dhateng reservasi.",
+        "Interface tetep trep dipunginakaken wonten layout desktop lan mobile.",
+      ],
+    },
+  },
+
   "sports-booking-platform": {
     meta: {
       // TODO: confirm these three — they're the first thing a recruiter reads.

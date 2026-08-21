@@ -177,6 +177,10 @@ const translations = {
       },
       projects: [
         {
+          title: "Koskosan Platform",
+          desc: "Responsive web platform for exploring boarding houses and managing reservations.",
+        },
+        {
           title: "Sports Booking Platform",
           desc: "Online sports court reservation system with a responsive booking experience.",
         },
@@ -436,6 +440,10 @@ const translations = {
       },
       projects: [
         {
+          title: "Platform Koskosan",
+          desc: "Platform web responsif untuk mencari tempat kos dan mengelola reservasi.",
+        },
+        {
           title: "Platform Booking Olahraga",
           desc: "Sistem reservasi lapangan olahraga online dengan pengalaman booking yang responsif.",
         },
@@ -693,6 +701,10 @@ const translations = {
         tool: "Tool Digital",
       },
       projects: [
+        {
+          title: "Platform Koskosan",
+          desc: "Platform web responsif kangge madosi papan kos lan ngatur reservasi.",
+        },
         {
           title: "Platform Reservasi Olahraga",
           desc: "Sistem reservasi lapangan olahraga online kanthi pengalaman booking ingkang responsif.",

@@ -1,7 +1,46 @@
-const CURRENT_UPDATE_VERSION = "2026.08.21-scrollsmoother";
+const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 const updates = [
+  {
+    id: "2026.08.22-koskosan",
+    version: "2026.08.22",
+    date: {
+      en: "august 22, 2026",
+      id: "22 agustus 2026",
+      jv: "22 agustus 2026",
+    },
+    title: {
+      en: "a new project is live",
+      id: "project baru sudah live",
+      jv: "karya enggal sampun live",
+    },
+    description: {
+      en: "koskosan is now part of the portfolio, complete with a live link and a focused case study.",
+      id: "koskosan sekarang sudah masuk portfolio, lengkap dengan link live dan case study yang ringkas.",
+      jv: "koskosan samenika sampun mlebet portfolio, jangkep kaliyan pranala live lan case study ingkang ringkes.",
+    },
+    items: {
+      en: [
+        "added the koskosan web platform to selected work",
+        "added a responsive generated preview without a separate image asset",
+        "added project copy in english, indonesian, and javanese krama",
+        "made the project searchable from the command palette",
+      ],
+      id: [
+        "menambahkan platform web koskosan ke karya pilihan",
+        "menambahkan preview responsif tanpa file gambar terpisah",
+        "menambahkan teks project dalam english, indonesia, dan jawa krama",
+        "project sekarang bisa dicari dari command palette",
+      ],
+      jv: [
+        "nambahaken platform web koskosan wonten karya pilihan",
+        "nambahaken pratinjau responsif tanpa berkas gambar kapisah",
+        "nambahaken teks karya mawi english, indonesia, lan jawa krama",
+        "karya samenika saged dipunpadosi saking command palette",
+      ],
+    },
+  },
   {
     id: "2026.08.21-scrollsmoother",
     version: "2026.08.21",
