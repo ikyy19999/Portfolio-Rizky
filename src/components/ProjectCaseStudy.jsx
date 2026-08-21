@@ -147,7 +147,6 @@ const ProjectCaseStudy = ({ slug = null, onClose }) => {
     <div
       className={`case-study-overlay ${open ? "is-open" : ""}`}
       aria-hidden={!open}
-      data-lenis-prevent
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -189,7 +188,7 @@ const ProjectCaseStudy = ({ slug = null, onClose }) => {
           </button>
         </header>
 
-        <div className="case-study-body" data-lenis-prevent>
+        <div className="case-study-body">
           {project?.imgSrc ? (
             <figure className="case-study-media">
               <img

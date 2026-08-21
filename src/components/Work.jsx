@@ -134,6 +134,7 @@ const Work = ({ onOpenCaseStudy = null }) => {
                 <ProjectCard
                   key={project.slug ?? project.demo}
                   imgSrc={project.imgSrc}
+                  visual={project.visual}
                   title={project.title}
                   desc={project.desc}
                   tags={project.tech}

@@ -11,6 +11,7 @@ const cardCopy = {
 
 const ProjectCard = ({
   imgSrc,
+  visual = "system",
   title,
   desc,
   tags,
@@ -62,13 +63,41 @@ const ProjectCard = ({
           <span className="project-card-category">{category}</span>
         </header>
 
-        <figure className="project-card-media">
-          <img
-            src={imgSrc}
-            alt={copy.work.previewAlt.replace("{title}", title)}
-            loading="lazy"
-            decoding="async"
-          />
+        <figure
+          className={`project-card-media ${!imgSrc ? "has-generated-visual" : ""}`.trim()}
+        >
+          {imgSrc ? (
+            <img
+              src={imgSrc}
+              alt={copy.work.previewAlt.replace("{title}", title)}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div
+              className={`project-card-generated is-${visual}`}
+              role="img"
+              aria-label={copy.work.previewAlt.replace("{title}", title)}
+            >
+              <span className="generated-visual-grid" aria-hidden="true">
+                {Array.from({ length: 12 }, (_, itemIndex) => (
+                  <span key={itemIndex} />
+                ))}
+              </span>
+
+              <span className="generated-visual-copy" aria-hidden="true">
+                <small>property platform</small>
+                <strong>kos / kosan</strong>
+                <span>rooms · booking · dashboard</span>
+              </span>
+
+              <span className="generated-visual-panel" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+            </div>
+          )}
 
           <span className="project-card-sheen" aria-hidden="true" />
 
@@ -119,7 +148,8 @@ const ProjectCard = ({
 };
 
 ProjectCard.propTypes = {
-  imgSrc: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string,
+  visual: PropTypes.string,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
