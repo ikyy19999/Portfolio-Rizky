@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useLenis } from "lenis/react";
 import { useLanguage } from "../context/LanguageContext";
+import { scrollToTarget } from "../lib/smoothScroll";
 
 const navItems = [
   {
@@ -31,15 +31,8 @@ const navItems = [
   },
 ];
 
-const smoothScrollOptions = {
-  duration: 1.2,
-  easing: (progress) =>
-    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
-};
-
 const Navbar = ({ mobile = false }) => {
   const { copy } = useLanguage();
-  const lenis = useLenis();
   const [activeSection, setActiveSection] = useState("#home");
 
   useEffect(() => {
@@ -90,21 +83,9 @@ const Navbar = ({ mobile = false }) => {
   const handleNavigation = (event, link) => {
     event.preventDefault();
 
-    const section = document.querySelector(link);
-
-    if (!section) return;
-
-    if (lenis) {
-      lenis.scrollTo(section, {
-        ...smoothScrollOptions,
-        offset: link === "#home" ? 0 : -96,
-      });
-    } else {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    scrollToTarget(link, {
+      headerOffset: link === "#home" ? 0 : 96,
+    });
 
     setActiveSection(link);
   };

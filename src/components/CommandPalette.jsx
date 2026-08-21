@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import { useLenis } from "lenis/react";
 import { useLanguage } from "../context/LanguageContext";
 import { projects } from "../data/projects";
 import { hasCaseStudy } from "../data/caseStudies";
@@ -16,6 +15,7 @@ import {
   setMotionMode,
   subscribeToMotion,
 } from "../lib/motionPreference";
+import { scrollToTarget } from "../lib/smoothScroll";
 import "../styles/command-palette-extras.css";
 
 const EMAIL_ADDRESS = "hello@madebyrizky.my.id";
@@ -271,7 +271,6 @@ const CommandPalette = ({
   onToggleTheme,
 }) => {
   const { language, languages, setLanguage, copy } = useLanguage();
-  const lenis = useLenis();
   const inputRef = useRef(null);
   const panelRef = useRef(null);
   const resultsRef = useRef(null);
@@ -284,26 +283,13 @@ const CommandPalette = ({
   const text = paletteCopy[language] ?? paletteCopy.en;
   const showShortcuts = normalizeText(query) === SHORTCUTS_QUERY;
 
-  const navigateToSection = useCallback(
-    (target) => {
-      const section = document.querySelector(target);
-
-      if (!section) return;
-
-      window.requestAnimationFrame(() => {
-        if (lenis) {
-          lenis.scrollTo(section, {
-            duration: 1.2,
-            offset: target === "#home" ? 0 : -96,
-          });
-          return;
-        }
-
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
+  const navigateToSection = useCallback((target) => {
+    window.requestAnimationFrame(() => {
+      scrollToTarget(target, {
+        headerOffset: target === "#home" ? 0 : 96,
       });
-    },
-    [lenis],
-  );
+    });
+  }, []);
 
   const copyEmail = useCallback(async () => {
     if (navigator.clipboard && window.isSecureContext) {
@@ -686,7 +672,6 @@ const CommandPalette = ({
     <div
       className={`command-palette-overlay ${open ? "is-open" : ""}`}
       aria-hidden={!open}
-      data-lenis-prevent
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -737,7 +722,6 @@ const CommandPalette = ({
           id="command-palette-results"
           className="command-palette-results"
           role={showShortcuts ? "presentation" : "listbox"}
-          data-lenis-prevent
         >
           {showShortcuts ? (
             <div className="command-palette-shortcuts">

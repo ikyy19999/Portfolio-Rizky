@@ -1,14 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { useLenis } from "lenis/react";
 import Navbar from "./Navbar";
 import { useLanguage } from "../context/LanguageContext";
-
-const smoothScrollOptions = {
-  duration: 1.2,
-  easing: (progress) =>
-    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
-};
+import { scrollToTarget } from "../lib/smoothScroll";
 
 const LanguageSwitcher = ({ disabled }) => {
   const {
@@ -125,7 +119,6 @@ LanguageSwitcher.propTypes = {
 
 const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
   const { copy, isLanguageTransitioning } = useLanguage();
-  const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [themeChanging, setThemeChanging] = useState(false);
 
@@ -148,22 +141,8 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
   const handleNavigation = (event, target) => {
     event.preventDefault();
 
-    const section = document.querySelector(target);
-
-    if (!section) return;
-
-    if (lenis) {
-      lenis.scrollTo(section, {
-        ...smoothScrollOptions,
-        offset: target === "#home" ? 0 : -96,
-      });
-
-      return;
-    }
-
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+    scrollToTarget(target, {
+      headerOffset: target === "#home" ? 0 : 96,
     });
   };
 

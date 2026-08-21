@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useLanguage } from "../context/LanguageContext";
+import { scrollToTarget, scrollToTop } from "../lib/smoothScroll";
 
 const sitemap = [
   {
@@ -52,9 +53,8 @@ const Footer = ({ hasUnreadUpdates, onOpenWhatsNew }) => {
 
     event.preventDefault();
 
-    document.querySelector(href)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+    scrollToTarget(href, {
+      headerOffset: href === "#home" ? 0 : 96,
     });
   };
 
@@ -222,12 +222,7 @@ const Footer = ({ hasUnreadUpdates, onOpenWhatsNew }) => {
 
           <button
             type="button"
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              })
-            }
+            onClick={() => scrollToTop()}
           >
             {copy.footer.backToTop}
 

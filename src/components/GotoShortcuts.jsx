@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useLenis } from "lenis/react";
+import { scrollToTarget } from "../lib/smoothScroll";
 
 const SEQUENCE_TIMEOUT = 1200;
 
@@ -25,8 +25,6 @@ const isTypingTarget = (element) => {
  * Renders nothing — it only listens while no overlay or input is focused.
  */
 const GotoShortcuts = ({ disabled }) => {
-  const lenis = useLenis();
-
   useEffect(() => {
     if (disabled) return undefined;
 
@@ -69,22 +67,11 @@ const GotoShortcuts = ({ disabled }) => {
 
       if (!target) return;
 
-      const section = document.querySelector(target);
-
-      if (!section) return;
-
       event.preventDefault();
 
-      if (lenis) {
-        lenis.scrollTo(section, {
-          duration: 1.2,
-          offset: target === "#home" ? 0 : -96,
-        });
-
-        return;
-      }
-
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToTarget(target, {
+        headerOffset: target === "#home" ? 0 : 96,
+      });
     };
 
     document.addEventListener("keydown", handleKeyDown);
@@ -93,7 +80,7 @@ const GotoShortcuts = ({ disabled }) => {
       window.clearTimeout(sequenceTimer);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [disabled, lenis]);
+  }, [disabled]);
 
   return null;
 };

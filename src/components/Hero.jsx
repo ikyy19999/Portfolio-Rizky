@@ -1,7 +1,7 @@
 import React from "react";
-import { useLenis } from "lenis/react";
 import { ButtonPrimary } from "./Button";
 import { useLanguage } from "../context/LanguageContext";
+import { scrollToTarget } from "../lib/smoothScroll";
 
 const techStack = [
   "Laravel",
@@ -24,35 +24,14 @@ const techStack = [
   "Vercel",
 ];
 
-const scrollOptions = {
-  duration: 1.2,
-  easing: (progress) =>
-    progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2,
-};
-
 const Hero = () => {
   const { copy } = useLanguage();
-  const lenis = useLenis();
 
   const scrollToSection = (event, target) => {
     event.preventDefault();
 
-    const section = document.querySelector(target);
-
-    if (!section) return;
-
-    if (lenis) {
-      lenis.scrollTo(section, {
-        ...scrollOptions,
-        offset: -96,
-      });
-
-      return;
-    }
-
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+    scrollToTarget(target, {
+      headerOffset: 96,
     });
   };
 
