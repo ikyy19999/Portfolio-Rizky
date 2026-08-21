@@ -135,6 +135,7 @@ const Work = ({ onOpenCaseStudy = null }) => {
                   key={project.slug ?? project.demo}
                   imgSrc={project.imgSrc}
                   visual={project.visual}
+                  comingSoon={project.comingSoon}
                   title={project.title}
                   desc={project.desc}
                   tags={project.tech}
@@ -143,7 +144,7 @@ const Work = ({ onOpenCaseStudy = null }) => {
                   index={index + 1}
                   featured={index === 0}
                   onOpenCaseStudy={
-                    canOpenCaseStudy
+                    canOpenCaseStudy && !project.comingSoon
                       ? () => onOpenCaseStudy(project.slug)
                       : undefined
                   }

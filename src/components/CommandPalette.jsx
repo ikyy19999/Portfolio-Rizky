@@ -35,6 +35,7 @@ const paletteCopy = {
     projects: "projects",
     openCaseStudy: "read the case study",
     openDemo: "open the live project",
+    comingSoon: "coming soon",
     enableMotion: "turn animations on",
     enableMotionDescription: "override the reduced motion setting for this site",
     disableMotion: "turn animations off",
@@ -78,6 +79,7 @@ const paletteCopy = {
     projects: "proyek",
     openCaseStudy: "baca case study-nya",
     openDemo: "buka proyeknya langsung",
+    comingSoon: "segera hadir",
     enableMotion: "nyalakan animasi",
     enableMotionDescription: "abaikan setting reduced motion khusus di situs ini",
     disableMotion: "matikan animasi",
@@ -121,6 +123,7 @@ const paletteCopy = {
     projects: "karya",
     openCaseStudy: "maos case study-nipun",
     openDemo: "bikak karyanipun langsung",
+    comingSoon: "badhe enggal rawuh",
     enableMotion: "nyalakaken animasi",
     enableMotionDescription: "mboten ngginakaken setting reduced motion wonten situs punika",
     disableMotion: "mejahi animasi",
@@ -424,15 +427,26 @@ const CommandPalette = ({
     const projectCommands = projects.map((project, index) => {
       const localized = copy.work.projects[index] ?? {};
       const label = localized.title ?? project.title;
+      const isComingSoon = Boolean(project.comingSoon);
       const canOpenCaseStudy =
-        typeof onOpenCaseStudy === "function" && hasCaseStudy(project.slug);
+        !isComingSoon &&
+        typeof onOpenCaseStudy === "function" &&
+        hasCaseStudy(project.slug);
 
       return {
         id: `project-${project.slug}`,
         group: text.projects,
-        icon: canOpenCaseStudy ? "article" : "open_in_new",
+        icon: isComingSoon
+          ? "schedule"
+          : canOpenCaseStudy
+            ? "article"
+            : "open_in_new",
         label,
-        description: canOpenCaseStudy ? text.openCaseStudy : text.openDemo,
+        description: isComingSoon
+          ? text.comingSoon
+          : canOpenCaseStudy
+            ? text.openCaseStudy
+            : text.openDemo,
         keywords: [
           project.slug,
           project.title,
@@ -443,6 +457,11 @@ const CommandPalette = ({
           "project work portfolio case study",
         ].join(" "),
         action: () => {
+          if (isComingSoon) {
+            navigateToSection("#work");
+            return;
+          }
+
           if (canOpenCaseStudy) {
             onOpenCaseStudy(project.slug);
             return;

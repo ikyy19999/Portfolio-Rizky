@@ -4,14 +4,15 @@ import { useLanguage } from "../context/LanguageContext";
 import "../styles/project-card-extras.css";
 
 const cardCopy = {
-  en: { caseStudy: "read case study" },
-  id: { caseStudy: "baca case study" },
-  jv: { caseStudy: "maos case study" },
+  en: { caseStudy: "read case study", comingSoon: "coming soon" },
+  id: { caseStudy: "baca case study", comingSoon: "segera hadir" },
+  jv: { caseStudy: "maos case study", comingSoon: "badhe enggal rawuh" },
 };
 
 const ProjectCard = ({
   imgSrc,
   visual = "system",
+  comingSoon = false,
   title,
   desc,
   tags,
@@ -28,8 +29,13 @@ const ProjectCard = ({
 
   // A project only becomes a case study card when a case study actually
   // exists for it. Otherwise this component behaves exactly as before.
-  const hasCaseStudy = typeof onOpenCaseStudy === "function";
-  const CardElement = hasCaseStudy ? "button" : projectLink ? "a" : "div";
+  const hasCaseStudy =
+    !comingSoon && typeof onOpenCaseStudy === "function";
+  const CardElement = hasCaseStudy
+    ? "button"
+    : !comingSoon && projectLink
+      ? "a"
+      : "div";
 
   const elementProps = hasCaseStudy
     ? {
@@ -37,7 +43,7 @@ const ProjectCard = ({
         onClick: onOpenCaseStudy,
         "aria-label": copy.work.viewProjectAria.replace("{title}", title),
       }
-    : projectLink
+    : !comingSoon && projectLink
       ? {
           href: projectLink,
           target: "_blank",
@@ -46,7 +52,8 @@ const ProjectCard = ({
         }
       : {};
 
-  const showAction = hasCaseStudy || Boolean(projectLink);
+  const isInteractive = hasCaseStudy || Boolean(projectLink);
+  const showAction = comingSoon || isInteractive;
 
   return (
     <article
@@ -56,7 +63,7 @@ const ProjectCard = ({
       <CardElement
         {...elementProps}
         className="project-card-link"
-        data-cursor={showAction ? "view" : undefined}
+        data-cursor={isInteractive ? "view" : undefined}
       >
         <header className="project-card-top">
           <span className="project-card-number">{projectNumber}</span>
@@ -104,7 +111,11 @@ const ProjectCard = ({
           {showAction && (
             <span className="project-card-media-action" aria-hidden="true">
               <span className="material-symbols-rounded">
-                {hasCaseStudy ? "article" : "north_east"}
+                {comingSoon
+                  ? "schedule"
+                  : hasCaseStudy
+                    ? "article"
+                    : "north_east"}
               </span>
             </span>
           )}
@@ -134,10 +145,18 @@ const ProjectCard = ({
           {showAction && (
             <span className="project-card-action">
               <span>
-                {hasCaseStudy ? text.caseStudy : copy.work.viewProject}
+                {comingSoon
+                  ? text.comingSoon
+                  : hasCaseStudy
+                    ? text.caseStudy
+                    : copy.work.viewProject}
               </span>
               <span className="material-symbols-rounded" aria-hidden="true">
-                {hasCaseStudy ? "east" : "arrow_outward"}
+                {comingSoon
+                  ? "schedule"
+                  : hasCaseStudy
+                    ? "east"
+                    : "arrow_outward"}
               </span>
             </span>
           )}
@@ -150,6 +169,7 @@ const ProjectCard = ({
 ProjectCard.propTypes = {
   imgSrc: PropTypes.string,
   visual: PropTypes.string,
+  comingSoon: PropTypes.bool,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
