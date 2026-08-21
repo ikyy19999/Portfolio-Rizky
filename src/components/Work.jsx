@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import ProjectCard from "./ProjectCard";
-import ScrambleValue from "./ScrambleValue";
 import { useLanguage } from "../context/LanguageContext";
 import { projects as works } from "../data/projects";
 import { hasCaseStudy } from "../data/caseStudies";
@@ -116,21 +115,8 @@ const Work = ({ onOpenCaseStudy = null }) => {
             })}
           </div>
 
-          <p className="work-result-count">
-            {/* Visible copy is aria-hidden: scrambling rewrites the text many
-                times per second, which a screen reader would read out frame by
-                frame. The real value lives in the .scramble-live span below. */}
-            <span aria-hidden="true">
-              <ScrambleValue
-                value={String(filteredProjects.length).padStart(2, "0")}
-              />{" "}
-              {copy.work.resultSuffix}
-            </span>
-
-            <span className="scramble-live" aria-live="polite">
-              {String(filteredProjects.length).padStart(2, "0")}{" "}
-              {copy.work.resultSuffix}
-            </span>
+          <p className="work-result-count" aria-live="polite">
+            {String(filteredProjects.length).padStart(2, "0")} {copy.work.resultSuffix}
           </p>
         </div>
 
