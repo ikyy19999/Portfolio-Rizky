@@ -1,13 +1,46 @@
-const CURRENT_UPDATE_VERSION = "2026.08.20-motion";
+const CURRENT_UPDATE_VERSION = "2026.08.21-scrollsmoother";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
-/**
- * `id` is the React key and the value compared against CURRENT_UPDATE_VERSION,
- * so it has to be unique. `version` stays a plain date string because it feeds
- * the <time dateTime> attribute — that lets two entries shipped on the same day
- * share the same date without clashing.
- */
 const updates = [
+  {
+    id: "2026.08.21-scrollsmoother",
+    version: "2026.08.21",
+    date: {
+      en: "august 21, 2026",
+      id: "21 agustus 2026",
+      jv: "21 agustus 2026",
+    },
+    title: {
+      en: "scrolling, refined",
+      id: "scroll yang lebih cinematic",
+      jv: "scroll ingkang langkung cinematic",
+    },
+    description: {
+      en: "page movement now feels smoother and more cinematic while keeping every existing interaction intact.",
+      id: "gerakan halaman sekarang lebih halus dan cinematic tanpa mengubah interaction yang sudah ada.",
+      jv: "obahing kaca samenika langkung alus lan cinematic kanthi tetep njagi sedaya interaction ingkang sampun wonten.",
+    },
+    items: {
+      en: [
+        "replaced Lenis with GSAP ScrollSmoother",
+        "unified smooth navigation across the header, navbar, hero, footer, command palette, and keyboard shortcuts",
+        "scrolling now pauses automatically while an intro, overlay, or case study is open",
+        "reduced motion keeps the native scrolling fallback",
+      ],
+      id: [
+        "mengganti Lenis sepenuhnya dengan GSAP ScrollSmoother",
+        "menyatukan smooth navigation pada header, navbar, hero, footer, command palette, dan keyboard shortcut",
+        "scroll otomatis pause saat intro, overlay, atau case study sedang terbuka",
+        "reduced motion tetap memakai native scrolling sebagai fallback",
+      ],
+      jv: [
+        "nggantos Lenis kanthi GSAP ScrollSmoother",
+        "nyawijikaken smooth navigation wonten header, navbar, hero, footer, command palette, lan keyboard shortcut",
+        "scroll otomatis kendel nalika intro, overlay, utawi case study saweg kabikak",
+        "reduced motion tetep ngagem native scrolling minangka fallback",
+      ],
+    },
+  },
   {
     id: "2026.08.20-motion",
     version: "2026.08.20",
