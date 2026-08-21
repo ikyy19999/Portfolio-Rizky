@@ -39,51 +39,81 @@ const ScrambleRevealText = ({
       value.textContent = text;
 
       if (reduceMotion) {
-        gsap.set(value, { autoAlpha: 1 });
+        gsap.set(value, {
+          autoAlpha: 1,
+        });
+
         return undefined;
       }
 
-      const reveal = () => {
+      const playScramble = () => {
+        gsap.killTweensOf(value);
+
         value.textContent = "";
-        gsap.set(value, { autoAlpha: 1 });
+
+        gsap.set(value, {
+          autoAlpha: 1,
+        });
+
         gsap.to(value, {
           duration: 0.9,
           ease: "none",
+          overwrite: true,
           scrambleText: {
+            text,
             chars: SCRAMBLE_CHARACTERS,
             revealDelay: 0.08,
             speed: 0.55,
-            text,
             tweenLength: true,
           },
+        });
+      };
+
+      const resetScramble = () => {
+        gsap.killTweensOf(value);
+
+        value.textContent = text;
+
+        gsap.set(value, {
+          autoAlpha: 0,
         });
       };
 
       const bounds = root.getBoundingClientRect();
       const viewportHeight =
         window.innerHeight || document.documentElement.clientHeight;
-      const isAlreadyVisible =
-        bounds.top <= viewportHeight * 0.88 && bounds.bottom >= 0;
+
+      const isInsideViewport =
+        bounds.top <= viewportHeight * 0.85 &&
+        bounds.bottom >= viewportHeight * 0.15;
+
       const isAboveViewport = bounds.bottom < 0;
 
       if (isAboveViewport) {
-        gsap.set(value, { autoAlpha: 1 });
-        return undefined;
-      }
-
-      gsap.set(value, { autoAlpha: 0 });
-
-      if (isAlreadyVisible) {
-        reveal();
-        return () => gsap.killTweensOf(value);
+        gsap.set(value, {
+          autoAlpha: 1,
+        });
+      } else {
+        gsap.set(value, {
+          autoAlpha: 0,
+        });
       }
 
       const trigger = ScrollTrigger.create({
         trigger: root,
-        start: "top 88%",
-        once: true,
-        onEnter: reveal,
+        start: "top 85%",
+        end: "bottom 15%",
+
+        onEnter: playScramble,
+        onEnterBack: playScramble,
+
+        onLeave: resetScramble,
+        onLeaveBack: resetScramble,
       });
+
+      if (isInsideViewport) {
+        playScramble();
+      }
 
       return () => {
         trigger.kill();
