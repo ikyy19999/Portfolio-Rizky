@@ -6,10 +6,10 @@ import React, {
   useState,
 } from "react";
 import { flushSync } from "react-dom";
-import ReactLenis from "lenis/react";
 import PropTypes from "prop-types";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollSmoother from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 
 import Header from "./components/Header";
@@ -28,13 +28,16 @@ import MotionWatchdog from "./components/MotionWatchdog";
 import WhatsNew from "./components/WhatsNew";
 import ProjectCaseStudy from "./components/ProjectCaseStudy";
 import { useLanguage } from "./context/LanguageContext";
-import { isReducedMotion } from "./lib/motionPreference";
+import {
+  isReducedMotion,
+  subscribeToMotion,
+} from "./lib/motionPreference";
 import {
   CURRENT_UPDATE_VERSION,
   WHATS_NEW_STORAGE_KEY,
 } from "./data/updates";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, useGSAP);
 
 const getInitialTheme = () => {
   if (typeof window === "undefined") {
@@ -217,6 +220,7 @@ const App = () => {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
   const [caseStudySlug, setCaseStudySlug] = useState(null);
+  const [reduceMotion, setReduceMotion] = useState(isReducedMotion);
   const [hasUnreadUpdates, setHasUnreadUpdates] = useState(() => {
     if (typeof window === "undefined") {
       return false;
@@ -227,6 +231,12 @@ const App = () => {
       CURRENT_UPDATE_VERSION
     );
   });
+  const scrollLocked =
+    showIntro ||
+    isLanguageTransitioning ||
+    commandPaletteOpen ||
+    whatsNewOpen ||
+    Boolean(caseStudySlug);
 
   const completeIntro = useCallback(() => {
     setShowIntro(false);
@@ -272,6 +282,61 @@ const App = () => {
 
     window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    return subscribeToMotion(() => {
+      setReduceMotion(isReducedMotion());
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousSmoother = ScrollSmoother.get();
+
+    previousSmoother?.kill();
+
+    if (reduceMotion) {
+      root.dataset.scrollSmoother = "native";
+      ScrollTrigger.refresh();
+      return undefined;
+    }
+
+    root.dataset.scrollSmoother = "active";
+
+    const smoother = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 1.15,
+      smoothTouch: 0.12,
+      effects: true,
+      ignoreMobileResize: true,
+      normalizeScroll: false,
+    });
+
+    const refreshFrame = window.requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
+    return () => {
+      window.cancelAnimationFrame(refreshFrame);
+      smoother.kill();
+      root.dataset.scrollSmoother = "native";
+    };
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    const smoother = ScrollSmoother.get();
+
+    if (!smoother) return undefined;
+
+    smoother.paused(scrollLocked);
+
+    return () => {
+      if (ScrollSmoother.get() === smoother) {
+        smoother.paused(false);
+      }
+    };
+  }, [reduceMotion, scrollLocked]);
 
   useEffect(() => {
     document.body.classList.toggle("intro-active", showIntro);
@@ -412,14 +477,7 @@ const App = () => {
   );
 
   return (
-    <ReactLenis
-      root
-      options={{
-        duration: 1.1,
-        smoothWheel: true,
-        touchMultiplier: 1.1,
-      }}
-    >
+    <>
       {showIntro && <HandwritingIntro onComplete={completeIntro} />}
 
       <LanguageTransitionOverlay />
@@ -435,19 +493,23 @@ const App = () => {
           onOpenCommandPalette={openCommandPalette}
         />
 
-        <main>
-          <Hero />
-          <About />
-          <Skill />
-          <Work onOpenCaseStudy={openCaseStudy} />
-          <Reviews />
-          <Contact />
-        </main>
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            <main>
+              <Hero />
+              <About />
+              <Skill />
+              <Work onOpenCaseStudy={openCaseStudy} />
+              <Reviews />
+              <Contact />
+            </main>
 
-        <Footer
-          hasUnreadUpdates={hasUnreadUpdates}
-          onOpenWhatsNew={openWhatsNew}
-        />
+            <Footer
+              hasUnreadUpdates={hasUnreadUpdates}
+              onOpenWhatsNew={openWhatsNew}
+            />
+          </div>
+        </div>
       </div>
 
       <CommandPalette
@@ -475,7 +537,7 @@ const App = () => {
           Boolean(caseStudySlug)
         }
       />
-    </ReactLenis>
+    </>
   );
 };
 

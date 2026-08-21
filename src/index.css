@@ -155,6 +155,28 @@ textarea:focus-visible {
   overflow: hidden;
 }
 
+#smooth-wrapper,
+#smooth-content {
+  width: 100%;
+  min-width: 0;
+}
+
+#smooth-wrapper {
+  overflow: hidden;
+}
+
+html[data-scroll-smoother="active"] {
+  scroll-behavior: auto;
+}
+
+html[data-scroll-smoother="active"] #smooth-content {
+  will-change: transform;
+}
+
+html[data-scroll-smoother="native"] #smooth-wrapper {
+  overflow: visible;
+}
+
 .site-shell.is-loading {
   visibility: hidden;
   opacity: 0;
