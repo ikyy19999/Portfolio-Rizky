@@ -88,7 +88,6 @@ const WhatsNew = ({ open, onClose }) => {
     <div
       className={`whats-new-overlay ${open ? "is-open" : ""}`}
       aria-hidden={!open}
-      data-lenis-prevent
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -121,7 +120,7 @@ const WhatsNew = ({ open, onClose }) => {
           </button>
         </header>
 
-        <div className="whats-new-list" data-lenis-prevent>
+        <div className="whats-new-list">
           {updates.map((update, index) => (
             <article className="whats-new-entry" key={update.id ?? update.version}>
               <div className="whats-new-entry-meta">
