@@ -436,9 +436,7 @@ const App = () => {
         />
 
         <main>
-          <Hero
-            animationActive={!showIntro && !isLanguageTransitioning}
-          />
+          <Hero />
           <About />
           <Skill />
           <Work onOpenCaseStudy={openCaseStudy} />
