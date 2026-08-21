@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import SkillCard from "./SkillCard";
+import ScrambleValue from "./ScrambleValue";
 import { useLanguage } from "../context/LanguageContext";
 
 const skillItems = [
@@ -516,13 +517,24 @@ const Skill = () => {
               <p>{copy.skills.technologyIndex}</p>
 
               <span>
-                {String(filteredSkills.length).padStart(2, "0")} /{" "}
-                {String(skillItems.length).padStart(2, "0")}
+                {/* aria-hidden for the same reason as Work.jsx — the real
+                    value is announced by the .scramble-live span. */}
+                <span aria-hidden="true">
+                  <ScrambleValue
+                    value={String(filteredSkills.length).padStart(2, "0")}
+                  />{" "}
+                  / {String(skillItems.length).padStart(2, "0")}
+                </span>
+
+                <span className="scramble-live" aria-live="polite">
+                  {String(filteredSkills.length).padStart(2, "0")} /{" "}
+                  {String(skillItems.length).padStart(2, "0")}
+                </span>
               </span>
             </div>
 
             {filteredSkills.length > 0 ? (
-              <div className="skills-grid reveal-up" aria-live="polite">
+              <div className="skills-grid reveal-up">
                 {filteredSkills.map((skill, index) => (
                   <SkillCard
                     key={skill.label}
