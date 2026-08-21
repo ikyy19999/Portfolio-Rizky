@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import SkillCard from "./SkillCard";
 import { useLanguage } from "../context/LanguageContext";
+import ScrambleRevealText from "./ScrambleRevealText";
 
 const skillItems = [
   {
@@ -371,9 +372,11 @@ const Skill = () => {
               <span>{copy.skills.section}</span>
             </div>
 
-            <h2 className="headline-2">
-              {copy.skills.title}
-            </h2>
+            <ScrambleRevealText
+              as="h2"
+              className="headline-2"
+              text={copy.skills.title}
+            />
 
             <p className="skills-intro">
               {copy.skills.intro}

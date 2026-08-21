@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useLanguage } from "../context/LanguageContext";
+import ScrambleRevealText from "./ScrambleRevealText";
 
 const socialLinks = [
   {
@@ -47,9 +48,11 @@ const Contact = () => {
               <span>{copy.contact.section}</span>
             </div>
 
-            <h2 className="headline-2">
-              {copy.contact.title}
-            </h2>
+            <ScrambleRevealText
+              as="h2"
+              className="headline-2"
+              text={copy.contact.title}
+            />
 
             <p className="contact-intro">
               {copy.contact.intro}

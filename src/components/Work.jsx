@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import ProjectCard from "./ProjectCard";
+import ScrambleRevealText from "./ScrambleRevealText";
 import { useLanguage } from "../context/LanguageContext";
 import { projects as works } from "../data/projects";
 import { hasCaseStudy } from "../data/caseStudies";
@@ -46,9 +47,11 @@ const Work = ({ onOpenCaseStudy = null }) => {
               <span>{copy.work.section}</span>
             </div>
 
-            <h2 className="headline-2">
-              {copy.work.title}
-            </h2>
+            <ScrambleRevealText
+              as="h2"
+              className="headline-2"
+              text={copy.work.title}
+            />
           </div>
 
           <div className="work-heading-aside reveal-up">

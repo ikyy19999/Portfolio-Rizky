@@ -1,5 +1,6 @@
 import React from "react";
 import { useLanguage } from "../context/LanguageContext";
+import ScrambleRevealText from "./ScrambleRevealText";
 
 const About = () => {
   const { copy } = useLanguage();
@@ -18,9 +19,11 @@ const About = () => {
               <span>{copy.about.section}</span>
             </div>
 
-            <h2 className="headline-2">
-              {copy.about.title}
-            </h2>
+            <ScrambleRevealText
+              as="h2"
+              className="headline-2"
+              text={copy.about.title}
+            />
 
             <p className="about-heading-note">
               {copy.about.note}
