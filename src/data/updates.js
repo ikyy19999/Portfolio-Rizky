@@ -1,9 +1,9 @@
-const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan";
+const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan-coming-soon";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 const updates = [
   {
-    id: "2026.08.22-koskosan",
+    id: "2026.08.22-koskosan-coming-soon",
     version: "2026.08.22",
     date: {
       en: "august 22, 2026",
@@ -11,33 +11,33 @@ const updates = [
       jv: "22 agustus 2026",
     },
     title: {
-      en: "a new project is live",
-      id: "project baru sudah live",
-      jv: "karya enggal sampun live",
+      en: "coming soon: koskosan",
+      id: "coming soon: koskosan",
+      jv: "badhe enggal rawuh: koskosan",
     },
     description: {
-      en: "koskosan is now part of the portfolio, complete with a live link and a focused case study.",
-      id: "koskosan sekarang sudah masuk portfolio, lengkap dengan link live dan case study yang ringkas.",
-      jv: "koskosan samenika sampun mlebet portfolio, jangkep kaliyan pranala live lan case study ingkang ringkes.",
+      en: "koskosan is now listed in the portfolio while the product is still being prepared.",
+      id: "koskosan sekarang sudah tampil di portfolio sementara produknya masih disiapkan.",
+      jv: "koskosan samenika sampun tampil wonten portfolio nalika produkipun taksih dipunsiapaken.",
     },
     items: {
       en: [
-        "added the koskosan web platform to selected work",
+        "added a coming soon preview for the koskosan web platform",
         "added a responsive generated preview without a separate image asset",
         "added project copy in english, indonesian, and javanese krama",
-        "made the project searchable from the command palette",
+        "added a coming soon state to the project card and command palette",
       ],
       id: [
-        "menambahkan platform web koskosan ke karya pilihan",
+        "menambahkan preview coming soon untuk platform web koskosan",
         "menambahkan preview responsif tanpa file gambar terpisah",
         "menambahkan teks project dalam english, indonesia, dan jawa krama",
-        "project sekarang bisa dicari dari command palette",
+        "menambahkan status coming soon pada project card dan command palette",
       ],
       jv: [
-        "nambahaken platform web koskosan wonten karya pilihan",
+        "nambahaken pratinjau coming soon kangge platform web koskosan",
         "nambahaken pratinjau responsif tanpa berkas gambar kapisah",
         "nambahaken teks karya mawi english, indonesia, lan jawa krama",
-        "karya samenika saged dipunpadosi saking command palette",
+        "nambahaken status coming soon wonten project card lan command palette",
       ],
     },
   },

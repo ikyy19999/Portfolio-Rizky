@@ -178,7 +178,7 @@ const translations = {
       projects: [
         {
           title: "Koskosan Platform",
-          desc: "Responsive web platform for exploring boarding houses and managing reservations.",
+          desc: "Boarding-house discovery and reservation platform currently in development.",
         },
         {
           title: "Sports Booking Platform",
@@ -441,7 +441,7 @@ const translations = {
       projects: [
         {
           title: "Platform Koskosan",
-          desc: "Platform web responsif untuk mencari tempat kos dan mengelola reservasi.",
+          desc: "Platform pencarian tempat kos dan reservasi yang sedang dikembangkan.",
         },
         {
           title: "Platform Booking Olahraga",
@@ -703,7 +703,7 @@ const translations = {
       projects: [
         {
           title: "Platform Koskosan",
-          desc: "Platform web responsif kangge madosi papan kos lan ngatur reservasi.",
+          desc: "Platform panelusuran papan kos lan reservasi ingkang saweg dipunkembangaken.",
         },
         {
           title: "Platform Reservasi Olahraga",
