@@ -1,9 +1,9 @@
-const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan-live";
+const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan-case-study";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 const updates = [
   {
-    id: "2026.08.22-koskosan-live",
+    id: "2026.08.22-koskosan-case-study",
     version: "2026.08.22",
     date: {
       en: "august 22, 2026",
@@ -16,28 +16,31 @@ const updates = [
       jv: "koskosan samenika sampun live",
     },
     description: {
-      en: "the koskosan platform is now available and can be opened directly from the portfolio.",
-      id: "platform koskosan sekarang sudah tersedia dan bisa dibuka langsung dari portfolio.",
-      jv: "platform koskosan samenika sampun cumawis lan saged dipunbikak langsung saking portfolio.",
+      en: "the koskosan platform is now live with a complete case study and direct access to the product.",
+      id: "platform koskosan sekarang sudah live dengan case study lengkap dan akses langsung ke produknya.",
+      jv: "platform koskosan samenika sampun live kanthi case study jangkep lan akses langsung dhateng produkipun.",
     },
     items: {
       en: [
         "launched the koskosan web platform",
         "added a responsive generated preview without a separate image asset",
         "added project copy in english, indonesian, and javanese krama",
-        "added direct access from the project card and command palette",
+        "added a full case study with the problem, approach, and results",
+        "added the live product link inside the case study",
       ],
       id: [
         "meluncurkan platform web koskosan",
         "menambahkan preview responsif tanpa file gambar terpisah",
         "menambahkan teks project dalam english, indonesia, dan jawa krama",
-        "menambahkan akses langsung dari project card dan command palette",
+        "menambahkan case study berisi masalah, pendekatan, dan hasil",
+        "menambahkan link live product di dalam case study",
       ],
       jv: [
         "ngluncuraken platform web koskosan",
         "nambahaken pratinjau responsif tanpa berkas gambar kapisah",
         "nambahaken teks karya mawi english, indonesia, lan jawa krama",
-        "nambahaken akses langsung saking project card lan command palette",
+        "nambahaken case study isinipun prekawis, pendekatan, lan asil",
+        "nambahaken pranala live product wonten salebeting case study",
       ],
     },
   },
