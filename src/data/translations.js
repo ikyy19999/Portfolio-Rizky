@@ -268,7 +268,7 @@ const translations = {
       changedTo: "Bahasa diubah ke Bahasa Indonesia",
       maintenanceTitle: "Bahasa Jawa sedang maintenance",
       maintenanceText:
-        "Bahasa Jawa sedang dalam proses maintenance dan sementara belum bisa digunakan. Silakan gunakan Bahasa Indonesia atau English terlebih dahulu.",
+        "Bahasa Jawa sedang dalam proses maintenance dan untuk sementara belum bisa digunakan. Silakan gunakan Bahasa Indonesia atau English terlebih dahulu.",
       maintenanceConfirm: "Mengerti",
     },
     common: {
@@ -296,7 +296,7 @@ const translations = {
     },
     header: {
       goHome: "Kembali ke beranda",
-      letsTalk: "Ngobrol",
+      letsTalk: "Mari ngobrol",
       switchToLight: "Ganti ke mode terang",
       switchToDark: "Ganti ke mode gelap",
     },
@@ -304,11 +304,11 @@ const translations = {
       staticTitle: "Merancang dengan jelas.",
       statements: [
         "Membangun sesuatu yang berdampak.",
-        "Menciptakan pengalaman yang berarti.",
-        "Terus mendorong sesuatu untuk maju.",
+        "Menciptakan pengalaman yang berkesan.",
+        "Terus mendorong sesuatu untuk berkembang.",
       ],
       description:
-        "Membangun pengalaman web yang rapi, sistem backend yang andal, dan infrastruktur yang membuat semuanya tetap berjalan.",
+        "Membangun pengalaman web yang rapi, sistem backend yang andal, dan infrastruktur yang menjaga semuanya tetap berjalan.",
       downloadCv: "Unduh CV",
       viewProjects: "Lihat proyek",
       coreStack: "Teknologi utama",
@@ -330,8 +330,8 @@ const translations = {
       lead:
         "Saya mahasiswa Ilmu Komputer dan Full Stack Developer dengan pengalaman di web development dan IT infrastructure.",
       paragraphs: [
-        "Saya berfokus membangun produk digital yang andal dengan interface yang dipikirkan dengan baik dan backend yang siap berkembang. Teknologi yang paling sering saya gunakan antara lain Laravel, PHP, React, MySQL, dan Tailwind CSS.",
-        "Di luar development, saya juga terbiasa menangani networking, system maintenance, troubleshooting, dan IT support. Pengalaman ini membantu saya melihat teknologi dari sisi produk sampai sistem yang menopangnya.",
+        "Saya berfokus pada membangun produk digital yang andal dengan interface yang dipikirkan dengan baik dan backend yang siap berkembang. Teknologi yang paling sering saya gunakan antara lain Laravel, PHP, React, MySQL, dan Tailwind CSS.",
+        "Di luar development, saya juga punya pengalaman langsung dalam networking, system maintenance, troubleshooting, dan IT support. Pengalaman ini membantu saya melihat teknologi dari sisi produk sampai sistem yang menopangnya.",
         "Saya memahami software yang digunakan user sekaligus infrastruktur yang membuatnya tetap berjalan di balik layar.",
       ],
       metrics: [
@@ -343,7 +343,7 @@ const translations = {
         {
           label: "Tahun pengalaman",
           number: "1+",
-          description: "Pengalaman langsung di development dan operasional IT.",
+          description: "Pengalaman langsung dalam development dan operasional IT.",
         },
       ],
       focusAreas: [
@@ -365,7 +365,7 @@ const translations = {
       section: "Keahlian",
       title: "Teknologi untuk produk dan infrastruktur.",
       intro:
-        "Toolkit saya mencakup frontend, backend, database, networking, sistem operasi, dan teknologi yang mendukung produk web tetap andal.",
+        "Toolkit saya mencakup frontend, backend, database, networking, sistem operasi, dan berbagai teknologi yang mendukung produk web tetap andal.",
       summaryLabel: "Ringkasan keahlian",
       technologies: "Teknologi",
       coreAreas: "Area utama",
@@ -427,7 +427,7 @@ const translations = {
       title:
         "Produk digital yang lahir dari ide nyata dan dibuat untuk pengalaman yang berguna.",
       intro:
-        "Beberapa aplikasi web dan tools yang saya rancang dan kembangkan, mulai dari frontend, backend, database, hingga product interface.",
+        "Beberapa aplikasi web dan tools yang saya rancang dan kembangkan, dari frontend, backend, dan database sampai product interface.",
       summaryLabel: "Ringkasan proyek",
       selectedProjects: "Proyek pilihan",
       focusAreas: "Area fokus",
@@ -449,7 +449,7 @@ const translations = {
         },
         {
           title: "Platform Booking Olahraga",
-          desc: "Sistem reservasi lapangan olahraga online dengan pengalaman booking yang responsif.",
+          desc: "Sistem reservasi lapangan olahraga online dengan pengalaman booking yang nyaman dan responsif.",
         },
         {
           title: "Website Streaming Musik",
@@ -457,11 +457,11 @@ const translations = {
         },
         {
           title: "Aplikasi Bookshelf",
-          desc: "Aplikasi sederhana untuk mengelola bacaan dengan penyimpanan lokal.",
+          desc: "Aplikasi minimal untuk mengelola bacaan dengan penyimpanan lokal.",
         },
         {
           title: "QR Generator",
-          desc: "Pembuat QR code instan dengan interface yang sederhana dan fokus.",
+          desc: "Pembuat QR code instan dengan interface yang sederhana dan mudah digunakan.",
         },
         {
           title: "Kalkulator",
@@ -473,7 +473,7 @@ const translations = {
         },
         {
           title: "Finance Tracker",
-          desc: "Aplikasi pencatatan keuangan pribadi dengan fitur budgeting.",
+          desc: "Aplikasi untuk mencatat keuangan pribadi dengan fitur budgeting.",
         },
       ],
       viewProject: "Lihat proyek",
