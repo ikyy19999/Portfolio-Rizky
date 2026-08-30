@@ -3,6 +3,10 @@ const translations = {
     language: {
       label: "Choose language",
       changedTo: "Language changed to English",
+      maintenanceTitle: "Javanese language is under maintenance",
+      maintenanceText:
+        "The Basa Jawa Krama translation is currently being updated. Please check back later.",
+      maintenanceConfirm: "Got it",
     },
     common: {
       fullStackDeveloper: "Full Stack Developer",
@@ -266,6 +270,10 @@ const translations = {
     language: {
       label: "Pilih bahasa",
       changedTo: "Bahasa diubah ke Bahasa Indonesia",
+      maintenanceTitle: "Bahasa Jawa sedang maintenance",
+      maintenanceText:
+        "Terjemahan Basa Jawa Krama sedang diperbarui. Silakan coba lagi nanti.",
+      maintenanceConfirm: "Mengerti",
     },
     common: {
       fullStackDeveloper: "Full Stack Developer",
@@ -528,6 +536,10 @@ const translations = {
     language: {
       label: "Pilih basa",
       changedTo: "Basa dipungantos dados Basa Jawa Krama",
+      maintenanceTitle: "Basa Jawa saweg maintenance",
+      maintenanceText:
+        "Terjemahan Basa Jawa Krama saweg dipunanyaraken. Mangga coba malih mengko.",
+      maintenanceConfirm: "Inggih",
     },
     common: {
       fullStackDeveloper: "Full Stack Developer",
