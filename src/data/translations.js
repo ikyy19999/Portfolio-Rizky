@@ -3,9 +3,9 @@ const translations = {
     language: {
       label: "Choose language",
       changedTo: "Language changed to English",
-      maintenanceTitle: "Javanese language is under maintenance",
+      maintenanceTitle: "Javanese is temporarily unavailable",
       maintenanceText:
-        "The Basa Jawa Krama translation is currently being updated. Please check back later.",
+        "the javanese language option is currently under maintenance and is temporarily unavailable. please use english or indonesian for now.",
       maintenanceConfirm: "Got it",
     },
     common: {
@@ -272,7 +272,7 @@ const translations = {
       changedTo: "Bahasa diubah ke Bahasa Indonesia",
       maintenanceTitle: "Bahasa Jawa sedang maintenance",
       maintenanceText:
-        "Terjemahan Basa Jawa Krama sedang diperbarui. Silakan coba lagi nanti.",
+        "opsi bahasa jawa sedang dalam proses maintenance dan sementara belum bisa digunakan. silakan gunakan bahasa indonesia atau english dulu.",
       maintenanceConfirm: "Mengerti",
     },
     common: {
@@ -536,9 +536,9 @@ const translations = {
     language: {
       label: "Pilih basa",
       changedTo: "Basa dipungantos dados Basa Jawa Krama",
-      maintenanceTitle: "Basa Jawa saweg maintenance",
+      maintenanceTitle: "Basa Jawa saweg dipunmaintenance",
       maintenanceText:
-        "Terjemahan Basa Jawa Krama saweg dipunanyaraken. Mangga coba malih mengko.",
+        "pilihan basa jawa saweg dipunrawat lan sakmenika dereng saged dipunginakaken. mangga ngginakaken basa indonesia utawi english rumiyin.",
       maintenanceConfirm: "Inggih",
     },
     common: {

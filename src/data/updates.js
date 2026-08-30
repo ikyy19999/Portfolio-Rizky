@@ -1,7 +1,43 @@
-const CURRENT_UPDATE_VERSION = "2026.08.22-koskosan-case-study";
+const CURRENT_UPDATE_VERSION = "2026.08.30-javanese-maintenance";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 const updates = [
+  {
+    id: "2026.08.30-javanese-maintenance",
+    version: "2026.08.30",
+    date: {
+      en: "august 30, 2026",
+      id: "30 agustus 2026",
+      jv: "30 agustus 2026",
+    },
+    title: {
+      en: "javanese is temporarily on maintenance",
+      id: "bahasa jawa sementara masuk maintenance",
+      jv: "basa jawa saweg dipunmaintenance",
+    },
+    description: {
+      en: "the javanese language option is temporarily unavailable while its translation system is being refined.",
+      id: "opsi bahasa jawa sementara tidak tersedia selama sistem terjemahannya sedang dirapikan.",
+      jv: "pilihan basa jawa saweg dereng cumawis nalika sistem terjemahanipun saweg dipunrapekaken.",
+    },
+    items: {
+      en: [
+        "javanese remains visible in the language switcher",
+        "selecting javanese now shows a maintenance notice instead of changing the active language",
+        "english and indonesian continue to work normally",
+      ],
+      id: [
+        "bahasa jawa tetap ditampilkan di language switcher",
+        "memilih bahasa jawa sekarang menampilkan notifikasi maintenance tanpa mengubah bahasa aktif",
+        "english dan indonesia tetap berjalan seperti biasa",
+      ],
+      jv: [
+        "basa jawa tetep katingal wonten language switcher",
+        "milih basa jawa samenika namung nampilaken kabar maintenance tanpa ngowahi basa aktif",
+        "english lan indonesia tetep saged dipunginakaken kados limrahipun",
+      ],
+    },
+  },
   {
     id: "2026.08.22-koskosan-case-study",
     version: "2026.08.22",
