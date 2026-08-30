@@ -15,6 +15,7 @@ const STORAGE_KEY = "portfolio-language";
 const DEFAULT_LANGUAGE = "en";
 const PREPARE_DURATION = 1500;
 const FINISH_DURATION = 350;
+
 const IDLE_TRANSITION = {
   active: false,
   phase: "idle",
@@ -22,14 +23,29 @@ const IDLE_TRANSITION = {
 };
 
 const languageOptions = [
-  { code: "en", shortLabel: "EN", label: "English" },
-  { code: "id", shortLabel: "ID", label: "Bahasa Indonesia" },
-  { code: "jv", shortLabel: "JAWA", label: "Basa Jawa Krama" },
+  {
+    code: "en",
+    shortLabel: "EN",
+    label: "English",
+  },
+  {
+    code: "id",
+    shortLabel: "ID",
+    label: "Bahasa Indonesia",
+  },
+  {
+    code: "jv",
+    shortLabel: "JAWA",
+    label: "Basa Jawa Krama",
+  },
 ];
 
-const supportedLanguages = new Set(
-  languageOptions.map(({ code }) => code),
-);
+/*
+ * bahasa jawa sementara tidak dianggap sebagai bahasa aktif.
+ * opsi tetap ditampilkan di language switcher supaya user tahu
+ * fitur tersebut masih tersedia, tetapi belum bisa digunakan.
+ */
+const supportedLanguages = new Set(["en", "id"]);
 
 const getInitialLanguage = () => {
   if (typeof window === "undefined") {
@@ -49,6 +65,7 @@ const LanguageProvider = ({ children }) => {
   const [language, setLanguageState] = useState(getInitialLanguage);
   const [languageTransition, setLanguageTransition] =
     useState(IDLE_TRANSITION);
+
   const languageRef = useRef(language);
   const transitionActiveRef = useRef(false);
   const prepareTimerRef = useRef(0);
@@ -57,8 +74,10 @@ const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     languageRef.current = language;
+
     document.documentElement.lang = language;
     document.documentElement.dataset.language = language;
+
     window.localStorage.setItem(STORAGE_KEY, language);
   }, [language]);
 
@@ -67,6 +86,7 @@ const LanguageProvider = ({ children }) => {
 
     return () => {
       mountedRef.current = false;
+
       window.clearTimeout(prepareTimerRef.current);
       window.clearTimeout(finishTimerRef.current);
     };
@@ -83,51 +103,56 @@ const LanguageProvider = ({ children }) => {
     }
   }, []);
 
-  const setLanguage = useCallback((nextLanguage) => {
-    const currentLanguage = languageRef.current;
+  const setLanguage = useCallback(
+    (nextLanguage) => {
+      const currentLanguage = languageRef.current;
 
-    if (
-      !supportedLanguages.has(nextLanguage) ||
-      nextLanguage === currentLanguage ||
-      transitionActiveRef.current
-    ) {
-      return false;
-    }
+      if (
+        !supportedLanguages.has(nextLanguage) ||
+        nextLanguage === currentLanguage ||
+        transitionActiveRef.current
+      ) {
+        return false;
+      }
 
-    const reduceMotion = isReducedMotion();
+      const reduceMotion = isReducedMotion();
 
-    languageRef.current = nextLanguage;
+      languageRef.current = nextLanguage;
 
-    if (reduceMotion) {
-      setLanguageState(nextLanguage);
-      return true;
-    }
+      if (reduceMotion) {
+        setLanguageState(nextLanguage);
+        return true;
+      }
 
-    transitionActiveRef.current = true;
-    setLanguageTransition({
-      active: true,
-      phase: "preparing",
-      targetLanguage: nextLanguage,
-    });
+      transitionActiveRef.current = true;
 
-    prepareTimerRef.current = window.setTimeout(() => {
-      if (!mountedRef.current) return;
-
-      setLanguageState(nextLanguage);
       setLanguageTransition({
         active: true,
-        phase: "finishing",
+        phase: "preparing",
         targetLanguage: nextLanguage,
       });
 
-      finishTimerRef.current = window.setTimeout(
-        finishLanguageTransition,
-        FINISH_DURATION,
-      );
-    }, PREPARE_DURATION);
+      prepareTimerRef.current = window.setTimeout(() => {
+        if (!mountedRef.current) return;
 
-    return true;
-  }, [finishLanguageTransition]);
+        setLanguageState(nextLanguage);
+
+        setLanguageTransition({
+          active: true,
+          phase: "finishing",
+          targetLanguage: nextLanguage,
+        });
+
+        finishTimerRef.current = window.setTimeout(
+          finishLanguageTransition,
+          FINISH_DURATION,
+        );
+      }, PREPARE_DURATION);
+
+      return true;
+    },
+    [finishLanguageTransition],
+  );
 
   const value = useMemo(
     () => ({
