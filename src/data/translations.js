@@ -3,10 +3,6 @@ const translations = {
     language: {
       label: "Choose language",
       changedTo: "Language changed to English",
-      maintenanceTitle: "Javanese is temporarily unavailable",
-      maintenanceText:
-        "the javanese language option is currently under maintenance and is temporarily unavailable. please use english or indonesian for now.",
-      maintenanceConfirm: "Got it",
     },
     common: {
       fullStackDeveloper: "Full Stack Developer",
@@ -272,7 +268,7 @@ const translations = {
       changedTo: "Bahasa diubah ke Bahasa Indonesia",
       maintenanceTitle: "Bahasa Jawa sedang maintenance",
       maintenanceText:
-        "opsi bahasa jawa sedang dalam proses maintenance dan sementara belum bisa digunakan. silakan gunakan bahasa indonesia atau english dulu.",
+        "Bahasa Jawa sedang dalam proses maintenance dan sementara belum bisa digunakan. Silakan gunakan Bahasa Indonesia atau English terlebih dahulu.",
       maintenanceConfirm: "Mengerti",
     },
     common: {
@@ -300,54 +296,54 @@ const translations = {
     },
     header: {
       goHome: "Kembali ke beranda",
-      letsTalk: "Mari Bicara",
+      letsTalk: "Ngobrol",
       switchToLight: "Ganti ke mode terang",
       switchToDark: "Ganti ke mode gelap",
     },
     hero: {
-      staticTitle: "Merancang kejelasan.",
+      staticTitle: "Merancang dengan jelas.",
       statements: [
-        "Menciptakan dampak.",
-        "Membangun pengalaman.",
-        "Menggerakkan kemajuan.",
+        "Membangun sesuatu yang berdampak.",
+        "Menciptakan pengalaman yang berarti.",
+        "Terus mendorong sesuatu untuk maju.",
       ],
       description:
-        "Membangun pengalaman web yang matang, sistem backend yang dapat diandalkan, dan infrastruktur yang menjaganya tetap berjalan.",
+        "Membangun pengalaman web yang rapi, sistem backend yang andal, dan infrastruktur yang membuat semuanya tetap berjalan.",
       downloadCv: "Unduh CV",
-      viewProjects: "Lihat Proyek",
+      viewProjects: "Lihat proyek",
       coreStack: "Teknologi utama",
-      stackCaption: "Teknologi di balik karya",
+      stackCaption: "Teknologi yang digunakan",
       stackAreas: ["Frontend", "Backend", "Infrastruktur"],
       stats: [
-        { number: "5+", label: "Proyek Selesai" },
-        { number: "1+", label: "Tahun Pengalaman" },
-        { number: "99%", label: "Desain Responsif" },
+        { number: "5+", label: "Proyek selesai" },
+        { number: "1+", label: "Tahun pengalaman" },
+        { number: "99%", label: "Desain responsif" },
       ],
       continue: "Lanjut",
       explore: "Jelajahi portfolio",
     },
     about: {
       section: "Tentang",
-      title: "Menghubungkan pengembangan software dan infrastruktur IT.",
+      title: "Menghubungkan software development dengan IT infrastructure.",
       note:
-        "Saya membangun pengalaman digital sekaligus memahami sistem yang menjaganya tetap andal di balik layar.",
+        "Saya membangun pengalaman digital sambil memahami sistem yang membuatnya tetap andal di balik layar.",
       lead:
-        "Saya mahasiswa Ilmu Komputer dan Full Stack Developer dengan pengalaman di bidang pengembangan web dan infrastruktur IT.",
+        "Saya mahasiswa Ilmu Komputer dan Full Stack Developer dengan pengalaman di web development dan IT infrastructure.",
       paragraphs: [
-        "Pekerjaan saya berfokus pada produk digital yang andal dengan interface yang matang dan sistem backend yang scalable. Teknologi utama yang saya gunakan adalah Laravel, PHP, React, MySQL, dan Tailwind CSS.",
-        "Di luar pengembangan, saya juga memiliki pengalaman langsung dalam networking, maintenance sistem, troubleshooting, dan IT support. Kombinasi ini memberi saya sudut pandang yang lebih luas saat membangun teknologi.",
-        "Saya memahami software yang digunakan user sekaligus infrastruktur yang mendukungnya di balik layar.",
+        "Saya berfokus membangun produk digital yang andal dengan interface yang dipikirkan dengan baik dan backend yang siap berkembang. Teknologi yang paling sering saya gunakan antara lain Laravel, PHP, React, MySQL, dan Tailwind CSS.",
+        "Di luar development, saya juga terbiasa menangani networking, system maintenance, troubleshooting, dan IT support. Pengalaman ini membantu saya melihat teknologi dari sisi produk sampai sistem yang menopangnya.",
+        "Saya memahami software yang digunakan user sekaligus infrastruktur yang membuatnya tetap berjalan di balik layar.",
       ],
       metrics: [
         {
-          label: "Proyek Selesai",
+          label: "Proyek selesai",
           number: "5+",
-          description: "Produk digital yang dibangun di sisi frontend dan backend.",
+          description: "Produk digital yang dibangun dari frontend hingga backend.",
         },
         {
-          label: "Tahun Pengalaman",
+          label: "Tahun pengalaman",
           number: "1+",
-          description: "Pengalaman langsung dalam development dan operasional IT.",
+          description: "Pengalaman langsung di development dan operasional IT.",
         },
       ],
       focusAreas: [
@@ -361,7 +357,7 @@ const translations = {
           title: "Di luar code",
           icon: "hub",
           description:
-            "Networking, infrastruktur, maintenance sistem, troubleshooting, dan IT support.",
+            "Networking, infrastructure, system maintenance, troubleshooting, dan IT support.",
         },
       ],
     },
@@ -369,11 +365,11 @@ const translations = {
       section: "Keahlian",
       title: "Teknologi untuk produk dan infrastruktur.",
       intro:
-        "Toolkit saya mencakup frontend, backend, database, networking, sistem operasi, dan teknologi di balik produk web yang andal.",
+        "Toolkit saya mencakup frontend, backend, database, networking, sistem operasi, dan teknologi yang mendukung produk web tetap andal.",
       summaryLabel: "Ringkasan keahlian",
       technologies: "Teknologi",
       coreAreas: "Area utama",
-      search: "Pencarian",
+      search: "Cari",
       searchPlaceholder: "Cari teknologi",
       clearSearch: "Hapus pencarian",
       category: "Kategori",
@@ -381,9 +377,9 @@ const translations = {
       previousCategories: "Kategori sebelumnya",
       nextCategories: "Kategori berikutnya",
       categoryGroup: "Kategori keahlian",
-      technologyIndex: "Indeks teknologi",
+      technologyIndex: "Daftar teknologi",
       emptyTitle: "Teknologi tidak ditemukan",
-      emptyText: "Coba keyword lain atau pilih kategori yang berbeda.",
+      emptyText: "Coba kata kunci lain atau pilih kategori yang berbeda.",
       reset: "Reset filter",
       filters: {
         all: "Semua",
@@ -412,7 +408,7 @@ const translations = {
         "Caching & Storage": "Cache & Penyimpanan",
         "Database ORM": "ORM Database",
         "Backend Platform": "Platform Backend",
-        "Version Control": "Kontrol Versi",
+        "Version Control": "Version Control",
         "DNS & Web Security": "DNS & Keamanan Web",
         "Web Deployment": "Deployment Web",
         "UI/UX Design": "Desain UI/UX",
@@ -427,29 +423,29 @@ const translations = {
       },
     },
     work: {
-      section: "Karya Pilihan",
+      section: "Karya pilihan",
       title:
-        "Produk digital yang dibangun dari ide nyata dan pengalaman yang berguna.",
+        "Produk digital yang lahir dari ide nyata dan dibuat untuk pengalaman yang berguna.",
       intro:
-        "Pilihan aplikasi web dan tools yang saya rancang serta kembangkan melalui pekerjaan frontend, backend, database, dan product interface.",
+        "Beberapa aplikasi web dan tools yang saya rancang dan kembangkan, mulai dari frontend, backend, database, hingga product interface.",
       summaryLabel: "Ringkasan proyek",
       selectedProjects: "Proyek pilihan",
       focusAreas: "Area fokus",
       categoryLabel: "Kategori proyek",
       resultSuffix: "proyek",
       filters: {
-        all: "Semua Proyek",
-        web: "Aplikasi Web",
+        all: "Semua proyek",
+        web: "Aplikasi web",
         tool: "Tools",
       },
       categories: {
-        web: "Aplikasi Web",
-        tool: "Tool Digital",
+        web: "Aplikasi web",
+        tool: "Tool digital",
       },
       projects: [
         {
           title: "Platform Koskosan",
-          desc: "Platform responsif untuk mencari tempat kos dan mengelola reservasi.",
+          desc: "Platform responsif untuk mencari kos dan mengelola reservasi.",
         },
         {
           title: "Platform Booking Olahraga",
@@ -461,7 +457,7 @@ const translations = {
         },
         {
           title: "Aplikasi Bookshelf",
-          desc: "Aplikasi pengelolaan bacaan minimal dengan penyimpanan lokal.",
+          desc: "Aplikasi sederhana untuk mengelola bacaan dengan penyimpanan lokal.",
         },
         {
           title: "QR Generator",
@@ -469,15 +465,15 @@ const translations = {
         },
         {
           title: "Kalkulator",
-          desc: "Kalkulator sederhana yang berfokus pada kemudahan dan aksesibilitas.",
+          desc: "Tool kalkulator sederhana yang mengutamakan kemudahan penggunaan dan aksesibilitas.",
         },
         {
           title: "Aplikasi Kalender",
-          desc: "Aplikasi kalender interaktif dengan pengelolaan event.",
+          desc: "Aplikasi kalender interaktif dengan fitur pengelolaan event.",
         },
         {
           title: "Finance Tracker",
-          desc: "Aplikasi pencatat keuangan pribadi dengan fitur budgeting.",
+          desc: "Aplikasi pencatatan keuangan pribadi dengan fitur budgeting.",
         },
       ],
       viewProject: "Lihat proyek",
@@ -494,32 +490,33 @@ const translations = {
       section: "Kontak",
       title: "Mari membangun sesuatu yang layak digunakan.",
       intro:
-        "Punya proyek, ide produk, atau rencana kolaborasi? Kirim detailnya dan saya akan menghubungi Anda kembali.",
-      availableFor: "Tersedia untuk",
-      availableText: "Proyek freelance, full stack development, dan kolaborasi.",
+        "Punya proyek, ide produk, atau rencana kolaborasi? Kirim detailnya dan saya akan membalas saat sudah sempat.",
+      availableFor: "Terbuka untuk",
+      availableText:
+        "Proyek freelance, full stack development, dan kolaborasi.",
       status: "Status",
-      statusText: "Saat ini tersedia untuk bekerja",
+      statusText: "Saat ini tersedia untuk pekerjaan baru",
       connect: "Terhubung",
-      socialLinks: "Link sosial",
+      socialLinks: "Media sosial",
       directEmail: "Email langsung",
       sendTitle: "Kirim pesan",
-      sendIntro: "Ceritakan sedikit tentang apa yang sedang Anda kerjakan.",
-      name: "Nama Anda",
+      sendIntro: "Ceritakan sedikit tentang apa yang sedang kamu kerjakan.",
+      name: "Nama kamu",
       email: "Alamat email",
       projectDetails: "Detail proyek",
-      messagePlaceholder: "Ceritakan tentang proyek Anda...",
+      messagePlaceholder: "Ceritakan tentang proyek kamu...",
       protected: "Dilindungi dengan Cloudflare Turnstile",
       send: "Kirim pesan",
       verificationAlert: "Selesaikan verifikasi terlebih dahulu.",
     },
     footer: {
-      overline: "Punya sesuatu dalam pikiran?",
-      title: "Mari membuat sesuatu yang nyaman digunakan.",
+      overline: "Punya sesuatu di pikiran?",
+      title: "Mari bikin sesuatu yang orang suka gunakan.",
       description:
-        "Terbuka untuk produk digital yang matang, aplikasi web modern, dan kolaborasi pilihan.",
+        "Terbuka untuk produk digital yang dipikirkan dengan matang, aplikasi web modern, dan kolaborasi pilihan.",
       startProject: "Mulai proyek",
       profile:
-        "Membangun produk modern di sisi frontend, backend, interface design, dan infrastruktur IT.",
+        "Membangun produk modern dari frontend, backend, interface design, hingga IT infrastructure.",
       navigation: "Navigasi",
       connect: "Terhubung",
       rights: "Seluruh hak cipta dilindungi.",
@@ -536,10 +533,6 @@ const translations = {
     language: {
       label: "Pilih basa",
       changedTo: "Basa dipungantos dados Basa Jawa Krama",
-      maintenanceTitle: "Basa Jawa saweg dipunmaintenance",
-      maintenanceText:
-        "pilihan basa jawa saweg dipunrawat lan sakmenika dereng saged dipunginakaken. mangga ngginakaken basa indonesia utawi english rumiyin.",
-      maintenanceConfirm: "Inggih",
     },
     common: {
       fullStackDeveloper: "Full Stack Developer",
