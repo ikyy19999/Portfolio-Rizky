@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 import Navbar from "./Navbar";
 import { useLanguage } from "../context/LanguageContext";
 import { scrollToTarget } from "../lib/smoothScroll";
@@ -12,9 +13,12 @@ const LanguageSwitcher = ({ disabled }) => {
     copy,
     isLanguageTransitioning,
   } = useLanguage();
+
   const [isOpen, setIsOpen] = useState(false);
   const switcherRef = useRef(null);
+
   const isDisabled = disabled || isLanguageTransitioning;
+
   const activeLanguage =
     languages.find(({ code }) => code === language) ?? languages[0];
 
@@ -43,11 +47,43 @@ const LanguageSwitcher = ({ disabled }) => {
   }, [isOpen]);
 
   const handleLanguageChange = (code) => {
+    if (isDisabled) return;
+
     setIsOpen(false);
 
-    if (!isDisabled) {
-      setLanguage(code);
+    /*
+     * bahasa jawa sedang maintenance.
+     * jangan panggil setLanguage supaya state dan localStorage
+     * tidak pernah berubah ke "jv".
+     */
+    if (code === "jv") {
+      Swal.fire({
+        title: copy.language.maintenanceTitle,
+        text: copy.language.maintenanceText,
+        icon: "info",
+        confirmButtonText: copy.language.maintenanceConfirm,
+        buttonsStyling: false,
+        heightAuto: false,
+        customClass: {
+          container: "ax-swal-container",
+          popup: "ax-swal-popup",
+          icon: "ax-swal-icon",
+          title: "ax-swal-title",
+          htmlContainer: "ax-swal-content",
+          confirmButton: "ax-swal-confirm",
+        },
+        showClass: {
+          popup: "ax-swal-enter",
+        },
+        hideClass: {
+          popup: "ax-swal-leave",
+        },
+      });
+
+      return;
     }
+
+    setLanguage(code);
   };
 
   return (
@@ -96,8 +132,13 @@ const LanguageSwitcher = ({ disabled }) => {
               tabIndex={isOpen ? 0 : -1}
               onClick={() => handleLanguageChange(code)}
             >
-              <span className="language-dropdown-code">{shortLabel}</span>
-              <span className="language-dropdown-name">{label}</span>
+              <span className="language-dropdown-code">
+                {shortLabel}
+              </span>
+
+              <span className="language-dropdown-name">
+                {label}
+              </span>
 
               <span
                 className="material-symbols-rounded language-dropdown-check"
@@ -117,8 +158,16 @@ LanguageSwitcher.propTypes = {
   disabled: PropTypes.bool.isRequired,
 };
 
-const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
-  const { copy, isLanguageTransitioning } = useLanguage();
+const Header = ({
+  theme,
+  onToggleTheme,
+  onOpenCommandPalette,
+}) => {
+  const {
+    copy,
+    isLanguageTransitioning,
+  } = useLanguage();
+
   const [scrolled, setScrolled] = useState(false);
   const [themeChanging, setThemeChanging] = useState(false);
 
@@ -149,7 +198,8 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
   const handleThemeToggle = async (event) => {
     if (themeChanging || isLanguageTransitioning) return;
 
-    const buttonBounds = event.currentTarget.getBoundingClientRect();
+    const buttonBounds =
+      event.currentTarget.getBoundingClientRect();
 
     setThemeChanging(true);
 
@@ -165,22 +215,36 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
 
   return (
     <>
-      <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
+      <header
+        className={`site-header ${
+          scrolled ? "is-scrolled" : ""
+        }`}
+      >
         <div className="container">
           <div className="header-inner">
             <a
               href="#home"
-              onClick={(event) => handleNavigation(event, "#home")}
+              onClick={(event) =>
+                handleNavigation(event, "#home")
+              }
               className="brand"
               aria-label={copy.header.goHome}
             >
               <span className="brand-mark">
-                <img src="/assets/favicon.ico" alt="" width={30} height={30} />
+                <img
+                  src="/assets/favicon.ico"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
               </span>
 
               <span className="brand-copy">
                 <strong>Rizky Maulana</strong>
-                <small>{copy.common.fullStackDeveloper}</small>
+
+                <small>
+                  {copy.common.fullStackDeveloper}
+                </small>
               </span>
             </a>
 
@@ -189,18 +253,26 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
             </div>
 
             <div className="header-actions">
-              <LanguageSwitcher disabled={themeChanging} />
+              <LanguageSwitcher
+                disabled={themeChanging}
+              />
 
               <button
                 type="button"
                 className="command-palette-trigger"
                 onClick={onOpenCommandPalette}
-                disabled={themeChanging || isLanguageTransitioning}
+                disabled={
+                  themeChanging ||
+                  isLanguageTransitioning
+                }
                 aria-label="open command palette"
                 aria-keyshortcuts="Control+K Meta+K"
                 title="command palette"
               >
-                <span className="material-symbols-rounded" aria-hidden="true">
+                <span
+                  className="material-symbols-rounded"
+                  aria-hidden="true"
+                >
                   search
                 </span>
 
@@ -209,9 +281,14 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
 
               <button
                 type="button"
-                className={`theme-toggle ${themeChanging ? "is-changing" : ""}`}
+                className={`theme-toggle ${
+                  themeChanging ? "is-changing" : ""
+                }`}
                 onClick={handleThemeToggle}
-                disabled={themeChanging || isLanguageTransitioning}
+                disabled={
+                  themeChanging ||
+                  isLanguageTransitioning
+                }
                 aria-label={
                   theme === "dark"
                     ? copy.header.switchToLight
@@ -223,7 +300,10 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
                     : copy.header.switchToDark
                 }
               >
-                <span className="theme-toggle-icons" aria-hidden="true">
+                <span
+                  className="theme-toggle-icons"
+                  aria-hidden="true"
+                >
                   <span className="material-symbols-rounded theme-toggle-sun">
                     light_mode
                   </span>
@@ -236,11 +316,17 @@ const Header = ({ theme, onToggleTheme, onOpenCommandPalette }) => {
 
               <a
                 href="#contact"
-                onClick={(event) => handleNavigation(event, "#contact")}
+                onClick={(event) =>
+                  handleNavigation(event, "#contact")
+                }
                 className="header-contact"
               >
                 {copy.header.letsTalk}
-                <span className="material-symbols-rounded" aria-hidden="true">
+
+                <span
+                  className="material-symbols-rounded"
+                  aria-hidden="true"
+                >
                   arrow_outward
                 </span>
               </a>
