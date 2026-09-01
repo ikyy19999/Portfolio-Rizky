@@ -1,7 +1,43 @@
-const CURRENT_UPDATE_VERSION = "2026.08.30-javanese-maintenance";
+const CURRENT_UPDATE_VERSION = "2026.09.01-email-contact";
 const WHATS_NEW_STORAGE_KEY = "portfolio-whats-new-read";
 
 const updates = [
+  {
+    id: "2026.09.01-email-contact",
+    version: "2026.09.01",
+    date: {
+      en: "september 1, 2026",
+      id: "1 september 2026",
+      jv: "1 september 2026",
+    },
+    title: {
+      en: "email contact, cleaned up",
+      id: "kontak email dirapikan",
+      jv: "kontak email dipunrapekaken",
+    },
+    description: {
+      en: "the portfolio now uses the new primary email domain and includes a dedicated abuse contact.",
+      id: "portfolio sekarang menggunakan domain email utama yang baru dan punya kontak khusus untuk laporan abuse.",
+      jv: "portfolio samenika ngginakaken domain email utama ingkang enggal lan gadhah kontak khusus kangge laporan abuse.",
+    },
+    items: {
+      en: [
+        "updated the portfolio email to hello@madebyrizky.id",
+        "added abuse@madebyrizky.id for abuse reports",
+        "kept hello@ as the main public contact",
+      ],
+      id: [
+        "memperbarui email portfolio menjadi hello@madebyrizky.id",
+        "menambahkan abuse@madebyrizky.id untuk laporan abuse",
+        "tetap menggunakan hello@ sebagai kontak utama",
+      ],
+      jv: [
+        "nganyari email portfolio dados hello@madebyrizky.id",
+        "nambahaken abuse@madebyrizky.id kangge laporan abuse",
+        "tetep ngginakaken hello@ minangka kontak utama",
+      ],
+    },
+  },
   {
     id: "2026.08.30-javanese-maintenance",
     version: "2026.08.30",
