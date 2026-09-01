@@ -18,7 +18,7 @@ import {
 import { scrollToTarget } from "../lib/smoothScroll";
 import "../styles/command-palette-extras.css";
 
-const EMAIL_ADDRESS = "hello@madebyrizky.my.id";
+const EMAIL_ADDRESS = "hello@madebyrizky.id";
 const RECENT_STORAGE_KEY = "portfolio-command-recent";
 const MAX_RECENT_COMMANDS = 3;
 const SHORTCUTS_QUERY = "?";
