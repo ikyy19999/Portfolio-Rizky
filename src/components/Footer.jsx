@@ -39,7 +39,12 @@ const socials = [
   },
   {
     label: "Email",
-    href: "mailto:hello@madebyrizky.my.id",
+    href: "mailto:hello@madebyrizky.id",
+    external: false,
+  },
+  {
+    label: "Abuse",
+    href: "mailto:abuse@madebyrizky.id",
     external: false,
   },
 ];
@@ -77,7 +82,7 @@ const Footer = ({ hasUnreadUpdates, onOpenWhatsNew }) => {
           </div>
 
           <a
-            href="mailto:hello@madebyrizky.my.id"
+            href="mailto:hello@madebyrizky.id"
             className="footer-cta-link"
           >
             <span>{copy.footer.startProject}</span>
@@ -120,10 +125,10 @@ const Footer = ({ hasUnreadUpdates, onOpenWhatsNew }) => {
             </p>
 
             <a
-              href="mailto:hello@madebyrizky.my.id"
+              href="mailto:hello@madebyrizky.id"
               className="footer-email"
             >
-              hello@madebyrizky.my.id
+              hello@madebyrizky.id
 
               <span
                 className="material-symbols-rounded"
