@@ -17,7 +17,6 @@ const SkillCard = ({
       className={`skill-card ${classes}`.trim()}
       style={{ "--skill-order": index - 1 }}
     >
-      <span className="skill-card-glow" aria-hidden="true" />
       <div className="skill-card-top">
         <figure className="skill-card-icon">
           <img
