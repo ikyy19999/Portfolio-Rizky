@@ -18,14 +18,14 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/css3.svg",
+    imgSrc: "/assets/css3.png",
     label: "CSS",
     desc: "Web Styling",
     category: "web",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/javascript.svg",
+    imgSrc: "/assets/javascript.png",
     label: "JavaScript",
     desc: "Web Interaction",
     category: "web",
@@ -60,7 +60,7 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/react.svg",
+    imgSrc: "/assets/react.png",
     label: "React",
     desc: "Frontend Library",
     category: "web",
@@ -74,28 +74,28 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/tailwindcss.svg",
+    imgSrc: "/assets/tailwindcss.png",
     label: "Tailwind CSS",
     desc: "CSS Framework",
     category: "web",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/livewire.svg",
+    imgSrc: "/assets/livewire.png",
     label: "Livewire",
     desc: "Reactive Laravel UI",
     category: "web",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/filament.svg",
+    imgSrc: "/assets/filament.png",
     label: "Filament",
     desc: "Admin Panel Framework",
     category: "web",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/gsap.svg",
+    imgSrc: "/assets/gsap.png",
     label: "GSAP",
     desc: "Web Animation",
     category: "web",
@@ -109,21 +109,21 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/redis.svg",
+    imgSrc: "/assets/redis.png",
     label: "Redis",
     desc: "Caching & Storage",
     category: "database",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/prisma.svg",
+    imgSrc: "/assets/prisma.png",
     label: "Prisma",
     desc: "Database ORM",
     category: "database",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/supabase.svg",
+    imgSrc: "/assets/supabase.png",
     label: "Supabase",
     desc: "Backend Platform",
     category: "database",
@@ -137,21 +137,21 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/cloudflare.svg",
+    imgSrc: "/assets/cloudflare.png",
     label: "Cloudflare",
     desc: "DNS & Web Security",
     category: "tools",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/vercel.svg",
+    imgSrc: "/assets/vercel.png",
     label: "Vercel",
     desc: "Web Deployment",
     category: "tools",
     tag: "Project",
   },
   {
-    imgSrc: "/assets/figma.svg",
+    imgSrc: "/assets/figma.png",
     label: "Figma",
     desc: "UI/UX Design",
     category: "design",
@@ -404,7 +404,7 @@ const Skill = () => {
               <span className="section-illustration-index">Visual 02</span>
 
               <img
-                src="/assets/illustrations/skills-illustration.svg"
+                src="/assets/illustrations/skills-illustration.png"
                 alt=""
                 loading="lazy"
                 decoding="async"
