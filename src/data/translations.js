@@ -231,8 +231,6 @@ const translations = {
       availableFor: "Available for",
       availableText:
         "Freelance projects, full stack development, and collaboration.",
-      status: "Status",
-      statusText: "Currently available for work",
       connect: "Connect",
       socialLinks: "Social links",
       directEmail: "Direct email",
@@ -498,8 +496,6 @@ const translations = {
       availableFor: "Terbuka untuk",
       availableText:
         "Proyek freelance, full stack development, dan kolaborasi.",
-      status: "Status",
-      statusText: "Saat ini tersedia untuk pekerjaan baru",
       connect: "Terhubung",
       socialLinks: "Media sosial",
       directEmail: "Email langsung",
@@ -764,8 +760,6 @@ const translations = {
         "Menawi panjenengan gadhah proyek, ide produk, utawi rencana kolaborasi, mangga kirim rinciyanipun lan kula badhe ngubungi panjenengan.",
       availableFor: "Saged kangge",
       availableText: "Proyek freelance, full stack development, saha kolaborasi.",
-      status: "Status",
-      statusText: "Sapunika saged nampi pakaryan",
       connect: "Sesambungan",
       socialLinks: "Pranala sosial",
       directEmail: "Email langsung",
