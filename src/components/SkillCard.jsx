@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const SkillCard = ({
   index,
   imgSrc,
-  icon,
   label,
   desc,
   category,
@@ -20,23 +19,14 @@ const SkillCard = ({
     >
       <div className="skill-card-top">
         <figure className="skill-card-icon">
-          {icon ? (
-            <span
-              className="material-symbols-rounded"
-              aria-hidden="true"
-            >
-              {icon}
-            </span>
-          ) : (
-            <img
-              src={imgSrc}
-              width={34}
-              height={34}
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-          )}
+          <img
+            src={imgSrc}
+            width={34}
+            height={34}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
         </figure>
 
         <span className="skill-card-index" aria-hidden="true">
@@ -66,8 +56,7 @@ const SkillCard = ({
 
 SkillCard.propTypes = {
   index: PropTypes.number.isRequired,
-  imgSrc: PropTypes.string,
-  icon: PropTypes.string,
+  imgSrc: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
