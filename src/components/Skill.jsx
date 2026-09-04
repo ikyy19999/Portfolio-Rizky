@@ -25,7 +25,7 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/javascript.png",
+    imgSrc: "/assets/javascript.svg",
     label: "JavaScript",
     desc: "Web Interaction",
     category: "web",
@@ -74,7 +74,7 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/tailwindcss.png",
+    imgSrc: "/assets/tailwindcss.svg",
     label: "Tailwind CSS",
     desc: "CSS Framework",
     category: "web",
