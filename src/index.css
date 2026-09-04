@@ -36,6 +36,13 @@
   --glass-highlight: rgba(255, 255, 255, 0.82);
   --glass-shadow: 0 18px 60px rgba(24, 24, 27, 0.12);
 
+  /* subtle neumorphism layer */
+  --neo-light: rgba(255, 255, 255, 0.88);
+  --neo-dark: rgba(24, 24, 27, 0.09);
+  --neo-shadow: 10px 10px 24px var(--neo-dark), -10px -10px 24px var(--neo-light);
+  --neo-shadow-soft: 6px 6px 16px var(--neo-dark), -6px -6px 16px var(--neo-light);
+  --neo-shadow-inset: inset 4px 4px 10px var(--neo-dark), inset -4px -4px 10px var(--neo-light);
+
   --page: var(--color-bg-canvas);
   --page-soft: var(--color-bg-subtle);
   --surface: var(--color-surface);
@@ -85,6 +92,11 @@
   --glass-edge: rgba(255, 255, 255, 0.08);
   --glass-highlight: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 22px 68px rgba(0, 0, 0, 0.42);
+  --neo-light: rgba(255, 255, 255, 0.045);
+  --neo-dark: rgba(0, 0, 0, 0.34);
+  --neo-shadow: 10px 10px 24px var(--neo-dark), -10px -10px 24px var(--neo-light);
+  --neo-shadow-soft: 6px 6px 16px var(--neo-dark), -6px -6px 16px var(--neo-light);
+  --neo-shadow-inset: inset 4px 4px 10px var(--neo-dark), inset -4px -4px 10px var(--neo-light);
 }
 
 html {
@@ -560,7 +572,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   background: var(--surface-solid);
   border: 1px solid var(--line);
   border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--neo-shadow-soft);
 }
 
 .brand-mark img {
@@ -818,7 +830,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--neo-shadow);
   backdrop-filter: blur(26px) saturate(145%);
   -webkit-backdrop-filter: blur(26px) saturate(145%);
 }
@@ -941,10 +953,12 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   font-weight: 620;
   letter-spacing: -0.015em;
   text-decoration: none;
+  box-shadow: var(--neo-shadow-soft);
   transition:
     background 180ms ease,
     border-color 180ms ease,
     color 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 
@@ -955,6 +969,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
 .btn-primary {
   color: var(--color-on-primary) !important;
   background: var(--accent) !important;
+  box-shadow: 5px 5px 14px rgba(22, 119, 255, 0.2), -4px -4px 12px rgba(255, 255, 255, 0.5);
 }
 
 .btn-primary:hover {
@@ -972,10 +987,12 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
 .btn-outline:hover {
   background: var(--surface-solid) !important;
   border-color: var(--accent) !important;
+  box-shadow: var(--neo-shadow-inset);
 }
 
 .btn:active {
   transform: scale(0.97);
+  box-shadow: var(--neo-shadow-inset);
 }
 
 .text-link {
@@ -1010,7 +1027,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   background: var(--surface) !important;
   border: 1px solid var(--line) !important;
   border-radius: 18px;
-  box-shadow: 0 12px 42px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--neo-shadow-soft);
 }
 
 .surface-card-strong {
@@ -1041,9 +1058,28 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   background: var(--surface) !important;
   border: 1px solid var(--line) !important;
   border-radius: 16px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--neo-shadow);
   backdrop-filter: blur(24px) saturate(145%);
   -webkit-backdrop-filter: blur(24px) saturate(145%);
+}
+
+/* global tactile surfaces */
+.neo-surface,
+.neo-card,
+.neo-control {
+  box-shadow: var(--neo-shadow-soft);
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .neo-surface:hover,
+  .neo-card:hover,
+  .neo-control:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--neo-shadow);
+  }
 }
 
 .divider {
@@ -1107,6 +1143,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
   border: 1px solid var(--line) !important;
   border-radius: 11px;
   outline: none;
+  box-shadow: var(--neo-shadow-soft);
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -1132,7 +1169,7 @@ html[data-scroll-smoother="native"] #smooth-wrapper {
 .text-field:focus,
 .line-input:focus {
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  box-shadow: 0 0 0 4px var(--accent-soft), var(--neo-shadow-inset);
 }
 
 textarea.text-field {
@@ -1596,7 +1633,7 @@ textarea.text-field {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
-  box-shadow: 0 16px 52px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--neo-shadow-soft);
   transition:
     background 220ms ease,
     border-color 220ms ease,
