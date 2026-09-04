@@ -185,6 +185,13 @@ const skillItems = [
     category: "network",
     tag: "Internship",
   },
+  {
+    icon: "handyman",
+    label: "Troubleshooting",
+    desc: "Problem Solving",
+    category: "network",
+    tag: "Work",
+  },
 ];
 
 const categoryKeys = ["web", "database", "tools", "design", "network", "system"];
@@ -531,6 +538,7 @@ const Skill = () => {
                     key={skill.label}
                     index={index + 1}
                     imgSrc={skill.imgSrc}
+                    icon={skill.icon}
                     label={skill.label}
                     desc={skill.desc}
                     category={categoryLabels[skill.category]}
