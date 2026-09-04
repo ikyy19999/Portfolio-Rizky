@@ -152,6 +152,7 @@ const translations = {
         "Operating System": "Operating System",
         "LAN/WAN & Troubleshooting": "LAN/WAN & Troubleshooting",
         "Installation & Maintenance": "Installation & Maintenance",
+        "Problem Solving": "Problem Solving",
       },
       tags: {
         Project: "Project",
@@ -417,6 +418,7 @@ const translations = {
         "Operating System": "Sistem Operasi",
         "LAN/WAN & Troubleshooting": "LAN/WAN & Troubleshooting",
         "Installation & Maintenance": "Instalasi & Maintenance",
+        "Problem Solving": "Pemecahan Masalah",
       },
       tags: {
         Project: "Proyek",
@@ -682,6 +684,7 @@ const translations = {
         "Operating System": "Sistem Operasi",
         "LAN/WAN & Troubleshooting": "LAN/WAN & Troubleshooting",
         "Installation & Maintenance": "Instalasi & Maintenance",
+        "Problem Solving": "Ngatasi Masalah",
       },
       tags: {
         Project: "Karya",
