@@ -65,13 +65,6 @@ const Contact = () => {
               <dd>{copy.contact.availableText}</dd>
             </div>
 
-            <div className="contact-detail-row">
-              <dt>{copy.contact.status}</dt>
-              <dd className="contact-status">
-                <span aria-hidden="true" />
-                <span>{copy.contact.statusText}</span>
-              </dd>
-            </div>
           </dl>
         </header>
 
