@@ -18,7 +18,7 @@ const skillItems = [
     tag: "Project",
   },
   {
-    imgSrc: "/assets/css3.png",
+    imgSrc: "/assets/css3.svg",
     label: "CSS",
     desc: "Web Styling",
     category: "web",
