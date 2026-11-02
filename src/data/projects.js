@@ -17,7 +17,7 @@ const projects = [
     desc: "Responsive platform for exploring boarding houses and managing reservations.",
     category: "web",
     tech: ["Laravel", "Blade", "MySQL"],
-    demo: "https://havunio.madebyrizky.my.id/",
+    demo: "https://havunio.madebyrizky.my.id",
   },
   {
     slug: "sports-booking-platform",
