@@ -30,7 +30,7 @@ const projects = [
   },
   {
     slug: "music-streaming-website",
-    imgSrc: "/assets/Web Music.png",
+    imgSrc: "",
     title: "Music Streaming Website",
     desc: "Interactive music platform integrated with public APIs.",
     category: "web",
