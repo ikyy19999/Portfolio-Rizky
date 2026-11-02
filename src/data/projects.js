@@ -21,7 +21,7 @@ const projects = [
   },
   {
     slug: "sports-booking-platform",
-    imgSrc: "/assets/Galaxy-S22+-sportix.madebyrizky.my.id.png",
+    imgSrc: "/assets/Sportix.png",
     title: "Sports Booking Platform",
     desc: "Online sports court reservation system with a responsive booking experience.",
     category: "web",
