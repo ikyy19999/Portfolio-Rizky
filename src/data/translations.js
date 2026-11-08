@@ -189,10 +189,6 @@ const translations = {
           desc: "Online sports court reservation system with a responsive booking experience.",
         },
         {
-          title: "Music Streaming Website",
-          desc: "Interactive music platform integrated with public APIs.",
-        },
-        {
           title: "Bookshelf App",
           desc: "Minimal reading management application with local storage.",
         },

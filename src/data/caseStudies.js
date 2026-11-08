@@ -30,7 +30,7 @@ const caseStudies = {
     ],
 
     links: {
-      demo: "https://koskosan.madebyrizky.my.id/",
+      demo: "https://havunio.madebyrizky.my.id/",
       repo: "",
     },
 

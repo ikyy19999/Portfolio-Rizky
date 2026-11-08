@@ -29,15 +29,6 @@ const projects = [
     demo: "https://sportix.madebyrizky.my.id",
   },
   {
-    slug: "music-streaming-website",
-    imgSrc: "",
-    title: "Music Streaming Website",
-    desc: "Interactive music platform integrated with public APIs.",
-    category: "web",
-    tech: ["HTML", "CSS", "JavaScript"],
-    demo: "/assets/Web Music/music.html",
-  },
-  {
     slug: "bookshelf-app",
     imgSrc: "/assets/Book.png",
     title: "Bookshelf App",
